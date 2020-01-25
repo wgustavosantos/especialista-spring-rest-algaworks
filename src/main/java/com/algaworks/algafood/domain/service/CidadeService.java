@@ -62,7 +62,6 @@ public class CidadeService {
     }
 
     private Cidade buscarOuFalhar(Long cidadeId) {
-        System.out.print("Dentro do método Buscar ou falhar");
         return cidadeRepository
                 .findById(cidadeId)
                 .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
