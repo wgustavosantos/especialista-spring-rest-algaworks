@@ -1,18 +1,14 @@
 package com.algaworks.di.service;
 
 import com.algaworks.di.modelo.Cliente;
-import com.algaworks.di.notificacao.Notificador;
+import com.algaworks.di.notificacao.NotificadorEmail;
 
 public class AtivacaoClienteService {
 	
-	private Notificador notificador;
-
-	public AtivacaoClienteService(Notificador notificador) {
-		this.notificador = notificador;
-	}
+	private NotificadorEmail notificadorEmail;;
 	
 	public void ativar (Cliente cliente) {
 		cliente.ativar();
-		notificador.notificar(cliente, "Seu cadastro no sistema está ativo");
+		notificadorEmail.notificar(cliente, "Seu cadastro no sistema está ativo");
 	}
 }
