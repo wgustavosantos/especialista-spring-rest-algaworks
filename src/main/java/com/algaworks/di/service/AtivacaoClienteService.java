@@ -9,7 +9,7 @@ import com.algaworks.di.notificacao.Notificador;
 @Component
 public class AtivacaoClienteService {
 	
-	@Autowired
+	@Autowired(required = false)
 	private Notificador notificador;
 
 	public void ativar (Cliente cliente) {
@@ -20,5 +20,4 @@ public class AtivacaoClienteService {
 	public Notificador getNotificador() {
 		return notificador;
 	}
-	
 }
