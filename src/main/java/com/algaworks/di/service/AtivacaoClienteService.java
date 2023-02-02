@@ -1,13 +1,8 @@
 package com.algaworks.di.service;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
-
 import com.algaworks.di.modelo.Cliente;
 import com.algaworks.di.notificacao.Notificador;
 
-@Component
-@Qualifier(value = "NotificadorZap")
 public class AtivacaoClienteService {
 	
 	private Notificador notificadorEmail;
