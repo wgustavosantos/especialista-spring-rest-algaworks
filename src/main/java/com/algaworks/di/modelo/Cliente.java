@@ -1,7 +1,9 @@
 package com.algaworks.di.modelo;
 
-public class Cliente {
+import javax.annotation.PostConstruct;
 
+public class Cliente {
+	
 	private String nome;
 	private String email;
 	private String telefone;

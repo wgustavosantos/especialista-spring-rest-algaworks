@@ -15,5 +15,4 @@ public class NotificadorEmail implements Notificador {
 		System.out.printf("Notificando %s por SMS através do telefone %s : %s\n",
 				c.getNome(), c.getTelefone(), m);
 	}
-	
 }
