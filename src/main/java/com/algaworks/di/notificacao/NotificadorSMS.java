@@ -1,12 +1,11 @@
 package com.algaworks.di.notificacao;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.di.modelo.Cliente;
 
 @Component
-@Qualifier("SMS")
+@TipoDoNotificador(NivelUrgencia.URGENTE)
 public class NotificadorSMS implements Notificador {
 	
 	@Override
