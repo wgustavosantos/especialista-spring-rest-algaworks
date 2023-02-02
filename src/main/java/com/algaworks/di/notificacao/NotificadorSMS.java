@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 import com.algaworks.di.modelo.Cliente;
 
 @Component
-public class NotificadorEmail implements Notificador {
+public class NotificadorSMS implements Notificador {
 	
 	@Override
 	public void notificar(Cliente c, String m) {
-		System.out.printf("Notificando %s por SMS através do telefone %s : %s\n", c.getNome(), c.getTelefone(), m);
+		System.out.printf("Notificando %s através do email %s : %s\n", c.getNome(), c.getEmail(), m);
 	}
 	
 }
