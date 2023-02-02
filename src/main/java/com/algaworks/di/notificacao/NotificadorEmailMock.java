@@ -6,14 +6,13 @@ import org.springframework.stereotype.Component;
 import com.algaworks.di.modelo.Cliente;
 
 @Component
+@Profile(value = "dev")
 @TipoDoNotificador(NivelUrgencia.NORMAL)
-@Profile(value = "prod")
-public class NotificadorEmail implements Notificador {
+public class NotificadorEmailMock implements Notificador {
 	
 	@Override
 	public void notificar(Cliente c, String m) {
-		System.out.printf("Notificando %s por SMS através do telefone %s : %s\n",
-				c.getNome(), c.getTelefone(), m);
+		System.out.printf("Notificando %s por EmailFake %s : %s\n", c.getNome(), c.getEmail(), m);
 	}
 	
 }
