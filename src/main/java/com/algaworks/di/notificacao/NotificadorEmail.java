@@ -1,10 +1,12 @@
 package com.algaworks.di.notificacao;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.di.modelo.Cliente;
 
 @Component
+@Primary
 public class NotificadorEmail implements Notificador {
 	
 	@Override
