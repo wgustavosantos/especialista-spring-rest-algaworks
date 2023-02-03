@@ -13,8 +13,8 @@ import com.algaworks.algafood.di.service.ClienteAtivadoEvent;
 public class EmissaoNotaFiscalService {
 	
 	@Autowired
-	@TipoDoNotificador(NivelUrgencia.NORMAL)
-	Notificador notificador;
+	@TipoDoNotificador(NivelUrgencia.URGENTE)
+	private Notificador notificador;
 	
 	@EventListener
 	public void emitirNotaFiscalClienteEvent(ClienteAtivadoEvent event) {
