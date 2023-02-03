@@ -1,6 +1,4 @@
-package com.algaworks.di.modelo;
-
-import javax.annotation.PostConstruct;
+package com.algaworks.algafood.di.modelo;
 
 public class Cliente {
 	
