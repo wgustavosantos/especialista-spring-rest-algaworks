@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "com.algaworks")
 public class AlgafoodApiApplication {
 
+	@Id
 	public static void main(String[] args) {
 		SpringApplication.run(AlgafoodApiApplication.class, args);
 	}
