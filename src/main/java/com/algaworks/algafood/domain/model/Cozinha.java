@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "cozinha")
 public class Cozinha {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//provedor de persistencia
     private Long id;
 
     @Column(name = "nome", length = 30)

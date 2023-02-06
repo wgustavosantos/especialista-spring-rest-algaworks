@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Restaurante {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //provedor de persistencia
     private Long Id;
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
