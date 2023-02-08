@@ -19,7 +19,7 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//provedor de persistencia
     private Long id;
 
-    @Column(name = "nome", length = 30)
+    @Column(name = "nome", length = 30, nullable = false)
     private String nome;
 
 }
