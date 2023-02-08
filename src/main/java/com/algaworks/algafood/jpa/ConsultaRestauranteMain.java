@@ -7,6 +7,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.List;
+
 public class ConsultaRestauranteMain {
     public static void main(String[] args) {
 
@@ -16,10 +18,12 @@ public class ConsultaRestauranteMain {
 
         final RestauranteRepository restaurantes = applicationContext.getBean(RestauranteRepository.class);
 
-        final Restaurante restaurante = restaurantes.porId(1L);
+        final List<Restaurante> todos = restaurantes.todos();
 
-        System.out.println(restaurante.getNome());
-        System.out.println(restaurante.getTaxaFrete());
+        for (Restaurante r : todos) {
+            System.out.printf("Nome: %s Cozinha: %s Taxa Frete: %.2f\n", r.getNome(), r.getCozinha().getNome(), r.getTaxaFrete());
+        }
+
 
     }
 }
