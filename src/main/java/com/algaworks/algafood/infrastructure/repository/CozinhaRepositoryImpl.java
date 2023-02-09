@@ -19,7 +19,6 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     @Override
     public List<Cozinha> todas(){
         final TypedQuery<Cozinha> cozinhas = entityManager.createQuery("from Cozinha", Cozinha.class);
-
         return cozinhas.getResultList();
     }
 
