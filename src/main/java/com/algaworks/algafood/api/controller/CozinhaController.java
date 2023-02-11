@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.service.CozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +18,9 @@ public class CozinhaController {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+
+    @Autowired
+    private CozinhaService cozinhaService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -44,7 +48,7 @@ public class CozinhaController {
 
         if(target != null){
             BeanUtils.copyProperties(cozinha, target, "id");
-            target = cozinhaRepository.salvar(target);
+            target = cozinhaService.salvar(target);
             return ResponseEntity.ok(target);
         }
         return ResponseEntity.notFound().build();
