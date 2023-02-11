@@ -21,7 +21,7 @@ public class AtualizarCozinhaMain {
 
         cozinha1.setNome("Brasileira");
         cozinha1.setId(1L);
-        cozinhas.adicionar(cozinha1);
+        cozinhas.salvar(cozinha1);
 
     }
 }
