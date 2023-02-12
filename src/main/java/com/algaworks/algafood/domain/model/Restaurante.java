@@ -14,7 +14,7 @@ public class Restaurante {
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //provedor de persistencia
-    private Long Id;
+    private Long id;
 
     @Column(nullable = false)
     private String nome;
