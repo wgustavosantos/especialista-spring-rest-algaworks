@@ -29,4 +29,14 @@ public class RestauranteService {
         restaurante.setCozinha(cozinha);
         return restauranteRepository.salvar(restaurante);
     }
+
+    public Restaurante buscar(Long id){
+
+        final Restaurante restaurante = restauranteRepository.porId(id);
+       if(restaurante == null){
+           throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada",
+                   id));
+       }
+       return restaurante;
+    }
 }
