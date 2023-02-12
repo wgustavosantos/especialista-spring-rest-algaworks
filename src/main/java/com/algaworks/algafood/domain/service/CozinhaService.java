@@ -23,10 +23,12 @@ public class CozinhaService {
         try {
             cozinhaRepository.excluir(cozinhaId);
         }catch(DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pôde ser excluída, pois está em uso", cozinhaId));
+            throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pôde ser excluída, pois está em uso",
+                    cozinhaId));
         }
         catch(EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada", cozinhaId));
+            throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada",
+                    cozinhaId));
         }
     }
 }
