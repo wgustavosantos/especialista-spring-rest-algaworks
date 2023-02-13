@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,14 @@ public class RestauranteService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @Autowired
+    private CozinhaService cozinhaService;
+
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
 
-        if(cozinha == null){
+        if (cozinha == null) {
             throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada",
                     cozinhaId));
         }
@@ -30,13 +34,27 @@ public class RestauranteService {
         return restauranteRepository.salvar(restaurante);
     }
 
-    public Restaurante buscar(Long id){
+    public Restaurante buscar(Long id) {
 
-        final Restaurante restaurante = restauranteRepository.porId(id);
-       if(restaurante == null){
-           throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada",
-                   id));
-       }
-       return restaurante;
+        return restauranteRepository.porId(id);
+    }
+
+    public Restaurante atualizar(Restaurante restaurante, Long id) {
+
+        Long cozinhaId = restaurante.getCozinha().getId();
+        Cozinha c = cozinhaRepository.porId(cozinhaId);
+
+        if (c == null)
+            throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada",
+                    cozinhaId));
+
+        Restaurante r = restauranteRepository.porId(id);
+
+        if(r == null )
+           return null;
+        restaurante.setCozinha(c);
+        BeanUtils.copyProperties(restaurante, r, "id");
+
+        return restauranteRepository.salvar(r);
     }
 }
