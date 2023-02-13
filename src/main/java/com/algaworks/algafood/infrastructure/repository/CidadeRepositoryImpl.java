@@ -25,19 +25,19 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Transactional
     @Override
-    public Cidade adicionar(Cidade cidade){
+    public Cidade salvar(Cidade cidade){
         return entityManager.merge(cidade);
     }
 
     @Override
-    public Cidade porId(Long id){
+    public Cidade buscar(Long id){
         return entityManager.find(Cidade.class, id);
     }
 
     @Transactional
     @Override
     public void remover (Cidade cidade){
-        cidade = porId(cidade.getId());
+        cidade = buscar(cidade.getId());
         entityManager.remove(cidade);
     }
 }

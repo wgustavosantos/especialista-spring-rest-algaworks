@@ -2,6 +2,7 @@ package com.algaworks.algafood.infrastructure.repository;
 
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +26,22 @@ public class EstadoRepositoryImpl implements EstadoRepository {
 
     @Transactional
     @Override
-    public Estado adicionar(Estado estado){
+    public Estado salvar(Estado estado){
         return entityManager.merge(estado);
     }
 
     @Override
-    public Estado porId(Long id){
+    public Estado buscar(Long id){
         return entityManager.find(Estado.class, id);
     }
 
     @Transactional
     @Override
-    public void remover (Estado estado){
-        estado = porId(estado.getId());
+    public void excluir(Long estadoId){
+        final Estado estado = buscar(estadoId);
+        if(estado == null){
+            throw new EmptyResultDataAccessException("Entidade cozinha não encontrada", 1);
+        }
         entityManager.remove(estado);
     }
 }
