@@ -31,7 +31,7 @@ public class CozinhaController {
 
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
-        Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
+        Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
         if (cozinha != null)
             return ResponseEntity.ok(cozinha);
 
@@ -46,7 +46,7 @@ public class CozinhaController {
 
     @PutMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> atualizar(@RequestBody Cozinha cozinha, @PathVariable Long cozinhaId) {
-        Cozinha target = cozinhaRepository.porId(cozinhaId);
+        Cozinha target = cozinhaRepository.buscar(cozinhaId);
 
         if (target != null) {
             BeanUtils.copyProperties(cozinha, target, "id");

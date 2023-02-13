@@ -30,14 +30,14 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
     }
 
     @Override
-    public Restaurante porId(Long id){
+    public Restaurante buscar(Long id){
         return entityManager.find(Restaurante.class, id);
     }
 
     @Transactional
     @Override
     public void remover (Restaurante restaurante){
-        restaurante = porId(restaurante.getId());
+        restaurante = buscar(restaurante.getId());
         entityManager.remove(restaurante);
     }
 }

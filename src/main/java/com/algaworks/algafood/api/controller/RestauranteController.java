@@ -3,7 +3,6 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import com.algaworks.algafood.domain.service.CozinhaService;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +20,7 @@ public class RestauranteController {
 
     @Autowired
     private RestauranteService restauranteService;
-
-    @Autowired
-    private CozinhaService cozinhaService;
-
+    
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
 
@@ -46,7 +42,7 @@ public class RestauranteController {
 
     @GetMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId) {
-        final Restaurante restaurante = restauranteRepository.porId(restauranteId);
+        final Restaurante restaurante = restauranteRepository.buscar(restauranteId);
 
         if (restaurante == null)
             return ResponseEntity.notFound().build();

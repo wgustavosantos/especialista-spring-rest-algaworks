@@ -33,7 +33,7 @@ public class CozinhaService {
     }
 
     public Cozinha buscar(Long id){
-        final Cozinha cozinha = cozinhaRepository.porId(id);
+        final Cozinha cozinha = cozinhaRepository.buscar(id);
 
         if(cozinha == null){
             throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada",
