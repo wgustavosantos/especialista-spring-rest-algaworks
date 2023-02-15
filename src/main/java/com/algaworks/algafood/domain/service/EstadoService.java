@@ -19,36 +19,19 @@ public class EstadoService {
     private EstadoRepository estadoRepository;
 
     public Estado salvar(Estado estado) {
-        return estadoRepository.salvar(estado);
-    }
-
-    public void excluir(Long estadoId) {
-        try {
-
-            estadoRepository.excluir(estadoId);
-
-        } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format("Estado de código %d não pôde ser excluído, pois está em uso",
-                    estadoId));
-
-        } catch (EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(String.format("Estado de código %d não pôde ser encontrado",
-                    estadoId));
-        }
-    }
-
-    public Estado buscar(Long id) {
-        final Estado estado = estadoRepository.buscar(id);
-
-        if (estado == null) {
-            throw new EntidadeNaoEncontradaException(String.format("Estado de código %d não pôde ser encontrada",
-                    id));
-        }
-        return estado;
+        return estadoRepository.save(estado);
     }
 
     public List<Estado> listar() {
-        return estadoRepository.todos();
+        return estadoRepository.findAll();
+    }
+
+    public Estado buscar(Long id) {
+        return estadoRepository
+                .findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format("Estado de código %d não pôde ser encontrada", id)));
+
     }
 
     public Estado atualizar(Estado estado, Long estadoId) {
@@ -56,6 +39,26 @@ public class EstadoService {
         Estado estadoOriginal = buscar(estadoId);
         BeanUtils.copyProperties(estado, estadoOriginal, "id");
 
-        return estadoRepository.salvar(estadoOriginal);
+        return estadoRepository.save(estadoOriginal);
     }
+
+    public void deletar(Long estadoId) {
+        try {
+            estadoRepository.deleteById(estadoId);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(
+                    String.format("Estado de código %d não pôde ser excluído, pois está em uso", estadoId));
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntidadeNaoEncontradaException(
+                    String.format("Estado de código %d não pôde ser encontrado", estadoId));
+        }
+    }
+
+
+
+
+
+
 }

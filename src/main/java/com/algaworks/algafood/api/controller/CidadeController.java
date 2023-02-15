@@ -2,7 +2,9 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CidadeService;
+import com.algaworks.algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +19,13 @@ public class CidadeController {
     @Autowired
     private CidadeService cidadeService;
 
+    @Autowired
+    private EstadoService estadoService;
+
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
-        try {
             cidade = cidadeService.salvar(cidade);
-            return ResponseEntity.ok(cidade);
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+            return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
     }
 
     @GetMapping
@@ -49,15 +49,17 @@ public class CidadeController {
     public ResponseEntity<?> atualizar(@RequestBody Cidade cidade, @PathVariable Long id) {
 
         try {
-            Cidade c = cidadeService.atualizar(cidade, id);
-
-            if (c == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(c);
-
+            Estado estado = estadoService.buscar(cidade.getEstado().getId());
+            cidade.setEstado(estado);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+        try {
+            Cidade c = cidadeService.atualizar(cidade, id);
+            return ResponseEntity.ok(c);
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 

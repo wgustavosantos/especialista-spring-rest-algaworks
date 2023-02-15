@@ -18,6 +18,12 @@ public class EstadoController {
     @Autowired
     private EstadoService estadoService;
 
+    @PostMapping
+    public ResponseEntity<Estado> adicionar(@RequestBody Estado estado) {
+        estado = estadoService.salvar(estado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(estado);
+    }
+
     @GetMapping
     public List<Estado> listar() {
         return estadoService.listar();
@@ -34,12 +40,6 @@ public class EstadoController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Estado> adicionar(@RequestBody Estado estado) {
-        estado = estadoService.salvar(estado);
-        return ResponseEntity.ok(estado);
-    }
-
     @PutMapping("/{estadoId}")
     public ResponseEntity<?> atualizar(@RequestBody Estado estado, @PathVariable Long estadoId) {
         try {
@@ -54,7 +54,8 @@ public class EstadoController {
     @DeleteMapping("/{estadoId}")
     public ResponseEntity<?> deletar(@PathVariable Long estadoId){
         try {
-            estadoService.excluir(estadoId);
+            estadoService.deletar(estadoId);
+            return ResponseEntity.noContent().build();
 
         } catch(EntidadeNaoEncontradaException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -62,8 +63,5 @@ public class EstadoController {
         } catch (EntidadeEmUsoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-
-        return ResponseEntity.noContent().build();
     }
-
 }
