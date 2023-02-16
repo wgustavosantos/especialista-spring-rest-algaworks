@@ -8,6 +8,8 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,22 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
     @Override
     public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 
+        //constroi elementos para criar a consulta
+        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+
+        //instância de criteria de restaurante para criar uma consulta de restaurante
+        CriteriaQuery<Restaurante> criteria = criteriaBuilder.createQuery(Restaurante.class);
+
+        //constroi a consulta
+        criteria.from(Restaurante.class);
+
+        final TypedQuery<Restaurante> query = manager.createQuery(criteria);
+
+        return query.getResultList();
+    }
+
+    /*Código sem utilizar criteria query*/
+    private TypedQuery<Restaurante> getRestauranteTypedQuery(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
         StringBuilder jpql = new StringBuilder();
         jpql.append("from Restaurante where 0 = 0 ");
 
@@ -42,7 +60,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
         }
         TypedQuery<Restaurante> query = manager.createQuery(jpql.toString(), Restaurante.class);
         parametros.forEach(query::setParameter);
-        return query.getResultList();
+        return query;
     }
 
 }
