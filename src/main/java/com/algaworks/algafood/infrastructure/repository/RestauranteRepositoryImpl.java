@@ -10,6 +10,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -23,15 +25,24 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
     @Override
     public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 
-        //constroi elementos para criar a consulta
+        //instância de CriteriaBuilder que constroi elementos para criar a consulta
         CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 
         //instância de criteria de restaurante para criar uma consulta de restaurante
         CriteriaQuery<Restaurante> criteria = criteriaBuilder.createQuery(Restaurante.class);
 
-        //constroi a consulta
-        criteria.from(Restaurante.class);
+        //equivalente a "from Restaurante" é o root da consulta
+        final Root<Restaurante> root = criteria.from(Restaurante.class);
 
+        //predicados da consulta
+        Predicate nomePredicate = criteriaBuilder.like(root.get("nome"),"%"+nome+"%");
+        Predicate taxaFreteInicialPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial);
+        Predicate taxaFreteFinalPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
+
+        //criado a consula "form Restaurante where nome like :nome and taxaFrete >= :taxaFrenteInicial and taxaFrete >= taxaFrenteFinal"
+        criteria.where(nomePredicate, taxaFreteInicialPredicate, taxaFreteFinalPredicate);
+
+        //constroi a query e retorna a query do banco
         final TypedQuery<Restaurante> query = manager.createQuery(criteria);
 
         return query.getResultList();
