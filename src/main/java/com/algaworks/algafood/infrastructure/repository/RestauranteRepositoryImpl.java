@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
     @Override
     public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+        List<Predicate> predicates = new ArrayList<>();
 
         //instância de CriteriaBuilder que constroi elementos para criar a consulta
         CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
@@ -35,12 +37,21 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
         final Root<Restaurante> root = criteria.from(Restaurante.class);
 
         //predicados da consulta
-        Predicate nomePredicate = criteriaBuilder.like(root.get("nome"),"%"+nome+"%");
-        Predicate taxaFreteInicialPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial);
-        Predicate taxaFreteFinalPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
+
+        if(StringUtils.hasText(nome)){
+            predicates.add(criteriaBuilder.like(root.get("nome"),"%"+nome+"%"));
+        }
+
+        if(taxaFreteInicial != null){
+         predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
+        }
+
+        if(taxaFreteFinal != null){
+            criteriaBuilder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
+        }
 
         //criado a consula "form Restaurante where nome like :nome and taxaFrete >= :taxaFrenteInicial and taxaFrete >= taxaFrenteFinal"
-        criteria.where(nomePredicate, taxaFreteInicialPredicate, taxaFreteFinalPredicate);
+        criteria.where(predicates.toArray(new Predicate[0]));
 
         //constroi a query e retorna a query do banco
         final TypedQuery<Restaurante> query = manager.createQuery(criteria);
