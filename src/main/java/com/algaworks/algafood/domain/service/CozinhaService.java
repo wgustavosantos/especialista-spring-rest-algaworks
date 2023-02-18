@@ -35,7 +35,7 @@ public class CozinhaService {
 
     public Cozinha atualizar(Cozinha cozinha, Long id){
         final Cozinha c = buscar(id);
-        BeanUtils.copyProperties(cozinha, c, "id");
+        BeanUtils.copyProperties(cozinha, c, "id", "formasPagamento");
         return cozinhaRepository.save(c);
     }
 
