@@ -51,7 +51,7 @@ public class RestauranteService {
 
         Restaurante r = this.buscar(id);
 
-        BeanUtils.copyProperties(restaurante, r, "id",  "formasPagamento", "endereco", "dataCadastro");
+        BeanUtils.copyProperties(restaurante, r, "id",  "formasPagamento", "endereco", "dataCadastro", "produtos");
 
         return restauranteRepository.save(r);
     }
