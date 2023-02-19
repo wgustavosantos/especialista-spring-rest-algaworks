@@ -45,11 +45,10 @@ public class RestauranteService {
 
         Restaurante r = this.buscar(id);
 
-        BeanUtils.copyProperties(restaurante, r, "id",  "formasPagamento", "endereco");
+        BeanUtils.copyProperties(restaurante, r, "id",  "formasPagamento", "endereco", "dataCadastro");
 
         return restauranteRepository.save(r);
     }
-
     public void deletar(Long restauranteId) {
 
         try{
