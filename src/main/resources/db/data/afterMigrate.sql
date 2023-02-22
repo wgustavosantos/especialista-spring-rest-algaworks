@@ -1,7 +1,22 @@
+set foreign_key_checks = 0;
+use algafood;
+truncate table cidade;
+truncate table cozinha;
+truncate table estado;
+truncate table forma_pagamento;
+truncate table grupo;
+truncate table grupo_permissao;
+truncate table permissao;
+truncate table produto;
+truncate table restaurante;
+truncate table restaurante_forma_pagamento;
+truncate table usuario;
+truncate table usuario_grupo;
+
+set foreign_key_checks = 1;
+
 insert into cozinha (id, nome) values (1, 'Tailandesa');
 insert into cozinha (id, nome) values (2, 'Indiana');
-insert into cozinha (id, nome) values (3, 'Argentina');
-insert into cozinha (id, nome) values (4, 'Brasileira');
 
 insert into estado (id, nome) values (1, 'Minas Gerais');
 insert into estado (id, nome) values (2, 'São Paulo');
@@ -37,7 +52,7 @@ insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_a
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (5, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (6, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp);
 
-insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 1);
