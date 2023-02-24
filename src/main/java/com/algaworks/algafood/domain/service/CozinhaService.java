@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class CozinhaService {
                     cozinhaId));
         }
         catch(EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pôde ser encontrada",
+            throw new EntidadeNaoEncontradaException(HttpStatus.NOT_FOUND, String.format("Cozinha de código %d não pôde ser encontrada",
                     cozinhaId));
         }
     }
