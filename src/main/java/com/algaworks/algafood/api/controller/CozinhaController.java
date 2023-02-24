@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
@@ -40,7 +39,7 @@ public class CozinhaController {
             final Cozinha cozinha = cozinhaService.buscar(cozinhaId);
             return ResponseEntity.ok(cozinha);
 
-        } catch(EntidadeNaoEncontradaException e){
+        } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -51,23 +50,29 @@ public class CozinhaController {
             cozinha = cozinhaService.atualizar(cozinha, cozinhaId);
             return ResponseEntity.ok(cozinha);
 
-        } catch(EntidadeNaoEncontradaException e){
+        } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
     }
 
+    //    @DeleteMapping("/{cozinhaId}")
+//    public ResponseEntity<Cozinha> deletar (@PathVariable Long cozinhaId) {
+//        try {
+//            cozinhaService.deletar(cozinhaId);
+//            return ResponseEntity.noContent().build();
+//
+//        } catch (EntidadeEmUsoException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//
+//        } catch (EntidadeNaoEncontradaException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//    }
     @DeleteMapping("/{cozinhaId}")
-    public ResponseEntity<Cozinha> deletar (@PathVariable Long cozinhaId) {
-        try {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long cozinhaId) {
             cozinhaService.deletar(cozinhaId);
-            return ResponseEntity.noContent().build();
-
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
     }
+
 }
