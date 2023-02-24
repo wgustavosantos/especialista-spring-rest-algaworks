@@ -2,13 +2,13 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,28 +28,33 @@ public class CozinhaService {
     }
 
     public Cozinha buscar(Long id){
-        return cozinhaRepository
-                .findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Cozinha de código %d não pôde ser encontrada", id)));
+        return buscarOuFalhar(id);
     }
 
+
     public Cozinha atualizar(Cozinha cozinha, Long id){
-        final Cozinha c = buscar(id);
-        BeanUtils.copyProperties(cozinha, c, "id");
-        return cozinhaRepository.save(c);
+        Cozinha cAtual = buscar(id);
+        BeanUtils.copyProperties(cozinha, cAtual, "id");
+        return cozinhaRepository.save(cAtual);
     }
 
     public void deletar (Long cozinhaId){
         try {
             cozinhaRepository.deleteById(cozinhaId);
         }catch(DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pôde ser excluída, pois está em uso",
+            throw new EntidadeEmUsoException(String.format(ErrorMessage.ENTIDADE_EM_USO.get(),
                     cozinhaId));
         }
         catch(EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(HttpStatus.NOT_FOUND, String.format("Cozinha de código %d não pôde ser encontrada",
+            throw new EntidadeNaoEncontradaException(String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(),
                     cozinhaId));
         }
+    }
+
+    private Cozinha buscarOuFalhar(Long id) {
+        return cozinhaRepository
+                .findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), id)));
     }
 }
