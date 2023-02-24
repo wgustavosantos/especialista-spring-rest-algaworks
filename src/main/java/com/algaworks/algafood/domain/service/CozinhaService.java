@@ -42,11 +42,11 @@ public class CozinhaService {
         try {
             cozinhaRepository.deleteById(cozinhaId);
         }catch(DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format(ErrorMessage.ENTIDADE_EM_USO.get(),
+            throw new EntidadeEmUsoException(String.format(ErrorMessage.ENTIDADE_EM_USO.get(), Cozinha.class.getSimpleName(),
                     cozinhaId));
         }
         catch(EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(),
+            throw new EntidadeNaoEncontradaException(String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Cozinha.class.getSimpleName(),
                     cozinhaId));
         }
     }
@@ -55,6 +55,6 @@ public class CozinhaService {
         return cozinhaRepository
                 .findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), id)));
+                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Cozinha.class.getSimpleName(), id)));
     }
 }

@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,38 +28,20 @@ public class EstadoController {
     }
 
     @GetMapping("/{estadoId}")
-    public ResponseEntity<?> buscar(@PathVariable Long estadoId) {
-        try {
-            Estado estado = estadoService.buscar(estadoId);
-            return ResponseEntity.ok(estado);
+    public Estado buscar(@PathVariable Long estadoId) {
 
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return estadoService.buscar(estadoId);
     }
 
     @PutMapping("/{estadoId}")
-    public ResponseEntity<?> atualizar(@RequestBody Estado estado, @PathVariable Long estadoId) {
-        try {
-            estado = estadoService.atualizar(estado, estadoId);
-            return ResponseEntity.ok(estado);
+    public Estado atualizar(@RequestBody Estado estado, @PathVariable Long estadoId) {
+        return estadoService.atualizar(estado, estadoId);
 
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 
     @DeleteMapping("/{estadoId}")
-    public ResponseEntity<?> deletar(@PathVariable Long estadoId){
-        try {
-            estadoService.deletar(estadoId);
-            return ResponseEntity.noContent().build();
-
-        } catch(EntidadeNaoEncontradaException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-
-        } catch (EntidadeEmUsoException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long estadoId) {
+        estadoService.deletar(estadoId);
     }
 }

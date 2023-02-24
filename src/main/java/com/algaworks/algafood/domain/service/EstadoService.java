@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.BeanUtils;
@@ -27,10 +28,7 @@ public class EstadoService {
     }
 
     public Estado buscar(Long id) {
-        return estadoRepository
-                .findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Estado de código %d não pôde ser encontrada", id)));
+        return buscarOuFalhar(id);
 
     }
 
@@ -48,17 +46,17 @@ public class EstadoService {
 
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Estado de código %d não pôde ser excluído, pois está em uso", estadoId));
+                    String.format(ErrorMessage.ENTIDADE_EM_USO.get(), Estado.class.getSimpleName(), estadoId));
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Estado de código %d não pôde ser encontrado", estadoId));
+                    String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Estado.class.getSimpleName(), estadoId));
         }
     }
 
-
-
-
-
-
+    public Estado buscarOuFalhar(Long estadoId) {
+        return estadoRepository.findById(estadoId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Estado.class.getSimpleName(),  estadoId)));
+    }
 }
