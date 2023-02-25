@@ -41,9 +41,6 @@ public class CidadeService {
     }
 
     public Cidade atualizar(Cidade cidade, Long id) {
-        Estado estado = estadoService.buscar(cidade.getEstado().getId());
-        cidade.setEstado(estado);
-
         Cidade c = this.buscar(id);
         BeanUtils.copyProperties(cidade, c, "id");
         return cidadeRepository.save(c);
