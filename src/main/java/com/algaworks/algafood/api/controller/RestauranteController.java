@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -34,9 +34,13 @@ public class RestauranteController {
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
 
-        Restaurante restauranteSalvo = restauranteService.salvar(restaurante);
-        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteSalvo);
+        try {
+            Restaurante restauranteSalvo = restauranteService.salvar(restaurante);
+            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteSalvo);
 
+        }catch (CozinhaNaoEncontradaException e){
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @GetMapping
@@ -57,8 +61,8 @@ public class RestauranteController {
         try {
             Cozinha cozinha = cozinhaService.buscar(restaurante.getCozinha().getId());
             restaurante.setCozinha(cozinha);
-        } catch (EntidadeNaoEncontradaException e){
-            throw new NegocioException(e.getMessage());
+        } catch (CozinhaNaoEncontradaException e){
+            throw new NegocioException(e.getMessage(), e);
         }
 
         return restauranteService.atualizar(restaurante, id);

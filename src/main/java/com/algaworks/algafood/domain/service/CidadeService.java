@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
@@ -40,8 +40,8 @@ public class CidadeService {
 
     }
 
-    public Cidade atualizar(Cidade cidade, Long id) {
-        Cidade c = this.buscar(id);
+    public Cidade atualizar(Cidade cidade, Long cidadeId) {
+        Cidade c = this.buscar(cidadeId);
         BeanUtils.copyProperties(cidade, c, "id");
         return cidadeRepository.save(c);
     }
@@ -55,16 +55,14 @@ public class CidadeService {
                     String.format(ErrorMessage.ENTIDADE_EM_USO.get(), Cidade.class.getSimpleName(), cidadeId));
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Cidade.class.getSimpleName(), cidadeId));
+            throw new CidadeNaoEncontradaException(cidadeId);
         }
     }
 
-    private Cidade buscarOuFalhar(Long id) {
+    private Cidade buscarOuFalhar(Long cidadeId) {
         return cidadeRepository
-                .findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Cidade.class.getSimpleName(), id)));
+                .findById(cidadeId)
+                .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
     }
 
 }

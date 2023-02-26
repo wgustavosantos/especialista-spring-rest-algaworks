@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
@@ -32,8 +32,8 @@ public class CozinhaService {
     }
 
 
-    public Cozinha atualizar(Cozinha cozinha, Long id){
-        Cozinha cAtual = buscar(id);
+    public Cozinha atualizar(Cozinha cozinha, Long cozinhaId){
+        Cozinha cAtual = buscar(cozinhaId);
         BeanUtils.copyProperties(cozinha, cAtual, "id");
         return cozinhaRepository.save(cAtual);
     }
@@ -46,15 +46,13 @@ public class CozinhaService {
                     cozinhaId));
         }
         catch(EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Cozinha.class.getSimpleName(),
-                    cozinhaId));
+            throw new CozinhaNaoEncontradaException(cozinhaId);
         }
     }
 
-    private Cozinha buscarOuFalhar(Long id) {
+    private Cozinha buscarOuFalhar(Long cozinhaId) {
         return cozinhaRepository
-                .findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Cozinha.class.getSimpleName(), id)));
+                .findById(cozinhaId)
+                .orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
     }
 }

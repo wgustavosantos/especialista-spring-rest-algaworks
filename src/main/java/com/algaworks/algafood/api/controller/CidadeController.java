@@ -25,9 +25,12 @@ public class CidadeController {
 
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
-
-        Cidade c = cidadeService.salvar(cidade);
-        return ResponseEntity.status(HttpStatus.CREATED).body(c);
+        try {
+            Cidade c = cidadeService.salvar(cidade);
+            return ResponseEntity.status(HttpStatus.CREATED).body(c);
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @GetMapping

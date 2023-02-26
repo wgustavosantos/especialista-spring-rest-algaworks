@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -31,7 +31,6 @@ public class RestauranteService {
 
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.buscar(cozinhaId);
-
         restaurante.setCozinha(cozinha);
         return restauranteRepository.save(restaurante);
     }
@@ -61,14 +60,12 @@ public class RestauranteService {
             throw new EntidadeEmUsoException(String.format(ErrorMessage.ENTIDADE_EM_USO.get(), Restaurante.class.getSimpleName(),
                     restauranteId));
         } catch(EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(
-                    String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Restaurante.class.getSimpleName(), restauranteId));
+            throw new RestauranteNaoEncontradoException(restauranteId);
         }
     }
 
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Restaurante.class.getSimpleName(),  restauranteId)));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
 }

@@ -42,19 +42,6 @@ public class CozinhaController {
         return cozinhaService.atualizar(cozinha, cozinhaId);
     }
 
-    //    @DeleteMapping("/{cozinhaId}")
-//    public ResponseEntity<Cozinha> deletar (@PathVariable Long cozinhaId) {
-//        try {
-//            cozinhaService.deletar(cozinhaId);
-//            return ResponseEntity.noContent().build();
-//
-//        } catch (EntidadeEmUsoException e) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//
-//        } catch (EntidadeNaoEncontradaException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long cozinhaId) {

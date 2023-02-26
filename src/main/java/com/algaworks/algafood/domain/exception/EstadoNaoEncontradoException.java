@@ -3,7 +3,7 @@ package com.algaworks.algafood.domain.exception;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Estado;
 
-//@ResponseStatus(HttpStatus.NOT_FOUND)
+
 public class EstadoNaoEncontradoException extends EntidadeNaoEncontradaException {
     public EstadoNaoEncontradoException(String msg) {
         super(msg);
