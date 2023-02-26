@@ -12,6 +12,10 @@ public class CidadeNaoEncontradaException extends EntidadeNaoEncontradaException
         super(msg);
     }
 
+    /**
+     * Mensagem padrão
+     * @param cidadeId
+     */
     public CidadeNaoEncontradaException(Long cidadeId) {
         this(String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Cidade.class.getSimpleName(), cidadeId));
     }

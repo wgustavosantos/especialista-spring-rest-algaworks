@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
-import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
@@ -57,8 +56,7 @@ public class RestauranteService {
         try{
             restauranteRepository.deleteById(restauranteId);
         } catch(DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format(ErrorMessage.ENTIDADE_EM_USO.get(), Restaurante.class.getSimpleName(),
-                    restauranteId));
+            throw new EntidadeEmUsoException(Restaurante.class.getSimpleName(), restauranteId);
         } catch(EmptyResultDataAccessException e){
             throw new RestauranteNaoEncontradoException(restauranteId);
         }

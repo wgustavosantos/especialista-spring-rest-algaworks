@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import org.springframework.beans.BeanUtils;
@@ -42,8 +41,7 @@ public class CozinhaService {
         try {
             cozinhaRepository.deleteById(cozinhaId);
         }catch(DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format(ErrorMessage.ENTIDADE_EM_USO.get(), Cozinha.class.getSimpleName(),
-                    cozinhaId));
+            throw new EntidadeEmUsoException(Cozinha.class.getSimpleName(), cozinhaId);
         }
         catch(EmptyResultDataAccessException e){
             throw new CozinhaNaoEncontradaException(cozinhaId);
