@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
@@ -49,14 +49,12 @@ public class EstadoService {
                     String.format(ErrorMessage.ENTIDADE_EM_USO.get(), Estado.class.getSimpleName(), estadoId));
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Estado.class.getSimpleName(), estadoId));
+            throw new EstadoNaoEncontradoException(estadoId);
         }
     }
 
     public Estado buscarOuFalhar(Long estadoId) {
         return estadoRepository.findById(estadoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), Estado.class.getSimpleName(),  estadoId)));
+                .orElseThrow(() -> new EstadoNaoEncontradoException(estadoId));
     }
 }
