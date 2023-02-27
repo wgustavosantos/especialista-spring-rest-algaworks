@@ -19,27 +19,30 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus statusNotFound = HttpStatus.NOT_FOUND;
         ProblemType problemType = ProblemType.ENTIDADE_NAO_ENCONTRADA;
-        final Problem problem2 = createProblemType(statusNotFound, problemType, ex.getMessage()).build();
-//        Problem problem = Problem.builder()
-//                .status(statusNotFound.value())
-//                .type("http://localhost:8080/entidade-nao-encontrada")
-//                .title("Entidade não encontrada")
-//                .detail(ex.getMessage())
-//                .build();
+        final Problem problem = createProblemType(statusNotFound, problemType, ex.getMessage()).build();
 
-        return handleExceptionInternal(ex, problem2, new HttpHeaders(), statusNotFound, request);
-
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), statusNotFound, request);
     }
 
     @ExceptionHandler(NegocioException.class) /*também subclasses*/
     public ResponseEntity<?> handleNegocioException(NegocioException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
+        final HttpStatus statusBadRequest = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.ERRO_NEGOCIO;
+        final Problem problem = createProblemType(statusBadRequest, problemType, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), statusBadRequest, request);
 
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException ex, WebRequest request){
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+
+        final HttpStatus statusConflict = HttpStatus.CONFLICT;
+        ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
+        final Problem problem = createProblemType(statusConflict, problemType, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), statusConflict, request);
     }
 
     @Override
