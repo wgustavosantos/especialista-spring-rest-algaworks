@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -62,6 +63,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     .build();
         }
         return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    /**
+     *  Algumas variáveis do parâmetro não precisam ser definidas pois a superclasse já atribiu valores
+     * @param ex the exception
+     * @param headers the headers to be written to the response
+     * @param status the selected response status.
+     * @param request the current request
+     * @return
+     */
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
+                                                                  HttpStatus status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.CORPO_NAO_LEGIVEL;
+        String detail = "O corpo da requisição está inválido. Verifique o possível erro de sintaxe.";
+        final Problem problem = createProblemType(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     private Problem.ProblemBuilder createProblemType (HttpStatus status, ProblemType problemType, String detail){
