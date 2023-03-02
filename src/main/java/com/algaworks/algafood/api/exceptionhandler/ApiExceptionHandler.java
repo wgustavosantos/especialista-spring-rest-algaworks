@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex, WebRequest request) {
 
         HttpStatus statusNotFound = HttpStatus.NOT_FOUND;
-        ProblemType problemType = ProblemType.ENTIDADE_NAO_ENCONTRADA;
+        ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
         final Problem problem = createProblemType(statusNotFound, problemType, ex.getMessage()).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), statusNotFound, request);
@@ -163,6 +164,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, problema, headers, status, request);
 
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        final ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+        final String requestURL = ex.getRequestURL();
+        String detail = String.format("O recurso '%s' é inexistente", requestURL);
+        final Problem problema = createProblemType(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problema, headers, status, request);
     }
 
     private Problem.ProblemBuilder createProblemType (HttpStatus status, ProblemType problemType, String detail){
