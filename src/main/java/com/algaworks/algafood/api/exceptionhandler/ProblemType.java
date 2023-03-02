@@ -11,8 +11,8 @@ public enum ProblemType {
     ENTIDADE_NAO_ENCONTRADA("/entidade-nao-encontrada", "Entidade não encontrada"),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     ERRO_NEGOCIO("/erro-negocio", "Violação de regra de negócio"),
-
-    CORPO_NAO_LEGIVEL("/corpo-nao-legivel", "Corpo não legível");
+    CORPO_NAO_LEGIVEL("/corpo-nao-legivel", "Corpo não legível"),
+    PARAMETRO_INVALIDO("/parametro-invalido", "parametro inválido");
 
     private String title;
     private String uri;

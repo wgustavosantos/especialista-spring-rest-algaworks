@@ -79,6 +79,13 @@ public class RestauranteController {
             restauranteService.deletar(restauranteId);
     }
 
+    /**
+     *
+     *
+     * @param servletRequest instancair um ServletServerHttpRequest e passar no argumento da exceção
+     *                       HttpMessageNotReadableException no método merge e relançar para ser capturada por
+     *                       handleHttpMessageNotReadable em ApiExceptionHandler
+     */
     @PatchMapping("/{id}")
     public Restaurante atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest servletRequest) {
         Restaurante restauranteAtual = restauranteService.buscar(id);
@@ -99,6 +106,7 @@ public class RestauranteController {
 
             dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
                 Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+                assert field != null;
                 field.setAccessible(true);
 
                 final Object novoValorConvertido = ReflectionUtils.getField(field, restauranteOrigem);
@@ -107,6 +115,7 @@ public class RestauranteController {
             });
         } catch (IllegalArgumentException ex){
             final Throwable rootCause = ExceptionUtils.getRootCause(ex);
+
             final ServletServerHttpRequest servletServerHttpRequest = new ServletServerHttpRequest(servletRequest);
             throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest );
         }

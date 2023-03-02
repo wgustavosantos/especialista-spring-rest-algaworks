@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,11 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -105,7 +108,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                 HttpStatus status, WebRequest request) {
         ProblemType problemType = ProblemType.CORPO_NAO_LEGIVEL;
 
-        final String path = getCollect(ex.getPath());
+        final String path = getPath(ex.getPath());
 
         String detail = String.format("A propriedade '%s' recebeu o valor '%s' que é de um tipo inválido. " +
                 "Corrija e informe um valor compatível com o tipo '%s'.", path, ex.getValue(), ex.getTargetType().getSimpleName());
@@ -117,7 +120,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-        final String path = getCollect(ex.getPath());
+        final String path = getPath(ex.getPath());
 
         ProblemType problemType = ProblemType.CORPO_NAO_LEGIVEL;
 
@@ -136,6 +139,32 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        if(ex instanceof MethodArgumentTypeMismatchException){
+            return handleMethodArgumentTypeMismacthException((MethodArgumentTypeMismatchException) ex, headers, status, request);
+        }
+        return super.handleTypeMismatch(ex, headers, status, request);
+    }
+
+    private ResponseEntity<Object> handleMethodArgumentTypeMismacthException(MethodArgumentTypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String campoUrl = ex.getName();
+        final Object valorEsperado = ex.getValue();
+        /*Pode vir nulo, então é usado Objects.requireNonNull*/
+        final String tipoRequerido = Objects.requireNonNull(ex.getRequiredType()).getSimpleName();
+
+        final ProblemType problemType = ProblemType.PARAMETRO_INVALIDO;
+        String detail = String.format("O parâmetro de URL '%s' recebeu o valor '%s', que é de um tipo inválido. Corrija e informe um valor" +
+                " compatível com o tipo '%s'.", campoUrl, valorEsperado, tipoRequerido);
+
+
+        final Problem problema = createProblemType(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problema, headers, status, request);
+
+    }
+
     private Problem.ProblemBuilder createProblemType (HttpStatus status, ProblemType problemType, String detail){
 
         return Problem.builder()
@@ -146,7 +175,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    private static String getCollect(List<JsonMappingException.Reference> ex) {
+    private static String getPath(List<JsonMappingException.Reference> ex) {
         return ex
                 .stream()
                 .map(JsonMappingException.Reference::getFieldName)
