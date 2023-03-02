@@ -21,6 +21,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -33,10 +34,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class) /*também subclasses*/
     public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex, WebRequest request) {
-
         HttpStatus statusNotFound = HttpStatus.NOT_FOUND;
         ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
-        final Problem problem = createProblemType(statusNotFound, problemType, ex.getMessage()).build();
+        final Problem problem = createProblemType(statusNotFound, problemType, ex.getMessage()).userMessage(ex.getMessage()).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), statusNotFound, request);
     }
@@ -46,7 +46,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         final HttpStatus statusBadRequest = HttpStatus.BAD_REQUEST;
         ProblemType problemType = ProblemType.ERRO_NEGOCIO;
-        final Problem problem = createProblemType(statusBadRequest, problemType, ex.getMessage()).build();
+        final Problem problem = createProblemType(statusBadRequest, problemType, ex.getMessage()).userMessage(ex.getMessage()).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), statusBadRequest, request);
 
@@ -76,6 +76,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             body = Problem.builder()
                     .title(body instanceof String ? (String) body : status.getReasonPhrase())
                     .status(status.value())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
         }
         return super.handleExceptionInternal(ex, body, headers, status, request);
@@ -103,7 +104,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemType problemType = ProblemType.CORPO_NAO_LEGIVEL;
         String detail = "O corpo da requisição está inválido. Verifique o possível erro de sintaxe.";
-        final Problem problem = createProblemType(status, problemType, detail).build();
+        final Problem problem = createProblemType(status, problemType, detail).userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -163,7 +164,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 " compatível com o tipo '%s'.", campoUrl, valorEsperado, tipoRequerido);
 
 
-        final Problem problema = createProblemType(status, problemType, detail).build();
+        final Problem problema = createProblemType(status, problemType, detail).userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 
         return handleExceptionInternal(ex, problema, headers, status, request);
 
@@ -176,7 +177,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         final ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
         final String requestURL = ex.getRequestURL();
         String detail = String.format("O recurso '%s' é inexistente", requestURL);
-        final Problem problema = createProblemType(status, problemType, detail).build();
+        final Problem problema = createProblemType(status, problemType, detail).userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 
         return handleExceptionInternal(ex, problema, headers, status, request);
     }
@@ -189,7 +190,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         final ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
         String detail = MSG_ERRO_GENERICA_USUARIO_FINAL;
         ex.printStackTrace();
-         Problem problema = createProblemType(status, problemType, detail).build();
+
+        Problem problema = createProblemType(status, problemType, detail).build();
 
         return handleExceptionInternal(ex, problema, headers, status, request);
     }
@@ -200,6 +202,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(status.value())
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
+                .timeStamp(LocalDateTime.now())
                 .detail(detail);
     }
 
