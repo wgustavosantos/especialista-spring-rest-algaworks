@@ -167,12 +167,27 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
+                                                                   HttpStatus status, WebRequest request) {
 
         final ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
         final String requestURL = ex.getRequestURL();
         String detail = String.format("O recurso '%s' é inexistente", requestURL);
         final Problem problema = createProblemType(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problema, headers, status, request);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleOtherAllException (Exception ex, WebRequest request){
+
+        final HttpHeaders headers = new HttpHeaders();
+        final HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        final ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+        String detail = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
+                "proplema persistir, entre em contato com o administrador do sistema.";
+        ex.printStackTrace();
+         Problem problema = createProblemType(status, problemType, detail).build();
 
         return handleExceptionInternal(ex, problema, headers, status, request);
     }
