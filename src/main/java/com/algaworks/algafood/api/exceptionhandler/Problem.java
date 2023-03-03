@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 /*Classe criada para representar a mensagem de erro da exceção de acordo com a RFC 7807*/
 @Getter
 @Builder
@@ -18,4 +20,13 @@ public class Problem {
     /*Extensão da especificação*/
     private String userMessage;
     private LocalDateTime timeStamp;
+    /*Extensão cap 9 - aula 4 */
+    private List<Field> fields;
+
+    @Getter
+    @Builder
+    public static class Field{
+        private String name;
+        private String userMessage;
+    }
 }
