@@ -111,7 +111,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers,
+    protected ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers,
                                                                 HttpStatus status, WebRequest request) {
         ProblemType problemType = ProblemType.CORPO_NAO_LEGIVEL;
 
@@ -125,7 +125,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
+    protected ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
         final String path = getPath(ex.getPath());
 
@@ -155,7 +155,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleTypeMismatch(ex, headers, status, request);
     }
 
-    private ResponseEntity<Object> handleMethodArgumentTypeMismacthException(MethodArgumentTypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentTypeMismacthException(MethodArgumentTypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String campoUrl = ex.getName();
         final Object valorEsperado = ex.getValue();
         /*Pode vir nulo, então é usado Objects.requireNonNull*/
