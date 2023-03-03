@@ -77,6 +77,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     .title(body instanceof String ? (String) body : status.getReasonPhrase())
                     .status(status.value())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                    .timeStamp(LocalDateTime.now())
                     .build();
         }
         return super.handleExceptionInternal(ex, body, headers, status, request);

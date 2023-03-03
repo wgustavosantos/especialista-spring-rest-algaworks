@@ -31,6 +31,7 @@ public class RestauranteService {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.buscar(cozinhaId);
         restaurante.setCozinha(cozinha);
+
         return restauranteRepository.save(restaurante);
     }
 

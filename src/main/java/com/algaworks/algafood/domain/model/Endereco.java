@@ -26,6 +26,6 @@ public class Endereco {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "endereco_cidade_id", nullable = false)
+    @JoinColumn(name = "endereco_cidade_id", nullable = true)
     private Cidade cidade;
 }

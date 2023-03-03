@@ -19,6 +19,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class RestauranteController {
     private CozinhaService cozinhaService;
 
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
+    public ResponseEntity<?> adicionar(@RequestBody @Valid Restaurante restaurante) {
 
         try {
             Restaurante restauranteSalvo = restauranteService.salvar(restaurante);
