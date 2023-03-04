@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//provedor de persistencia
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Column(name = "nome", length = 30, nullable = false)
     private String nome;
 

@@ -20,7 +20,7 @@ public class Cidade {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotEmpty
+    @NotEmpty(message = "Não é permitido um campo vazio")
     @Column(nullable = false)
     private String nome;
 
