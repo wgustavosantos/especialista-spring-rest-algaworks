@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
+import com.algaworks.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,13 +16,13 @@ import java.util.List;
 @Table(name = "cozinha")
 public class Cozinha {
 
-
-    @NotNull
+    @NotNull(groups = Groups.CadastroRestaurante.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//provedor de persistencia
     private Long id;
 
+    @NotNull
     @Column(name = "nome", length = 30, nullable = false)
     private String nome;
 
