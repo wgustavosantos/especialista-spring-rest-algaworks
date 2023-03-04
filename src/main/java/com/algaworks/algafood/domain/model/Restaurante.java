@@ -8,7 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,8 +35,9 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
+    @NotNull
+    @Valid
     @ManyToOne(fetch = FetchType.LAZY)
-    //@JsonIgnore
     @JsonIgnoreProperties("hibernateLazyInitializer")
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
