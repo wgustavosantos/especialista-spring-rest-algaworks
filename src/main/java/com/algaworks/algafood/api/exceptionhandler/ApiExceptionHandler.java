@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,7 +28,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -165,7 +165,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String campoUrl = ex.getName();
         final Object valorEsperado = ex.getValue();
         /*Pode vir nulo, então é usado Objects.requireNonNull*/
-        final String tipoRequerido = Objects.requireNonNull(ex.getRequiredType()).getSimpleName();
+        final String tipoRequerido = java.util.Objects.requireNonNull(ex.getRequiredType()).getSimpleName();
 
         final ProblemType problemType = ProblemType.PARAMETRO_INVALIDO;
         String detail = String.format("O parâmetro de URL '%s' recebeu o valor '%s', que é de um tipo inválido. Corrija e informe um valor" +
@@ -207,24 +207,40 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-
-        final List<Problem.Field> problemFieldErros = ex.getFieldErrors()
+        final List<Problem.Objects> problemObjectsErros = ex.getAllErrors()
                 .stream()
                 .map(fd -> {
                     String message = messageSource.getMessage(fd, LocaleContextHolder.getLocale());
-                    return Problem.Field.builder()
-                            .name(fd.getField())
+                    String name = null; //fd.getField()
+
+                    if(fd instanceof FieldError fieldError){
+                        name = (fieldError).getField();
+                    }
+                    name = fd.getObjectName();
+                    return Problem.Objects.builder()
+                            .name(name)
                             .userMessage(message)
                             .build();
                 })
                 .toList();
+
+//        final List<Problem.Field> problemFieldErros = ex.getFieldErrors()
+//                .stream()
+//                .map(fd -> {
+//                    String message = messageSource.getMessage(fd, LocaleContextHolder.getLocale());
+//                    return Problem.Field.builder()
+//                            .name(fd.getField())
+//                            .userMessage(message)
+//                            .build();
+//                })
+//                .toList();
 
         final ProblemType problemType = ProblemType.DADOS_INVALIDOS;
         String detail = "Um ou mais campos estão invalidados. Faça o preenchimento e" +
                 " tente novamente.";
         final Problem problema = createProblemType(status, problemType, detail)
                 .userMessage(detail)
-                .fields(problemFieldErros)
+                .objects(problemObjectsErros)
                 .build();
         return handleExceptionInternal(ex, problema, headers, status, request);
     }
