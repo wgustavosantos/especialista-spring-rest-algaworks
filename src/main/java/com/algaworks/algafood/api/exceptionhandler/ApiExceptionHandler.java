@@ -223,18 +223,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                             .build();
                 })
                 .toList();
-
-//        final List<Problem.Field> problemFieldErros = ex.getFieldErrors()
-//                .stream()
-//                .map(fd -> {
-//                    String message = messageSource.getMessage(fd, LocaleContextHolder.getLocale());
-//                    return Problem.Field.builder()
-//                            .name(fd.getField())
-//                            .userMessage(message)
-//                            .build();
-//                })
-//                .toList();
-
+        
         final ProblemType problemType = ProblemType.DADOS_INVALIDOS;
         String detail = "Um ou mais campos estão invalidados. Faça o preenchimento e" +
                 " tente novamente.";
