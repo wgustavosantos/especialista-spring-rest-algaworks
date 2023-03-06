@@ -21,11 +21,11 @@ public class Problem {
     private String userMessage;
     private LocalDateTime timeStamp;
     /*Extensão cap 9 - aula 4 */
-    private List<Objects> objects;
+    private List<Object> objects;
 
     @Getter
     @Builder
-    public static class Objects {
+    public static class Object {
         private String name;
         private String userMessage;
     }

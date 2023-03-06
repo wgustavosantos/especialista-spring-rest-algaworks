@@ -42,6 +42,7 @@ public class RestauranteController {
 
     @Autowired
     private SmartValidator smartValidator;
+
     @PostMapping
     public ResponseEntity<?> adicionar
             (@RequestBody @Valid Restaurante restaurante) {
@@ -50,7 +51,7 @@ public class RestauranteController {
             Restaurante restauranteSalvo = restauranteService.salvar(restaurante);
             return ResponseEntity.status(HttpStatus.CREATED).body(restauranteSalvo);
 
-        }catch (CozinhaNaoEncontradaException e){
+        } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
@@ -73,7 +74,7 @@ public class RestauranteController {
         try {
             Cozinha cozinha = cozinhaService.buscar(restaurante.getCozinha().getId());
             restaurante.setCozinha(cozinha);
-        } catch (CozinhaNaoEncontradaException e){
+        } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
 
@@ -83,12 +84,10 @@ public class RestauranteController {
     @DeleteMapping("/{restauranteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long restauranteId) {
-            restauranteService.deletar(restauranteId);
+        restauranteService.deletar(restauranteId);
     }
 
     /**
-     *
-     *
      * @param servletRequest instancair um ServletServerHttpRequest e passar no argumento da exceção
      *                       HttpMessageNotReadableException no método merge e relançar para ser capturada por
      *                       handleHttpMessageNotReadable em ApiExceptionHandler
@@ -103,13 +102,14 @@ public class RestauranteController {
         return atualizar(restauranteAtual, id);
     }
 
-    private void validate(Restaurante restaurante, String objectName) {
+    private void validate(Restaurante restaurante, String objectName){
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
 
         smartValidator.validate(restaurante, bindingResult);
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             throw new ValidacaoException(bindingResult);
+
         }
     }
 
@@ -131,11 +131,11 @@ public class RestauranteController {
 
                 ReflectionUtils.setField(field, restauranteDestino, novoValorConvertido);
             });
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             final Throwable rootCause = ExceptionUtils.getRootCause(ex);
 
             final ServletServerHttpRequest servletServerHttpRequest = new ServletServerHttpRequest(servletRequest);
-            throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest );
+            throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
         }
     }
 }
