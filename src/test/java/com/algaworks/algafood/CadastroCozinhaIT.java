@@ -12,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.ConstraintViolationException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
+
 
 @SpringBootTest
 class CadastroCozinhaIT {
