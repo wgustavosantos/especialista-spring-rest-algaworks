@@ -71,8 +71,8 @@ class CadastroCozinhaIntegrationTests {
         public void deveFalhar_QuandoExcluirCozinhaInexistente() {
             final Long cozinhaId = 55L;
 
-            final ConstraintViolationException erroEsperado = Assertions
-                    .assertThrows(ConstraintViolationException.class, () -> cozinhaService.deletar(cozinhaId));
+            final CozinhaNaoEncontradaException erroEsperado = Assertions
+                    .assertThrows(CozinhaNaoEncontradaException.class, () -> cozinhaService.deletar(cozinhaId));
             System.out.println("antes do assertThaht");
 
             assertThat(erroEsperado).isNotNull();
