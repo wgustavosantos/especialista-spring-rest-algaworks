@@ -1,6 +1,8 @@
 package com.algaworks.algafood;
 
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.flywaydb.core.Flyway;
@@ -15,6 +17,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.Arrays;
+
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static  io.restassured.RestAssured.given;
 
@@ -28,12 +32,20 @@ public class CadastroCozinhaApiIT {
     @Autowired
     private Flyway flyway;
 
+    /*Classe para limpar base de dados*/
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private CozinhaRepository cozinhaRepository;
+
     @BeforeEach /*Executa sempre antes de um método*/
     public void SetUp(){
         enableLoggingOfRequestAndResponseIfValidationFails();
          RestAssured.basePath = "/cozinhas";
          RestAssured.port = port;
-         flyway.migrate();
+         databaseCleaner.clearTables();
+         prepararDados();
     }
 
     @Test
@@ -53,7 +65,7 @@ public class CadastroCozinhaApiIT {
         .when()
             .get()
         .then()
-                .body("", Matchers.hasSize(4));
+                .body("", Matchers.hasSize(2));
 
     }
 
@@ -72,5 +84,12 @@ public class CadastroCozinhaApiIT {
 
     }
 
+    private void prepararDados(){
+        Cozinha cozinha = new Cozinha();
+        cozinha.setNome("Americana");
+        Cozinha cozinha2 = new Cozinha();
+        cozinha2.setNome("Portuguesa");
 
+        cozinhaRepository.saveAll(Arrays.asList(cozinha, cozinha2));
+    }
 }
