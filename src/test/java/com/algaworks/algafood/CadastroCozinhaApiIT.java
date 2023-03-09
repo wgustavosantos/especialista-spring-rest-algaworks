@@ -13,11 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static  io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource("/application-test.properties")
 public class CadastroCozinhaApiIT {
 
     @LocalServerPort
@@ -58,7 +60,7 @@ public class CadastroCozinhaApiIT {
     @Test
     public void aveRetornarStatus201_QuandoCadastrarCozinha(){
         Cozinha cozinha = new Cozinha();
-        cozinha.setNome("Nova cozinhaq");
+        cozinha.setNome("Nova cozinha");
         given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
