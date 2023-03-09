@@ -84,6 +84,29 @@ public class CadastroCozinhaApiIT {
 
     }
 
+    @Test
+    public void deveRetornarRespostasEStatusCorretos_QuandoConsultarCozinhaExistente(){
+        given()
+                .accept(ContentType.JSON)
+                .pathParams("cozinhaId", 2)
+            .when()
+                .get("/{cozinhaId}")
+            .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("nome", Matchers.equalTo("Portuguesa"));
+    }
+
+    @Test
+    public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente(){
+        given()
+                .accept(ContentType.JSON)
+                .pathParams("cozinhaId", 100)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
     private void prepararDados(){
         Cozinha cozinha = new Cozinha();
         cozinha.setNome("Americana");
