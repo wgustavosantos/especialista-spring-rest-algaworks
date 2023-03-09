@@ -3,10 +3,12 @@ package com.algaworks.algafood;
 import com.algaworks.algafood.domain.model.Cozinha;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.flywaydb.core.Flyway;
 import org.hamcrest.*;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,11 +23,15 @@ public class CadastroCozinhaApiIT {
     @LocalServerPort
     private int port;
 
-    @BeforeEach
+    @Autowired
+    private Flyway flyway;
+
+    @BeforeEach /*Executa sempre antes de um método*/
     public void SetUp(){
         enableLoggingOfRequestAndResponseIfValidationFails();
          RestAssured.basePath = "/cozinhas";
          RestAssured.port = port;
+         flyway.migrate();
     }
 
     @Test
