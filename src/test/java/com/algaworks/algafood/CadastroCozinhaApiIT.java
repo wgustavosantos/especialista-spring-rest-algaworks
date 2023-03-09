@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
-import static org.assertj.core.api.Assertions.*;
+import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
+import static  io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CadastroCozinhaApiIT {
@@ -18,9 +19,9 @@ public class CadastroCozinhaApiIT {
     @Test
     public void deveRetornar200_QuandoConsultarCozinhas(){
 
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+         enableLoggingOfRequestAndResponseIfValidationFails();
 
-        RestAssured.given()
+        given()
                 .basePath("/cozinhas")
                 .port(port)
                 .accept(ContentType.JSON)

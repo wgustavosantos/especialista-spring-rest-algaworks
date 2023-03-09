@@ -28,6 +28,7 @@ public class CozinhaController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public List<Cozinha> listar() {
         return cozinhaService.listar();
     }
