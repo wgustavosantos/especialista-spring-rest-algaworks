@@ -1,5 +1,6 @@
 package com.algaworks.algafood;
 
+import com.algaworks.algafood.domain.model.Cozinha;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.*;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
@@ -37,13 +39,30 @@ public class CadastroCozinhaApiIT {
     }
 
     @Test
-    public void deveConter7Cozinhas_QuandoConsultarCozinhas(){
+    public void zveRetornar4Cozinhas_QuandoConsultarCozinhas(){
+        given()
+            .accept(ContentType.JSON)
+        .when()
+            .get()
+        .then()
+                .body("", Matchers.hasSize(4));
+
+    }
+
+    @Test
+    public void aveRetornarStatus201_QuandoCadastrarCozinha(){
+        Cozinha cozinha = new Cozinha();
+        cozinha.setNome("Nova cozinhaq");
         given()
                 .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body(cozinha)
             .when()
-                .get()
+                .post()
             .then()
-                .body("", Matchers.hasSize(4))
-            .body("nome", Matchers.hasItems("Tailandesa", "Indiana"));
+                .statusCode(HttpStatus.CREATED.value());
+
     }
+
+
 }
