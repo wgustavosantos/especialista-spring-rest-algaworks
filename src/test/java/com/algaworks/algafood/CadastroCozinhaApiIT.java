@@ -3,6 +3,7 @@ package com.algaworks.algafood;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.util.DatabaseCleaner;
+import com.algaworks.algafood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.flywaydb.core.Flyway;
@@ -26,6 +27,7 @@ import static  io.restassured.RestAssured.given;
 @TestPropertySource("/application-test.properties")
 public class CadastroCozinhaApiIT {
 
+    public static final int ID = 100;
     @LocalServerPort
     private int port;
 
@@ -39,6 +41,10 @@ public class CadastroCozinhaApiIT {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    private int cozinhas;
+
+    private Cozinha cozinhaParaTeste;
+
     @BeforeEach /*Executa sempre antes de um método*/
     public void SetUp(){
         enableLoggingOfRequestAndResponseIfValidationFails();
@@ -46,6 +52,7 @@ public class CadastroCozinhaApiIT {
          RestAssured.port = port;
          databaseCleaner.clearTables();
          prepararDados();
+         this.cozinhas = quantidadeDeCozinhas();
     }
 
     @Test
@@ -65,42 +72,39 @@ public class CadastroCozinhaApiIT {
         .when()
             .get()
         .then()
-                .body("", Matchers.hasSize(2));
+                .body("", Matchers.hasSize(cozinhas));
 
     }
 
     @Test
     public void aveRetornarStatus201_QuandoCadastrarCozinha(){
-        Cozinha cozinha = new Cozinha();
-        cozinha.setNome("Nova cozinha");
         given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-                .body(cozinha)
+                .body(ResourceUtils.getContentFromResource("/JsonFiles/data.json"))
             .when()
                 .post()
             .then()
                 .statusCode(HttpStatus.CREATED.value());
-
     }
 
     @Test
     public void deveRetornarRespostasEStatusCorretos_QuandoConsultarCozinhaExistente(){
         given()
                 .accept(ContentType.JSON)
-                .pathParams("cozinhaId", 2)
+                .pathParams("cozinhaId", cozinhaParaTeste.getId())
             .when()
                 .get("/{cozinhaId}")
             .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("nome", Matchers.equalTo("Portuguesa"));
+                .body("nome", Matchers.equalTo(cozinhaParaTeste.getNome()));
     }
 
     @Test
     public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente(){
         given()
                 .accept(ContentType.JSON)
-                .pathParams("cozinhaId", 100)
+                .pathParams("cozinhaId", ID)
                 .when()
                 .get("/{cozinhaId}")
                 .then()
@@ -113,6 +117,11 @@ public class CadastroCozinhaApiIT {
         Cozinha cozinha2 = new Cozinha();
         cozinha2.setNome("Portuguesa");
 
+        this.cozinhaParaTeste = cozinha;
         cozinhaRepository.saveAll(Arrays.asList(cozinha, cozinha2));
+    }
+
+    private int quantidadeDeCozinhas(){
+        return cozinhaRepository.findAll().size();
     }
 }
