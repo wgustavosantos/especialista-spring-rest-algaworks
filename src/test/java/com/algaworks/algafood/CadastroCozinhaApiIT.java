@@ -6,33 +6,28 @@ import com.algaworks.algafood.util.DatabaseCleaner;
 import com.algaworks.algafood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.flywaydb.core.Flyway;
-import org.hamcrest.*;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
-import static  io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
 public class CadastroCozinhaApiIT {
 
     public static final int ID = 100;
+    public static final String FILES_DATA_JSON = "/JsonFiles/data.json";
     @LocalServerPort
     private int port;
-
-    @Autowired
-    private Flyway flyway;
 
     /*Classe para limpar base de dados*/
     @Autowired
@@ -41,7 +36,7 @@ public class CadastroCozinhaApiIT {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    private int cozinhas;
+    private long cozinhas;
 
     private Cozinha cozinhaParaTeste;
 
@@ -72,7 +67,7 @@ public class CadastroCozinhaApiIT {
         .when()
             .get()
         .then()
-                .body("", Matchers.hasSize(cozinhas));
+                .body("", Matchers.hasSize((int)cozinhas));
 
     }
 
@@ -81,7 +76,7 @@ public class CadastroCozinhaApiIT {
         given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-                .body(ResourceUtils.getContentFromResource("/JsonFiles/data.json"))
+                .body(ResourceUtils.getContentFromResource(FILES_DATA_JSON))
             .when()
                 .post()
             .then()
@@ -121,7 +116,7 @@ public class CadastroCozinhaApiIT {
         cozinhaRepository.saveAll(Arrays.asList(cozinha, cozinha2));
     }
 
-    private int quantidadeDeCozinhas(){
-        return cozinhaRepository.findAll().size();
+    private long quantidadeDeCozinhas(){
+        return cozinhaRepository.count();
     }
 }

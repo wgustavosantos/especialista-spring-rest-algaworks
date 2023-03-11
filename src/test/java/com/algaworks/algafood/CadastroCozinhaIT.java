@@ -68,7 +68,6 @@ class CadastroCozinhaIT {
 
             final CozinhaNaoEncontradaException erroEsperado = Assertions
                     .assertThrows(CozinhaNaoEncontradaException.class, () -> cozinhaService.deletar(cozinhaId));
-            System.out.println("antes do assertThaht");
 
             assertThat(erroEsperado).isNotNull();
         }
