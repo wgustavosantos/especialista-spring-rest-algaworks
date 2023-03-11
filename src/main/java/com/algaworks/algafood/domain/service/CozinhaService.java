@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class CozinhaService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @Transactional
     public Cozinha salvar(Cozinha cozinha){
         return cozinhaRepository.save(cozinha);
     }
@@ -30,13 +32,14 @@ public class CozinhaService {
         return buscarOuFalhar(id);
     }
 
-
+    @Transactional
     public Cozinha atualizar(Cozinha cozinha, Long cozinhaId){
         Cozinha cAtual = buscar(cozinhaId);
         BeanUtils.copyProperties(cozinha, cAtual, "id");
         return cozinhaRepository.save(cAtual);
     }
 
+    @Transactional
     public void deletar (Long cozinhaId){
         try {
             cozinhaRepository.deleteById(cozinhaId);

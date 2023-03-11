@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class RestauranteService {
     @Autowired
     private CozinhaService cozinhaService;
 
+    @Transactional
     public Restaurante salvar(Restaurante restaurante) {
 
         Long cozinhaId = restaurante.getCozinha().getId();
@@ -44,6 +46,7 @@ public class RestauranteService {
         return buscarOuFalhar(id);
     }
 
+    @Transactional
     public Restaurante atualizar(Restaurante restaurante, Long id) {
 
         Restaurante r = this.buscar(id);
@@ -52,6 +55,8 @@ public class RestauranteService {
 
         return restauranteRepository.save(r);
     }
+
+    @Transactional
     public void deletar(Long restauranteId) {
 
         try{
