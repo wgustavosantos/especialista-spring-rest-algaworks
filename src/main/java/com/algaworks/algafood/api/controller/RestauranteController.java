@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.CozinhaDTO;
+import com.algaworks.algafood.api.RestauranteDTO;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -13,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -44,12 +45,11 @@ public class RestauranteController {
     private SmartValidator smartValidator;
 
     @PostMapping
-    public ResponseEntity<?> adicionar
+    @ResponseStatus(HttpStatus.CREATED)
+    public RestauranteDTO adicionar
             (@RequestBody @Valid Restaurante restaurante) {
-
         try {
-            Restaurante restauranteSalvo = restauranteService.salvar(restaurante);
-            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteSalvo);
+            return toDTO(restauranteService.salvar(restaurante));
 
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
@@ -57,19 +57,21 @@ public class RestauranteController {
     }
 
     @GetMapping
-    public List<Restaurante> listar() {
+    public List<RestauranteDTO> listar() {
+        final List<Restaurante> listaRestaurante = restauranteService.listar();
 
-        return restauranteService.listar();
+        return listaRestaurante.stream().map(RestauranteController::toDTO).toList();
     }
 
     @GetMapping("/{restauranteId}")
-    public Restaurante buscar(@PathVariable Long restauranteId) {
+    public RestauranteDTO buscar(@PathVariable Long restauranteId) {
+        final Restaurante restaurante = restauranteService.buscar(restauranteId);
 
-        return restauranteService.buscar(restauranteId);
+        return toDTO(restaurante);
     }
 
     @PutMapping("/{id}")
-    public Restaurante atualizar(@RequestBody @Valid Restaurante restaurante, @PathVariable Long id) {
+    public RestauranteDTO atualizar(@RequestBody @Valid Restaurante restaurante, @PathVariable Long id) {
 
         try {
             Cozinha cozinha = cozinhaService.buscar(restaurante.getCozinha().getId());
@@ -78,7 +80,7 @@ public class RestauranteController {
             throw new NegocioException(e.getMessage(), e);
         }
 
-        return restauranteService.atualizar(restaurante, id);
+        return toDTO(restauranteService.atualizar(restaurante, id));
     }
 
     @DeleteMapping("/{restauranteId}")
@@ -93,7 +95,7 @@ public class RestauranteController {
      *                       handleHttpMessageNotReadable em ApiExceptionHandler
      */
     @PatchMapping("/{id}")
-    public Restaurante atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest servletRequest) {
+    public RestauranteDTO atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest servletRequest) {
         Restaurante restauranteAtual = restauranteService.buscar(id);
 
         merge(campos, restauranteAtual, servletRequest);
@@ -138,4 +140,18 @@ public class RestauranteController {
             throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
         }
     }
+
+    private static RestauranteDTO toDTO(Restaurante restaurante) {
+        CozinhaDTO cozinhaDTO = new CozinhaDTO();
+        cozinhaDTO.setId(restaurante.getCozinha().getId());
+        cozinhaDTO.setNome(restaurante.getCozinha().getNome());
+
+        RestauranteDTO restauranteDTO = new RestauranteDTO();
+        restauranteDTO.setId(restaurante.getId());
+        restauranteDTO.setNome(restaurante.getNome());
+        restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
+        restauranteDTO.setCozinha(cozinhaDTO);
+        return restauranteDTO;
+    }
+
 }
