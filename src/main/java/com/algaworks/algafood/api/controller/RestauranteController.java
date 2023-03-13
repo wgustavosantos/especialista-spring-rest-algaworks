@@ -1,7 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.CozinhaDTO;
-import com.algaworks.algafood.api.RestauranteDTO;
+import com.algaworks.algafood.api.model.dto.CozinhaDTO;
+import com.algaworks.algafood.api.model.dto.RestauranteDTO;
+import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -47,9 +48,9 @@ public class RestauranteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteDTO adicionar
-            (@RequestBody @Valid Restaurante restaurante) {
+            (@RequestBody @Valid RestauranteInputDTO restauranteInput) {
         try {
-            return toDTO(restauranteService.salvar(restaurante));
+            return toDTO(restauranteService.salvar(toDomainModel(restauranteInput)));
 
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
@@ -58,9 +59,9 @@ public class RestauranteController {
 
     @GetMapping
     public List<RestauranteDTO> listar() {
-        final List<Restaurante> listaRestaurante = restauranteService.listar();
+        final List<Restaurante> restaurantes = restauranteService.listar();
 
-        return listaRestaurante.stream().map(RestauranteController::toDTO).toList();
+        return restaurantes.stream().map(RestauranteController::toDTO).toList();
     }
 
     @GetMapping("/{restauranteId}")
@@ -153,5 +154,19 @@ public class RestauranteController {
         restauranteDTO.setCozinha(cozinhaDTO);
         return restauranteDTO;
     }
+
+    private Restaurante toDomainModel(RestauranteInputDTO restauranteInput) {
+
+        Restaurante restaurante = new Restaurante();
+        restaurante.setNome(restauranteInput.getNome());
+        restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
+
+        Cozinha cozinha = new Cozinha();
+        cozinha.setId(restauranteInput.getCozinha().getId());
+        restaurante.setCozinha(cozinha);
+
+        return restaurante;
+    }
+
 
 }

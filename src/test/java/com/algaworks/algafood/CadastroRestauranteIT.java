@@ -1,6 +1,7 @@
 package com.algaworks.algafood;
 
 import com.algaworks.algafood.api.controller.RestauranteController;
+import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -53,15 +54,15 @@ public class CadastroRestauranteIT {
 
     @Test
     public void testarCadastroRestauranteSemCozinha(){
-        Restaurante restaurante = new Restaurante();
+        RestauranteInputDTO restauranteInputDTO = new RestauranteInputDTO();
 
-        restaurante.setNome(this.restauranteTeste.getNome());
-        restaurante.setTaxaFrete(this.restauranteTeste.getTaxaFrete());
+        restauranteInputDTO.setNome(this.restauranteTeste.getNome());
+        restauranteInputDTO.setTaxaFrete(this.restauranteTeste.getTaxaFrete());
 
         Assertions
                 .assertThrows
                         (NullPointerException.class,
-                                () -> restauranteController.adicionar(restaurante));
+                                () -> restauranteController.adicionar(restauranteInputDTO));
     }
 
     @Test
