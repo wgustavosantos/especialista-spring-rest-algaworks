@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /*Classe criada para representar a mensagem de erro da exceção de acordo com a RFC 7807*/
@@ -19,7 +19,7 @@ public class Problem {
     private String detail;
     /*Extensão da especificação*/
     private String userMessage;
-    private LocalDateTime timeStamp;
+    private OffsetDateTime timeStamp;
     /*Extensão cap 9 - aula 4 */
     private List<Object> objects;
 
