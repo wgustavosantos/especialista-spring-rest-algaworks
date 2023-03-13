@@ -25,7 +25,6 @@ public class Endereco {
     private String bairro;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "endereco_cidade_id", nullable = true)
     private Cidade cidade;
 }
