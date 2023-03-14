@@ -46,13 +46,19 @@ public class RestauranteController {
     @Autowired
     private SmartValidator smartValidator;
 
+    @Autowired
+    private RestauranteAssembler rAssembler;
+
+    @Autowired
+    private RestauranteInputDisassembler rInputDisassembler;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteDTO adicionar
             (@RequestBody @Valid RestauranteInputDTO restauranteInput) {
         try {
-            final Restaurante restaurante = RestauranteInputDisassembler.toDomainModel(restauranteInput);
-            return RestauranteAssembler.toDTO(restauranteService.salvar(restaurante));
+            final Restaurante restaurante = rInputDisassembler.toDomainModel(restauranteInput);
+            return rAssembler.toDTO(restauranteService.salvar(restaurante));
 
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
@@ -63,19 +69,19 @@ public class RestauranteController {
     public List<RestauranteDTO> listar() {
         final List<Restaurante> restaurantes = restauranteService.listar();
 
-        return RestauranteAssembler.toListDTO(restaurantes);
+        return rAssembler.toListDTO(restaurantes);
     }
 
     @GetMapping("/{restauranteId}")
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
 
-        return RestauranteAssembler.toDTO(restaurante)  ;
+        return rAssembler.toDTO(restaurante)  ;
     }
 
     @PutMapping("/{id}")
-    public RestauranteDTO atualizar(@RequestBody @Valid Restaurante restaurante, @PathVariable Long id) {
-
+    public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInput, @PathVariable Long id) {
+        final Restaurante restaurante = rInputDisassembler.toDomainModel(restauranteInput);
         try {
             Cozinha cozinha = cozinhaService.buscar(restaurante.getCozinha().getId());
             restaurante.setCozinha(cozinha);
@@ -83,7 +89,7 @@ public class RestauranteController {
             throw new NegocioException(e.getMessage(), e);
         }
 
-        return RestauranteAssembler.toDTO(restauranteService.atualizar(restaurante, id));
+        return rAssembler.toDTO(restauranteService.atualizar(restaurante, id));
     }
 
     @DeleteMapping("/{restauranteId}")
@@ -103,8 +109,9 @@ public class RestauranteController {
 
         merge(campos, restauranteAtual, servletRequest);
         validate(restauranteAtual, "restaurante");
+        final Restaurante restaurante = restauranteService.atualizar(restauranteAtual, id);
 
-        return atualizar(restauranteAtual, id);
+        return rAssembler.toDTO(restaurante) ;
     }
 
     private void validate(Restaurante restaurante, String objectName){
