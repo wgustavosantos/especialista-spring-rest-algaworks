@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.RestauranteAssembler;
+import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.core.validation.ValidacaoException;
@@ -50,7 +51,8 @@ public class RestauranteController {
     public RestauranteDTO adicionar
             (@RequestBody @Valid RestauranteInputDTO restauranteInput) {
         try {
-            return RestauranteAssembler.toDTO(restauranteService.salvar(toDomainModel(restauranteInput)));
+            final Restaurante restaurante = RestauranteInputDisassembler.toDomainModel(restauranteInput);
+            return RestauranteAssembler.toDTO(restauranteService.salvar(restaurante));
 
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
@@ -141,19 +143,4 @@ public class RestauranteController {
             throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
         }
     }
-
-    private Restaurante toDomainModel(RestauranteInputDTO restauranteInput) {
-
-        Restaurante restaurante = new Restaurante();
-        restaurante.setNome(restauranteInput.getNome());
-        restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-
-        Cozinha cozinha = new Cozinha();
-        cozinha.setId(restauranteInput.getCozinha().getId());
-        restaurante.setCozinha(cozinha);
-
-        return restaurante;
-    }
-
-
 }
