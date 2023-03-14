@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.model.dto.CozinhaDTO;
+import com.algaworks.algafood.api.assembler.RestauranteAssembler;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.core.validation.ValidacaoException;
@@ -50,7 +50,7 @@ public class RestauranteController {
     public RestauranteDTO adicionar
             (@RequestBody @Valid RestauranteInputDTO restauranteInput) {
         try {
-            return toDTO(restauranteService.salvar(toDomainModel(restauranteInput)));
+            return RestauranteAssembler.toDTO(restauranteService.salvar(toDomainModel(restauranteInput)));
 
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
@@ -61,14 +61,14 @@ public class RestauranteController {
     public List<RestauranteDTO> listar() {
         final List<Restaurante> restaurantes = restauranteService.listar();
 
-        return restaurantes.stream().map(RestauranteController::toDTO).toList();
+        return RestauranteAssembler.toListDTO(restaurantes);
     }
 
     @GetMapping("/{restauranteId}")
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
 
-        return toDTO(restaurante);
+        return RestauranteAssembler.toDTO(restaurante)  ;
     }
 
     @PutMapping("/{id}")
@@ -81,7 +81,7 @@ public class RestauranteController {
             throw new NegocioException(e.getMessage(), e);
         }
 
-        return toDTO(restauranteService.atualizar(restaurante, id));
+        return RestauranteAssembler.toDTO(restauranteService.atualizar(restaurante, id));
     }
 
     @DeleteMapping("/{restauranteId}")
@@ -140,19 +140,6 @@ public class RestauranteController {
             final ServletServerHttpRequest servletServerHttpRequest = new ServletServerHttpRequest(servletRequest);
             throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
         }
-    }
-
-    private static RestauranteDTO toDTO(Restaurante restaurante) {
-        CozinhaDTO cozinhaDTO = new CozinhaDTO();
-        cozinhaDTO.setId(restaurante.getCozinha().getId());
-        cozinhaDTO.setNome(restaurante.getCozinha().getNome());
-
-        RestauranteDTO restauranteDTO = new RestauranteDTO();
-        restauranteDTO.setId(restaurante.getId());
-        restauranteDTO.setNome(restaurante.getNome());
-        restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
-        restauranteDTO.setCozinha(cozinhaDTO);
-        return restauranteDTO;
     }
 
     private Restaurante toDomainModel(RestauranteInputDTO restauranteInput) {
