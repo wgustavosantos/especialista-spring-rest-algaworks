@@ -1,5 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.CidadeAssembler;
+import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
+import com.algaworks.algafood.api.model.dto.CidadeDTO;
+import com.algaworks.algafood.api.model.dto.inputDto.CidadeInputDTO;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -24,38 +28,47 @@ public class CidadeController {
     @Autowired
     private EstadoService estadoService;
 
+    @Autowired
+    private CidadeAssembler cAssembler;
+
+    @Autowired
+    private CidadeInputDisassembler cidadeInputDisassembler;
+
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody @Valid Cidade cidade) {
+    public ResponseEntity<CidadeDTO> adicionar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
         try {
+            final Cidade cidade = cidadeInputDisassembler.DTOtoDomainModel(cidadeInputDTO);
             Cidade c = cidadeService.salvar(cidade);
-            return ResponseEntity.status(HttpStatus.CREATED).body(c);
+            return ResponseEntity.status(HttpStatus.CREATED).body(cAssembler.toDTO(c));
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<Cidade>> listar() {
+    public ResponseEntity<List<CidadeDTO>> listar() {
         final List<Cidade> cidades = cidadeService.listar();
-        return ResponseEntity.ok(cidades);
+        return ResponseEntity.ok(cAssembler.toListDTO(cidades));
     }
 
     @GetMapping("/{cidadeId}")
-    public Cidade buscar(@PathVariable Long cidadeId) {
-        return cidadeService.buscar(cidadeId);
+    public CidadeDTO buscar(@PathVariable Long cidadeId) {
+        return cAssembler.toDTO(cidadeService.buscar(cidadeId));
     }
 
     @PutMapping("/{id}")
-    public Cidade atualizar(@RequestBody @Valid Cidade cidade, @PathVariable Long id) {
-
+    public CidadeDTO atualizar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO, @PathVariable Long id) {
+        Cidade cidadeAtual;
         try {
-            Estado estado = estadoService.buscar(cidade.getEstado().getId());
-            cidade.setEstado(estado);
+            Estado estadoAtual = estadoService.buscar(cidadeInputDTO.getEstado().getId());
+            cidadeAtual = cidadeService.buscar(id);
+            cidadeInputDisassembler.copyProperties(cidadeInputDTO, cidadeAtual);
+            cidadeAtual.setEstado(estadoAtual);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
 
-        return cidadeService.atualizar(cidade, id);
+        return cAssembler.toDTO(cidadeService.atualizar(cidadeAtual));
     }
 
     @DeleteMapping("/{cidadeId}")

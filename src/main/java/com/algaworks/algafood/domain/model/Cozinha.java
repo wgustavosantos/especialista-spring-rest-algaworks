@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +13,11 @@ import java.util.List;
 @Table(name = "cozinha")
 public class Cozinha {
 
-//    @NotNull(groups = Groups.CozinhaId.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//provedor de persistencia
     private Long id;
 
-    @NotBlank
     @Column(name = "nome", length = 30, nullable = false)
     private String nome;
 

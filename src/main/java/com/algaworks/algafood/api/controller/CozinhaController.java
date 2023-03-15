@@ -1,5 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.CozinhaAssembler;
+import com.algaworks.algafood.api.assembler.CozinhaInputDisassembler;
+import com.algaworks.algafood.api.model.dto.CozinhaDTO;
+import com.algaworks.algafood.api.model.dto.inputDto.CozinhaInputDTO;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
@@ -21,25 +25,35 @@ public class CozinhaController {
     @Autowired
     private CozinhaService cozinhaService;
 
+    @Autowired
+    private CozinhaAssembler cAssembler;
+
+    @Autowired
+    private CozinhaInputDisassembler cInputAssembler;
+
     @PostMapping
-    public ResponseEntity<Cozinha> adicionar(@RequestBody @Valid Cozinha cozinha) {
-        cozinha = cozinhaService.salvar(cozinha);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
+    public ResponseEntity<CozinhaDTO> adicionar(@RequestBody @Valid CozinhaInputDTO cozinhaInputDTO) {
+        final Cozinha cozinha = cInputAssembler.DTOtoDomainModel(cozinhaInputDTO);
+        final CozinhaDTO cozinhaDTO = cAssembler.toDTO(cozinhaService.salvar(cozinha));
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
     }
 
     @GetMapping
-    public List<Cozinha> listar() {
-        return cozinhaService.listar();
+    public List<CozinhaDTO> listar() {
+        return cAssembler.toListDTO(cozinhaService.listar());
     }
 
     @GetMapping("/{cozinhaId}")
-    public Cozinha buscar(@PathVariable Long cozinhaId) {
-        return cozinhaService.buscar(cozinhaId);
+    public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
+        return cAssembler.toDTO(cozinhaService.buscar(cozinhaId));
     }
 
     @PutMapping("/{cozinhaId}")
-    public Cozinha atualizar(@RequestBody Cozinha cozinha, @PathVariable Long cozinhaId) {
-        return cozinhaService.atualizar(cozinha, cozinhaId);
+    public Cozinha atualizar(@RequestBody @Valid CozinhaInputDTO cozinhaInputDTO, @PathVariable Long cozinhaId) {
+        final Cozinha cozinhaAtual = cozinhaService.buscar(cozinhaId);
+        cInputAssembler.copyProperties(cozinhaInputDTO, cozinhaAtual);
+
+        return cozinhaService.atualizar(cozinhaAtual);
     }
 
     @DeleteMapping("/{cozinhaId}")

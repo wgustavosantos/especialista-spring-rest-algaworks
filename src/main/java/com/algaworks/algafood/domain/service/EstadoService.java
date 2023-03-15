@@ -4,7 +4,6 @@ import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,12 +33,9 @@ public class EstadoService {
     }
 
     @Transactional
-    public Estado atualizar(Estado estado, Long estadoId) {
+    public Estado atualizar(Estado estado) {
 
-        Estado estadoOriginal = buscar(estadoId);
-        BeanUtils.copyProperties(estado, estadoOriginal, "id");
-
-        return estadoRepository.save(estadoOriginal);
+        return estadoRepository.save(estado);
     }
 
     @Transactional
