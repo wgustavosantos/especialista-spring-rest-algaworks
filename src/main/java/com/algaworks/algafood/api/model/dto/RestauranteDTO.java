@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 public class RestauranteDTO {
     private Long id;
     private String nome;
-    private BigDecimal taxaFrete;
+    private BigDecimal precoFrete;
     private CozinhaDTO cozinha;
 }
