@@ -50,6 +50,7 @@ public class CidadeService {
     public void deletar(Long cidadeId) {
         try {
             cidadeRepository.deleteById(cidadeId);
+            cidadeRepository.flush();
 
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(Cidade.class.getSimpleName(), cidadeId);

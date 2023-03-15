@@ -40,6 +40,7 @@ public class CozinhaService {
     public void deletar (Long cozinhaId){
         try {
             cozinhaRepository.deleteById(cozinhaId);
+            cozinhaRepository.flush();
         }catch(DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(Cozinha.class.getSimpleName(), cozinhaId);
         }

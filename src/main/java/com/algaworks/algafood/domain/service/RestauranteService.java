@@ -55,6 +55,7 @@ public class RestauranteService {
 
         try{
             restauranteRepository.deleteById(restauranteId);
+            restauranteRepository.flush();
         } catch(DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(Restaurante.class.getSimpleName(), restauranteId);
         } catch(EmptyResultDataAccessException e){

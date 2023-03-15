@@ -42,7 +42,7 @@ public class EstadoService {
     public void deletar(Long estadoId) {
         try {
             estadoRepository.deleteById(estadoId);
-
+            estadoRepository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(Estado.class.getSimpleName(), estadoId);
 
