@@ -81,15 +81,18 @@ public class RestauranteController {
 
     @PutMapping("/{id}")
     public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInput, @PathVariable Long id) {
-        final Restaurante restaurante = rInputDisassembler.toDomainModel(restauranteInput);
+        final Restaurante restauranteAtual;
+
         try {
-            Cozinha cozinha = cozinhaService.buscar(restaurante.getCozinha().getId());
-            restaurante.setCozinha(cozinha);
+            restauranteAtual = restauranteService.buscar(id);
+            rInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
+            Cozinha cozinha = cozinhaService.buscar(restauranteInput.getCozinha().getId());
+            restauranteAtual.setCozinha(cozinha);
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
 
-        return rAssembler.toDTO(restauranteService.atualizar(restaurante, id));
+        return rAssembler.toDTO(restauranteService.atualizar(restauranteAtual));
     }
 
     @DeleteMapping("/{restauranteId}")
@@ -109,7 +112,7 @@ public class RestauranteController {
 
         merge(campos, restauranteAtual, servletRequest);
         validate(restauranteAtual, "restaurante");
-        final Restaurante restaurante = restauranteService.atualizar(restauranteAtual, id);
+        final Restaurante restaurante = restauranteService.atualizar(restauranteAtual);
 
         return rAssembler.toDTO(restaurante) ;
     }

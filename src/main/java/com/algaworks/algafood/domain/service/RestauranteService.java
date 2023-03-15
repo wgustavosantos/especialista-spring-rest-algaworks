@@ -6,7 +6,6 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -42,18 +41,13 @@ public class RestauranteService {
     }
 
     public Restaurante buscar(Long id) {
-
         return buscarOuFalhar(id);
     }
 
     @Transactional
-    public Restaurante atualizar(Restaurante restaurante, Long id) {
+    public Restaurante atualizar(Restaurante restaurante) {
 
-        Restaurante r = this.buscar(id);
-
-        BeanUtils.copyProperties(restaurante, r, "id",  "formasPagamento", "endereco", "dataCadastro", "produtos");
-
-        return restauranteRepository.save(r);
+        return restauranteRepository.save(restaurante);
     }
 
     @Transactional

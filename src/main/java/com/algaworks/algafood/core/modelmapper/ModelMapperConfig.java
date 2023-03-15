@@ -1,7 +1,5 @@
 package com.algaworks.algafood.core.modelmapper;
 
-import com.algaworks.algafood.api.model.dto.RestauranteDTO;
-import com.algaworks.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +11,9 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper(){
 
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.createTypeMap(Restaurante.class, RestauranteDTO.class)
-                .addMapping(Restaurante::getTaxaFrete, RestauranteDTO::setPrecoFrete);
+        //11.16. Customizando o mapeamento de propriedades com ModelMapper
+//        modelMapper.createTypeMap(Restaurante.class, RestauranteDTO.class)
+//                .addMapping(Restaurante::getTaxaFrete, RestauranteDTO::setPrecoFrete);
 
         return modelMapper;
     }
