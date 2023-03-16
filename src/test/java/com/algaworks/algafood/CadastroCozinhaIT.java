@@ -54,7 +54,7 @@ class CadastroCozinhaIT {
     @Test
     /* bad path */
     public void deveFalhar_QuandoExcluirCozinhaEmUso() {
-        final Long cozinhaId = restauranteService.buscarOuFalhar(1L).getCozinha().getId();
+        final Long cozinhaId = restauranteService.buscar(1L).getCozinha().getId();
 
         final EntidadeEmUsoException erroEsperado = Assertions.
                 assertThrows(EntidadeEmUsoException.class, () -> cozinhaService.deletar(cozinhaId));

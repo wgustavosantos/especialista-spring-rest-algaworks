@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -101,13 +102,26 @@ public class RestauranteController {
         restauranteService.deletar(restauranteId);
     }
 
+    @PutMapping("/{restauranteId}/ativar")
+    public ResponseEntity<Void> ativar(@PathVariable Long restauranteId){
+        restauranteService.ativar(restauranteId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{restauranteId}/inativar")
+    public ResponseEntity<Void> inativar(@PathVariable Long restauranteId){
+        restauranteService.inativar(restauranteId);
+        return ResponseEntity.noContent().build();
+    }
+
     /**
      * @param servletRequest instancair um ServletServerHttpRequest e passar no argumento da exceção
      *                       HttpMessageNotReadableException no método merge e relançar para ser capturada por
      *                       handleHttpMessageNotReadable em ApiExceptionHandler
      */
     @PatchMapping("/{id}")
-    public RestauranteDTO atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest servletRequest) {
+    public RestauranteDTO atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos,
+                                           HttpServletRequest servletRequest) {
         Restaurante restauranteAtual = restauranteService.buscar(id);
 
         merge(campos, restauranteAtual, servletRequest);
@@ -128,7 +142,8 @@ public class RestauranteController {
         }
     }
 
-    private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest servletRequest) {
+    private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino,
+                              HttpServletRequest servletRequest) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);

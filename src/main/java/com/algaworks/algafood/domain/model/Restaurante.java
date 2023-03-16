@@ -22,18 +22,12 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //provedor de persistencia
     private Long id;
 
-//    @NotBlank
     @Column(nullable = false)
     private String nome;
 
-//   @NotNull
-//   @PositiveOrZero
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-//    @ConvertGroup(to = Groups.CozinhaId.class)
-//    @NotNull
-//    @Valid
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
@@ -57,4 +51,14 @@ public class Restaurante {
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
+
+    private Boolean ativo = Boolean.TRUE;
+
+    public void ativar(){
+        setAtivo(Boolean.TRUE);
+    }
+
+    public void inativar(){
+        setAtivo(Boolean.FALSE);
+    }
 }

@@ -63,7 +63,19 @@ public class RestauranteService {
         }
     }
 
-    public Restaurante buscarOuFalhar(Long restauranteId) {
+    @Transactional
+    public void ativar(Long restauranteId){
+        final Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long restauranteId){
+        final Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.inativar();
+    }
+
+    private Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
