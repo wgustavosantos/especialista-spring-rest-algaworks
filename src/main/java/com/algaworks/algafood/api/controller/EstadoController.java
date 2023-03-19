@@ -31,7 +31,7 @@ public class EstadoController {
     @PostMapping
     public ResponseEntity<EstadoDTO> adicionar(@RequestBody @Valid EstadoInputDTO estadoInputDTO) {
 
-        final Estado estado = eInputDissasembler.DTOtoDomainModel(estadoInputDTO);
+        final Estado estado = eInputDissasembler.toDomainModel(estadoInputDTO);
         final EstadoDTO estadoDTO = eAssembler.toDTO(estadoService.salvar(estado));
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoDTO);
     }

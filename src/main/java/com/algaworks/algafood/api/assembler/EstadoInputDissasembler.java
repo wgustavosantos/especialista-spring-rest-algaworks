@@ -12,7 +12,7 @@ public class EstadoInputDissasembler {
     @Autowired
     ModelMapper modelMapper;
 
-    public Estado DTOtoDomainModel(EstadoInputDTO estadoInputDTO) {
+    public Estado toDomainModel(EstadoInputDTO estadoInputDTO) {
         return modelMapper.map(estadoInputDTO, Estado.class);
     }
 

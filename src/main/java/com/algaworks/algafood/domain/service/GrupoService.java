@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,6 +18,7 @@ public class GrupoService {
     @Autowired
     private GrupoRepository grupoRepository;
 
+    @Transactional
     public Grupo salvar(Grupo grupo){
         return grupoRepository.save(grupo);
     }
@@ -29,13 +31,16 @@ public class GrupoService {
         return buscarOuFalhar(grupoId);
     }
 
+    @Transactional
     public Grupo atualizar(Grupo grupo){
         return grupoRepository.save(grupo);
     }
 
+    @Transactional
     public void deletar(Long grupoId){
         try {
             grupoRepository.deleteById(grupoId);
+            grupoRepository.flush();
         } catch(DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(Grupo.class.getSimpleName(), grupoId);
         } catch (EmptyResultDataAccessException e){

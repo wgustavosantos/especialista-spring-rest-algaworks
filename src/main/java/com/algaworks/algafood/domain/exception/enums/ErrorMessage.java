@@ -11,7 +11,8 @@ package com.algaworks.algafood.domain.exception.enums;
  */
 public enum ErrorMessage {
     ENTIDADE_NOT_FOUND("A entidade %s de código %d não pôde ser encontrada"),
-    ENTIDADE_EM_USO("A entidade %s de código %d não pôde ser excluída, pois está em uso");
+    ENTIDADE_EM_USO("A entidade %s de código %d não pôde ser excluída, pois está em uso"),
+    SENHA_NAO_COINCIDE("Senha atual informada não coincide com a senha do usuário");
 
     private String mensagem;
 
