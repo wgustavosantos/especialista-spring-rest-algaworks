@@ -1,2 +1,19 @@
-package com.algaworks.algafood.domain.exception;public class FormaPagamentoNaoEncontradaException {
+package com.algaworks.algafood.domain.exception;
+
+import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
+import com.algaworks.algafood.domain.model.FormaPagamento;
+
+public class FormaPagamentoNaoEncontradaException extends EntidadeNaoEncontradaException {
+    /**
+     * Mensagem do erro
+     *
+     * @param msg
+     */
+    public FormaPagamentoNaoEncontradaException(String msg) {
+        super(msg);
+    }
+
+    public FormaPagamentoNaoEncontradaException(Long id) {
+        this(String.format(ErrorMessage.ENTIDADE_EM_USO.get(), FormaPagamento.class.getSimpleName(), id));
+    }
 }
