@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.model.dto.inputDto.RestauranteInputDTO;
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -22,7 +23,7 @@ public class RestauranteInputDisassembler {
         //evitar Caused by: org.hibernate.HibernateException: identifier of an instance of
         // com.algaworks.algafood.domain.model.Cozinha was altered from 1 to 4
         restaurante.setCozinha(new Cozinha());
-
+        restaurante.getEndereco().setCidade(new Cidade());
         modelMapper.map(restauranteInputDTO, restaurante);
     }
 }

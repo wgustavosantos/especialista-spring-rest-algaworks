@@ -5,11 +5,14 @@ import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.dto.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.core.validation.ValidacaoException;
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
+import com.algaworks.algafood.domain.service.CidadeService;
 import com.algaworks.algafood.domain.service.CozinhaService;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -45,6 +48,9 @@ public class RestauranteController {
     private CozinhaService cozinhaService;
 
     @Autowired
+    private CidadeService cidadeService;
+
+    @Autowired
     private SmartValidator smartValidator;
 
     @Autowired
@@ -61,7 +67,7 @@ public class RestauranteController {
             final Restaurante restaurante = rInputDisassembler.DTOtoDomainModel(restauranteInput);
             return rAssembler.toDTO(restauranteService.salvar(restaurante));
 
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
@@ -85,15 +91,22 @@ public class RestauranteController {
         final Restaurante restauranteAtual;
 
         try {
+            Cozinha cozinha = cozinhaService.buscar(restauranteInput.getCozinha().getId());
+            Cidade cidade = cidadeService.buscar(restauranteInput.getEndereco().getCidade().getId());
+
             restauranteAtual = restauranteService.buscar(id);
             rInputDisassembler.copyProperties(restauranteInput, restauranteAtual);
-            Cozinha cozinha = cozinhaService.buscar(restauranteInput.getCozinha().getId());
+
             restauranteAtual.setCozinha(cozinha);
-        } catch (CozinhaNaoEncontradaException e) {
+            restauranteAtual.getEndereco().setCidade(cidade);
+
+            return rAssembler.toDTO(restauranteService.atualizar(restauranteAtual));
+
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
 
-        return rAssembler.toDTO(restauranteService.atualizar(restauranteAtual));
+
     }
 
     @DeleteMapping("/{restauranteId}")
