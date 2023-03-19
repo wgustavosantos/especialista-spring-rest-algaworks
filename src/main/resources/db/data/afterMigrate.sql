@@ -65,3 +65,7 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('San
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 INSERT INTO `algafood`.`restaurante` (`cozinha_id`, `nome`, `taxa_frete`, `data_atualizacao`, `data_cadastro`, ativo) VALUES ('1', 'Bar Bragantino', '0', '2023-03-09 14:30:22', '2023-03-09 14:30:22', true);
+
+#12.8. Desafio- implementando os endpoints de grupos
+
+insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
