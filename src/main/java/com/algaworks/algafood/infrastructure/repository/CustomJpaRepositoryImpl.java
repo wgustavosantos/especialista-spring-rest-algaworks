@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.Optional;
-
+/* é a especializaçção da implementação SimpleJpaRepository,
+que é a implementação padrão do Spring para JpaRepository. Não precisa de anotações pois a SimpleJpaRepository
+já contém anotações necessárias para ser uma classe gerenciada pelo contexto do container spring*/
 public class CustomJpaRepositoryImpl<T, ID>
         extends SimpleJpaRepository<T, ID>
         implements CustomJpaRepository<T, ID> {
@@ -31,5 +33,10 @@ public class CustomJpaRepositoryImpl<T, ID>
                 .setMaxResults(1)//somente 1 entidade (sql Limit)
                 .getSingleResult();
         return Optional.ofNullable(singleResult);
+    }
+
+    @Override
+    public void detach(T entity) {
+        entityManager.detach(entity);
     }
 }

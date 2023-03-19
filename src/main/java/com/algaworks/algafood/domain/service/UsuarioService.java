@@ -14,7 +14,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -22,8 +24,21 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        usuarioRepository.detach(usuario); /*Antes de chamaro findbyEmail o SDJPA faz o commit dos objetos gerenciados
+        por isso é necessário desanexar do contexto de persistencia, pois vai adicionar no bd um usuari com o mesmo
+        email*/
+
+        final Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+
+        /*Se um usuario vindo do banco com o mesmo email for diferente do usuario vindo da requisição, cai no if */
+        if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)){
+            throw new NegocioException(String.format(ErrorMessage.EMAIL_JA_CADASTRADO.get(), usuario.getEmail()));
+        }
         return usuarioRepository.save(usuario);
     }
 
@@ -35,7 +50,7 @@ public class UsuarioService {
     @Transactional
     public Usuario atualizar(Usuario usuario) {
 
-        return usuarioRepository.save(usuario);
+        return salvar(usuario);
     }
 
     @Transactional
