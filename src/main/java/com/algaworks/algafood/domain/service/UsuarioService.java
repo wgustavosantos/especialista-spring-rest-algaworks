@@ -30,7 +30,7 @@ public class UsuarioService {
     @Transactional
     public Usuario salvar(Usuario usuario) {
         usuarioRepository.detach(usuario); /*Antes de chamaro findbyEmail o SDJPA faz o commit dos objetos gerenciados
-        por isso é necessário desanexar do contexto de persistencia, pois vai adicionar no bd um usuari com o mesmo
+        por isso é necessário desanexar do contexto de persistencia, pois vai adicionar no bd um usuario com o mesmo
         email*/
 
         final Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
