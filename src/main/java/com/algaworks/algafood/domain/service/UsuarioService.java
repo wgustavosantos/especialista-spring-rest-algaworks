@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.Estado;
+import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +25,7 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private EntityManager entityManager;
+    private GrupoService grupoService;
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
@@ -66,7 +66,7 @@ public class UsuarioService {
         }
     }
 
-    public Usuario buscarOuFalhar(Long usuarioId) {
+    private Usuario buscarOuFalhar(Long usuarioId) {
         return usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
     }
@@ -85,4 +85,18 @@ public class UsuarioService {
 
         usuarioAtual.setSenha(senhaDTO.getNovaSenha());
     }
+
+    public void adicionarGrupo(Long usuarioId, Long grupoId) {
+        final Usuario usuario = buscarOuFalhar(usuarioId);
+        final Grupo grupo = grupoService.buscar(grupoId);
+        usuario.adicionarGrupo(grupo);
+        salvar(usuario);
+    }
+    public void removerGrupo(Long usuarioId, Long grupoId) {
+        final Usuario usuario = buscarOuFalhar(usuarioId);
+        final Grupo grupo = grupoService.buscar(grupoId);
+        usuario.removerGrupo(grupo);
+        salvar(usuario);
+    }
+
 }

@@ -136,3 +136,6 @@ values (1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
 #12.15. Desafio- implementando os endpoints de associação de grupos com permissões
 
 insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+
+#12.16. Desafio- implementando os endpoints de associação de usuários com grupos
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);

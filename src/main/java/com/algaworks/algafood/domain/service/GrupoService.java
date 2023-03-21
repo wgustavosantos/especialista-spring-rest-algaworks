@@ -57,7 +57,7 @@ public class GrupoService {
     }
 
     @Transactional
-    public void associarPermissao(Long grupoId, Long permissaoId) {
+    public void adicionarPermissao(Long grupoId, Long permissaoId) {
         final Grupo grupo = buscarOuFalhar(grupoId);
         final Permissao permissao = permissaoService.buscar(permissaoId);
         grupo.associarPermissao(permissao);
@@ -65,7 +65,7 @@ public class GrupoService {
     }
 
     @Transactional
-    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+    public void removerPermissao(Long grupoId, Long permissaoId) {
         final Grupo grupo = buscarOuFalhar(grupoId);
         final Permissao permissao = permissaoService.buscar(permissaoId);
         grupo.desassociarPermissao(permissao);
