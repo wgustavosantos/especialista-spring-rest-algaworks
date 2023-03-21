@@ -120,11 +120,11 @@ VALUES ('1', 'Bar Bragantino', '0', '2023-03-09 14:30:22', '2023-03-09 14:30:22'
 
 #12.8. Desafio- implementando os endpoints de grupos
 
-insert into grupo (nome)
-values ('Gerente'),
-       ('Vendedor'),
-       ('Secretária'),
-       ('Cadastrador');
+insert into grupo (id, nome)
+values (1, 'Gerente'),
+       (2, 'Vendedor'),
+       (3, 'Secretária'),
+       (4, 'Cadastrador');
 
 #12.9. Desafio: implementando os endpoints de usuarios
 insert into usuario (id, nome, email, senha, data_cadastro)
@@ -132,3 +132,7 @@ values (1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
        (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
        (3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
        (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
+
+#12.15. Desafio- implementando os endpoints de associação de grupos com permissões
+
+insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);

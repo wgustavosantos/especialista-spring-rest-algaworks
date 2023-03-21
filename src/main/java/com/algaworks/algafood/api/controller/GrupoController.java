@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.GrupoAssembler;
+import com.algaworks.algafood.api.assembler.PermissaoAssembler;
 import com.algaworks.algafood.api.model.dto.GrupoDTO;
 import com.algaworks.algafood.api.model.dto.inputDto.GrupoInputDTO;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -22,6 +23,9 @@ public class GrupoController {
 
     @Autowired
     private GrupoAssembler gAssembler;
+
+    @Autowired
+    private PermissaoAssembler pAssembler;
 
     @PostMapping
     public ResponseEntity<GrupoDTO> adicionar(@RequestBody @Valid GrupoInputDTO grupoInputDTO){
@@ -58,5 +62,4 @@ public class GrupoController {
         grupoService.deletar(grupoId);
         return ResponseEntity.noContent().build();
     }
-
 }

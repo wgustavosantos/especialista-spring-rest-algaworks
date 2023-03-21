@@ -14,7 +14,8 @@ public enum ErrorMessage {
     ENTIDADE_EM_USO("A entidade %s de código %d não pôde ser excluída, pois está em uso"),
     SENHA_NAO_COINCIDE("Senha atual informada não coincide com a senha do usuário"),
     EMAIL_JA_CADASTRADO("Já existe um usuário cadstrado com o e-mail %s"),
-    PRODUTO_NAO_VINCULADO("Não existe um cadastro de produto com código %d para o restaurante de código %d");
+    PRODUTO_NAO_VINCULADO("Não existe um cadastro de produto com código %d para o restaurante de código %d"),
+    PERMISSAO_NAO_ENCONTRADA("Não existe permissão de código %d");
 
     private String mensagem;
 
