@@ -127,6 +127,18 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{restauranteId}/abertura")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void abrir(@PathVariable Long restauranteId){
+        restauranteService.abrir(restauranteId);
+    }
+
+    @PutMapping("/{restauranteId}/fechamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void fechar(@PathVariable Long restauranteId){
+        restauranteService.fechar(restauranteId);
+    }
+
     /**
      * @param servletRequest instancair um ServletServerHttpRequest e passar no argumento da exceção
      *                       HttpMessageNotReadableException no método merge e relançar para ser capturada por

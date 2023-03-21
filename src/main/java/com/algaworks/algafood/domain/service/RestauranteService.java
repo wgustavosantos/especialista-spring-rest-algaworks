@@ -87,11 +87,6 @@ public class RestauranteService {
         restaurante.inativar();
     }
 
-    private Restaurante buscarOuFalhar(Long restauranteId) {
-        return restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
-    }
-
     @Transactional
     public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId){
         final Restaurante restaurante = buscarOuFalhar(restauranteId);
@@ -107,5 +102,24 @@ public class RestauranteService {
 
         restaurante.associarFormaPagamento(formaPagamento);
     }
+
+    @Transactional
+    public void abrir(Long restauranteId){
+        final Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.abrir();
+        restauranteRepository.flush();
+    }
+
+    public void fechar(Long restauranteId) {
+        final Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.fechar();
+        restauranteRepository.flush();
+    }
+
+    private Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+    }
+
 
 }
