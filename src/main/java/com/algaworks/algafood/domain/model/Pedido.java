@@ -21,7 +21,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "subTotal")
+    @Column(nullable = false, name = "subtotal")
     private BigDecimal subTotal;
 
     @Column(nullable = false)
@@ -59,8 +59,21 @@ public class Pedido {
     private Endereco enderecoEntrega;
 
     @Column(nullable = false, columnDefinition = "varchar(10)")
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itensPedido = new ArrayList<>();
+
+    public void calcularValorTotal(){
+        this.subTotal = itensPedido.stream()
+                .map(ItemPedido::getPrecoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.valorTotal = this.subTotal.add(this.taxaFrete);
+    }
+
+    public void atribuirPedidoAosItens() {
+        getItensPedido().forEach(item -> item.setPedido(this));
+    }
 }

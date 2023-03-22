@@ -15,7 +15,9 @@ public enum ErrorMessage {
     SENHA_NAO_COINCIDE("Senha atual informada não coincide com a senha do usuário"),
     EMAIL_JA_CADASTRADO("Já existe um usuário cadstrado com o e-mail %s"),
     PRODUTO_NAO_VINCULADO("Não existe um cadastro de produto com código %d para o restaurante de código %d"),
-    PERMISSAO_NAO_ENCONTRADA("Não existe permissão de código %d");
+    PERMISSAO_NAO_ENCONTRADA("Não existe permissão de código %d"),
+    PRODUTO_NAO_ENCONTRADO("Não existe produto de código %d"),
+    PEDIDO_NAO_ENCONTRADO("Não existe um pedido de código %d");
 
     private String mensagem;
 
