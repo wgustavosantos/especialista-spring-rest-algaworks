@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RestauranteService {
@@ -134,5 +135,15 @@ public class RestauranteService {
         final Restaurante restaurante = buscarOuFalhar(restauranteId);
         final Usuario responsavel = usuarioService.buscar(usuarioId);
         restaurante.removerResponsavel(responsavel);
+    }
+
+    @Transactional
+    public void ativarEmMassa(Set<Long> restauranteIds){
+        restauranteIds.forEach(this::ativar);
+    }
+
+    @Transactional
+    public void inativarEmMassa(Set<Long> restauranteIds){
+        restauranteIds.forEach(this::inativar);
     }
 }

@@ -8,6 +8,7 @@ import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -33,6 +34,7 @@ import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -83,7 +85,7 @@ public class RestauranteController {
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
 
-        return rAssembler.toDTO(restaurante)  ;
+        return rAssembler.toDTO(restaurante);
     }
 
     @PutMapping("/{id}")
@@ -116,27 +118,47 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}/ativar")
-    public ResponseEntity<Void> ativar(@PathVariable Long restauranteId){
+    public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
         restauranteService.ativar(restauranteId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{restauranteId}/inativar")
-    public ResponseEntity<Void> inativar(@PathVariable Long restauranteId){
+    public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
         restauranteService.inativar(restauranteId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void abrir(@PathVariable Long restauranteId){
+    public void abrir(@PathVariable Long restauranteId) {
         restauranteService.abrir(restauranteId);
     }
 
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void fechar(@PathVariable Long restauranteId){
+    public void fechar(@PathVariable Long restauranteId) {
         restauranteService.fechar(restauranteId);
+    }
+
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarRestaurantes(@RequestBody Set<Long> restauranteIds) {
+        try {
+            restauranteService.ativarEmMassa(restauranteIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping("/inativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativarRestaurantes(@RequestBody Set<Long> restauranteIds) {
+        try {
+            restauranteService.inativarEmMassa(restauranteIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -153,10 +175,10 @@ public class RestauranteController {
         validate(restauranteAtual, "restaurante");
         final Restaurante restaurante = restauranteService.atualizar(restauranteAtual);
 
-        return rAssembler.toDTO(restaurante) ;
+        return rAssembler.toDTO(restaurante);
     }
 
-    private void validate(Restaurante restaurante, String objectName){
+    private void validate(Restaurante restaurante, String objectName) {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
 
         smartValidator.validate(restaurante, bindingResult);
