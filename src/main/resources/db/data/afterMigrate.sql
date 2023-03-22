@@ -12,6 +12,7 @@ truncate table restaurante;
 truncate table restaurante_forma_pagamento;
 truncate table usuario;
 truncate table usuario_grupo;
+truncate table restaurante_usuario_responsavel;
 
 set foreign_key_checks = 1;
 
@@ -139,3 +140,7 @@ insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 
 
 #12.16. Desafio- implementando os endpoints de associação de usuários com grupos
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+#12.17. Desafio- implementando endpoints de associação de usuários responsáveis com restaurantes
+insert into usuario (id, nome, email, senha, data_cadastro) values (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
+insert into restaurante_usuario_responsavel(usuario_id, restaurante_id) values(1, 5), (3, 5);

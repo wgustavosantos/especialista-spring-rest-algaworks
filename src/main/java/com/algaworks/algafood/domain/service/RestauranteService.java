@@ -2,10 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
-import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.model.FormaPagamento;
-import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,9 @@ public class RestauranteService {
 
     @Autowired
     private FormaPagamentoService formaPagamentoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -122,4 +122,17 @@ public class RestauranteService {
     }
 
 
+    @Transactional
+    public void associarResponsavel(Long restauranteId, Long usuarioId) {
+        final Restaurante restaurante = buscarOuFalhar(restauranteId);
+        final Usuario responsavel = usuarioService.buscar(usuarioId);
+        restaurante.adicionarResponsavel(responsavel);
+    }
+
+    @Transactional
+    public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
+        final Restaurante restaurante = buscarOuFalhar(restauranteId);
+        final Usuario responsavel = usuarioService.buscar(usuarioId);
+        restaurante.removerResponsavel(responsavel);
+    }
 }

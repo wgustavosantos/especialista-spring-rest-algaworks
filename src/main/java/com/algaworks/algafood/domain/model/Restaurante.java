@@ -58,6 +58,12 @@ public class Restaurante {
 
     private Boolean aberto = Boolean.FALSE;
 
+    @ManyToMany
+    @JoinTable(name = "restaurante_usuario_responsavel",
+                joinColumns = @JoinColumn(name = "restaurante_id"),
+                inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> responsaveis = new HashSet<>();
+
     public void ativar(){
         setAtivo(Boolean.TRUE);
     }
@@ -80,5 +86,13 @@ public class Restaurante {
 
     public void fechar(){
         setAberto(Boolean.FALSE);
+    }
+
+    public boolean adicionarResponsavel(Usuario responsavel){
+        return this.getResponsaveis().add(responsavel);
+    }
+
+    public boolean removerResponsavel(Usuario responsavel){
+        return this.getResponsaveis().remove(responsavel);
     }
 }
