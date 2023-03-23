@@ -15,7 +15,8 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
 
     public Pedido buscar(Long pedidoId){
-        return buscarOuFalhar(pedidoId);
+        final Pedido pedido = buscarOuFalhar(pedidoId);
+        return pedido;
     }
 
     private Pedido buscarOuFalhar(Long pedidoId){

@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.model.dto;
 
-import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.enums.StatusPedido;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,7 @@ public class PedidoDTO {
     private OffsetDateTime dataConfirmacao;
     private OffsetDateTime dataCancelamento;
     private OffsetDateTime dataEntrega;
-    private FormaPagamento formaPagamento;
+    private FormaPagamentoDTO formaPagamento;
     private RestauranteResumoDTO restaurante;
     private UsuarioDTO cliente;
     private EnderecoDTO enderecoEntrega;

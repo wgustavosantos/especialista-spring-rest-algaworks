@@ -1,7 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.PedidoAssembler;
+import com.algaworks.algafood.api.assembler.PedidoResumoAssembler;
 import com.algaworks.algafood.api.model.dto.PedidoDTO;
+import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.domain.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +23,16 @@ public class PedidoController {
     @Autowired
     private PedidoAssembler pAssembler;
 
+    @Autowired
+    private PedidoResumoAssembler pRAssembler;
+
+    @GetMapping
+    public List<PedidoResumoDTO> listar(){
+        return pRAssembler.toListDTO(pedidoService.listar());
+    }
+
     @GetMapping("/{pedidoId}")
     public PedidoDTO buscar(@PathVariable Long pedidoId){
         return pAssembler.toDTO(pedidoService.buscar(pedidoId));
-    }
-
-    @GetMapping
-    public List<PedidoDTO> listar(){
-        return pAssembler.toListDTO(pedidoService.listar());
     }
 }
