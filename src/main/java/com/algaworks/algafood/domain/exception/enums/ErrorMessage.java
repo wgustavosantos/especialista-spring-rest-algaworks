@@ -17,7 +17,8 @@ public enum ErrorMessage {
     PRODUTO_NAO_VINCULADO("Não existe um cadastro de produto com código %d para o restaurante de código %d"),
     PERMISSAO_NAO_ENCONTRADA("Não existe permissão de código %d"),
     PRODUTO_NAO_ENCONTRADO("Não existe produto de código %d"),
-    PEDIDO_NAO_ENCONTRADO("Não existe um pedido de código %d");
+    PEDIDO_NAO_ENCONTRADO("Não existe um pedido de código %d"),
+    FORMA_PAGAMENTO_NAO_ACEITA("Forma de pagamento %s não é aceita pelo restaurante %s.");
 
     private String mensagem;
 

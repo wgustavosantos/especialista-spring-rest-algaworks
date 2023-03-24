@@ -14,6 +14,6 @@ public class FormaPagamentoNaoEncontradaException extends EntidadeNaoEncontradaE
     }
 
     public FormaPagamentoNaoEncontradaException(Long id) {
-        this(String.format(ErrorMessage.ENTIDADE_EM_USO.get(), FormaPagamento.class.getSimpleName(), id));
+        this(String.format(ErrorMessage.ENTIDADE_NOT_FOUND.get(), FormaPagamento.class.getSimpleName(), id));
     }
 }
