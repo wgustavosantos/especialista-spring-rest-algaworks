@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public enum StatusPedido {
 
-    CRIADO(1, "Pedido criado"),
-    CONFIRMADO(2, "Pedido confirmado"),
-    ENTREGUE(3, "Pedido entregue"),
-    CANCELADO(4, "Pedido cancelado");
+    CRIADO(1, "Criado"),
+    CONFIRMADO(2, "Confirmado"),
+    ENTREGUE(3, "Entregue"),
+    CANCELADO(4, "Cancelado");
 
     private final String status;
     private final int valor;

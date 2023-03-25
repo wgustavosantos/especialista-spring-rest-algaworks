@@ -18,7 +18,8 @@ public enum ErrorMessage {
     PERMISSAO_NAO_ENCONTRADA("Não existe permissão de código %d"),
     PRODUTO_NAO_ENCONTRADO("Não existe produto de código %d"),
     PEDIDO_NAO_ENCONTRADO("Não existe um pedido de código %d"),
-    FORMA_PAGAMENTO_NAO_ACEITA("Forma de pagamento %s não é aceita pelo restaurante %s.");
+    FORMA_PAGAMENTO_NAO_ACEITA("Forma de pagamento %s não é aceita pelo restaurante %s."),
+    STATUS_PEDIDO("Status do pedido %d não pode ser alterado de %s para %s");
 
     private String mensagem;
 
