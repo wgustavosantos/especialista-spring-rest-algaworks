@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.RestauranteAssembler;
 import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.dto.inputDto.RestauranteInputDTO;
+import com.algaworks.algafood.api.model.view.RestauranteView;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
@@ -16,6 +17,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CidadeService;
 import com.algaworks.algafood.domain.service.CozinhaService;
 import com.algaworks.algafood.domain.service.RestauranteService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -74,12 +76,46 @@ public class RestauranteController {
         }
     }
 
+    @JsonView(RestauranteView.Resumo.class)
     @GetMapping
     public List<RestauranteDTO> listar() {
         final List<Restaurante> restaurantes = restauranteService.listar();
 
         return rAssembler.toListDTO(restaurantes);
     }
+
+    @JsonView(RestauranteView.ResumoApenasNome.class)
+    @GetMapping(params = "projecao=apenas-nome")
+    public List<RestauranteDTO> listarApenasNome() {
+
+        return listar();
+    }
+
+    /* @GetMapping
+    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+        final List<RestauranteDTO> restaurantes = rAssembler.toListDTO(restauranteService.listar());
+        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(restaurantes);
+
+        mappingJacksonValue.setSerializationView(RestauranteView.Resumo.class);
+
+        if("apenas-nome".equals(projecao)){
+            mappingJacksonValue.setSerializationView(RestauranteView.ResumoApenasNome.class);
+        } else if("completo".equals(projecao)){
+            mappingJacksonValue.setSerializationView(null); // remove a view RestauranteView.Resumo.class
+        }
+
+        return mappingJacksonValue;
+    }*/
+
+     /*@JsonView(RestauranteView.Resumo.class)
+    @GetMapping(params = "projecao=resumo")
+    public List<RestauranteDTO> listarResumido() {
+        final List<Restaurante> restaurantes = restauranteService.listar();
+
+        return listar();
+    }
+
+    */
 
     @GetMapping("/{restauranteId}")
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
