@@ -41,7 +41,7 @@ public class PedidoController {
     }
 
     @GetMapping
-    public MappingJacksonValue listar(@RequestParam String campos){
+    public MappingJacksonValue listar(String campos){
         final List<PedidoResumoDTO> pedidos = pRAssembler.toListDTO(pedidoService.listar());
 
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(pedidos);
@@ -50,13 +50,13 @@ public class PedidoController {
         if(StringUtils.isNotBlank(campos)){
             simpleFilterProvider.addFilter("pedidosFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
         }
-        
+
         mappingJacksonValue.setFilters(simpleFilterProvider);
         return mappingJacksonValue;
     }
 
-    @GetMapping("/{pedidoId}")
-    public PedidoDTO buscar(@PathVariable Long pedidoId){
-        return pAssembler.toDTO(pedidoService.buscar(pedidoId));
+    @GetMapping("/{codigoId}")
+    public PedidoDTO buscar(@PathVariable String codigoId){
+        return pAssembler.toDTO(pedidoService.buscar(codigoId));
     }
 }

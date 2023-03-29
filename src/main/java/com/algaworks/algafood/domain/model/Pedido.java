@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -23,6 +24,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String codigo;
     @Column(nullable = false, name = "subtotal")
     private BigDecimal subTotal;
 
@@ -97,12 +99,17 @@ public class Pedido {
         if(getStatus().naoPodeAlterarPara(novoStatus)){
             throw new NegocioException(String.format(
                     ErrorMessage.STATUS_PEDIDO.get(),
-                    getId(),
+                    getCodigo(),
                     this.getStatus().getStatus(),
                     novoStatus.getStatus()));
         }
 
         this.status = novoStatus;
+    }
+
+    @PrePersist
+    private void SetCodigo(){
+        this.codigo = UUID.randomUUID().toString();
     }
 
 }

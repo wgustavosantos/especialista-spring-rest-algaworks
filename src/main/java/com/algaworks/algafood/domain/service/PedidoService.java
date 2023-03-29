@@ -81,13 +81,13 @@ public class PedidoService {
         pedido.calcularValorTotal();
     }
 
-    public Pedido buscar(Long pedidoId){
-        return buscarOuFalhar(pedidoId);
+    public Pedido buscar(String codigoId){
+        return buscarOuFalhar(codigoId);
     }
 
-    private Pedido buscarOuFalhar(Long pedidoId){
-        return pedidoRepository.findById(pedidoId)
-                .orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
+    private Pedido buscarOuFalhar(String codigoId){
+        return pedidoRepository.findByCodigo(codigoId)
+                .orElseThrow(() -> new PedidoNaoEncontradoException((Object) codigoId));
     }
 
     public List<Pedido> listar() {

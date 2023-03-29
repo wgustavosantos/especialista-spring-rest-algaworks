@@ -12,8 +12,8 @@ public class PedidoNaoEncontradoException extends EntidadeNaoEncontradaException
     public PedidoNaoEncontradoException(String msg) {
         super(msg);
     }
-    public PedidoNaoEncontradoException(Long id) {
-        super(String.format(ErrorMessage.PEDIDO_NAO_ENCONTRADO.get(), id));
+    public PedidoNaoEncontradoException(Object id) {
+        super(String.format(ErrorMessage.PEDIDO_NAO_ENCONTRADO.get(), (String) id));
     }
 
 }
