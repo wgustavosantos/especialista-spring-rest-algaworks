@@ -36,9 +36,17 @@ public class RestauranteProdutoController {
     }
 
     @GetMapping
-    public List<ProdutoDTO> listar(@PathVariable Long restauranteId){
+    public List<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam (required = false) boolean incluirInativos){
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
-        final List<Produto> produtos = produtoService.listarPorRestaurante(restaurante);
+        List<Produto> produtos = null;
+
+        if(incluirInativos){
+            produtos = produtoService.listarTodosPorRestaurante(restaurante);
+        } else {
+            produtos = produtoService.listarAtivosPorRestaurante(restaurante);
+        }
+
+
         return pAssembler.toListDTO(produtos);
     }
 
