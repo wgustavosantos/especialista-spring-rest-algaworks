@@ -9,6 +9,9 @@ import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,22 +41,11 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter){
-        final List<PedidoResumoDTO> pedidos = pRAssembler.toListDTO(pedidoService.pesquisar(pedidoFilter));
-
-//13.2. Limitando os campos retornados pela API com @JsonFilter do Jackson
-//terça-feira, 28 de março de 2023
-//15:28
-//        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(pedidos);
-//        SimpleFilterProvider simpleFilterProvider = new SimpleFilterProvider();
-//        simpleFilterProvider.addFilter("pedidosFilter", SimpleBeanPropertyFilter.serializeAll());
-//        if(StringUtils.isNotBlank(campos)){
-//            simpleFilterProvider.addFilter("pedidosFilter", SimpleBeanPropertyFilter.
-//                    filterOutAllExcept(campos.split(",")));
-//        }
-//
-//        mappingJacksonValue.setFilters(simpleFilterProvider);
-        return pedidos;
+    public Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
+        final Page<Pedido> pedidosPage = pedidoService.pesquisar(pedidoFilter, pageable);
+        final List<PedidoResumoDTO> pedidosResumoDTO = pRAssembler.toListDTO(pedidosPage.getContent());
+        final Page<PedidoResumoDTO> pedidoResumoDTOS = new PageImpl<>(pedidosResumoDTO, pageable, pedidosPage.getTotalElements());
+        return pedidoResumoDTOS;
     }
 
 

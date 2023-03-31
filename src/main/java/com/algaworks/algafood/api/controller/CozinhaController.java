@@ -43,7 +43,7 @@ public class CozinhaController {
     }
 
     @GetMapping
-    public Page<CozinhaDTO> listar(@PageableDefault( size = 5) Pageable pageable) {
+    public Page<CozinhaDTO> listar(@PageableDefault(size = 5) Pageable pageable) {
         final List<CozinhaDTO> cozinhas = cAssembler.toListDTO(cozinhaService.listar(pageable).getContent());
 
         return new PageImpl<>(cozinhas, pageable, cozinhas.size());
