@@ -5,6 +5,8 @@ import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,5 +94,9 @@ public class PedidoService {
 
     public List<Pedido> listar() {
         return pedidoRepository.findAll();
+    }
+
+    public List<Pedido> pesquisar(PedidoFilter pedidoFilter) {
+        return pedidoRepository.findAll(PedidoSpecs.filtroPedidoSpec(pedidoFilter));
     }
 }

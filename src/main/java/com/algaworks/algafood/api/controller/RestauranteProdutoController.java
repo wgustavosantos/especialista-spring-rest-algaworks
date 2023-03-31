@@ -36,7 +36,8 @@ public class RestauranteProdutoController {
     }
 
     @GetMapping
-    public List<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam (required = false) boolean incluirInativos){
+    public List<ProdutoDTO> listar(@PathVariable Long restauranteId,
+                                   @RequestParam (required = false) boolean incluirInativos){
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
         List<Produto> produtos = null;
 

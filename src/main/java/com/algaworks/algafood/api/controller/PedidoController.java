@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.model.dto.PedidoDTO;
 import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.model.dto.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,12 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<PedidoResumoDTO> listar(){
-        final List<PedidoResumoDTO> pedidos = pRAssembler.toListDTO(pedidoService.listar());
-//
+    public List<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter){
+        final List<PedidoResumoDTO> pedidos = pRAssembler.toListDTO(pedidoService.pesquisar(pedidoFilter));
+
+//13.2. Limitando os campos retornados pela API com @JsonFilter do Jackson
+//terça-feira, 28 de março de 2023
+//15:28
 //        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(pedidos);
 //        SimpleFilterProvider simpleFilterProvider = new SimpleFilterProvider();
 //        simpleFilterProvider.addFilter("pedidosFilter", SimpleBeanPropertyFilter.serializeAll());
@@ -51,6 +55,7 @@ public class PedidoController {
 //        mappingJacksonValue.setFilters(simpleFilterProvider);
         return pedidos;
     }
+
 
     @GetMapping("/{codigoId}")
     public PedidoDTO buscar(@PathVariable String codigoId){
