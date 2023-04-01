@@ -44,7 +44,7 @@ public class PedidoController {
 
     @GetMapping
     public Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
-        //pageable = truduzirPageable(pageable);
+        pageable = truduzirPageable(pageable);
         final Page<Pedido> pedidosPage = pedidoService.pesquisar(pedidoFilter, pageable);
         final List<PedidoResumoDTO> pedidosResumoDTO = pRAssembler.toListDTO(pedidosPage.getContent());
         final Page<PedidoResumoDTO> pedidoResumoDTOS = new PageImpl<>(pedidosResumoDTO, pageable, pedidosPage.getTotalElements());
