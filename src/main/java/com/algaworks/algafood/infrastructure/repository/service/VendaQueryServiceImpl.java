@@ -21,7 +21,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
     private EntityManager entityManager;
 
     @Override
-    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter){
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter, String timeOffSet){
 
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<VendaDiaria> query = criteriaBuilder.createQuery(VendaDiaria.class);
@@ -29,9 +29,18 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 
         List<Predicate> predicates = new ArrayList<>();
 
+        final Expression<Date> convert_tz = criteriaBuilder.
+                function("convert_tz", Date.class, root.get("dataCriacao"),
+                        criteriaBuilder.literal("+00:00"), criteriaBuilder.literal(timeOffSet));
+
+        final Expression<Date> date = criteriaBuilder.function("date", Date.class, convert_tz);
+
+
+
         if(vendaDiariaFilter == null){
             vendaDiariaFilter = new VendaDiariaFilter();
         }
+
         if(vendaDiariaFilter.getRestauranteId() != null){
             predicates.add(criteriaBuilder.equal(root.get("restaurante").get("id"), vendaDiariaFilter.getRestauranteId()));
         }
@@ -46,10 +55,10 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 
        predicates.add(root.get("status").in(StatusPedido.CONFIRMADO, StatusPedido.ENTREGUE));
 
-        final Expression<Date> function = criteriaBuilder.function("date", Date.class, root.get("dataCriacao"));
+
 
         final CompoundSelection<VendaDiaria> selection = criteriaBuilder.construct(VendaDiaria.class,
-                function,
+                date,
                 criteriaBuilder.count(root.get("id")),
                 criteriaBuilder.sum(root.get("valorTotal")));
 
@@ -57,7 +66,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 
         query.select(selection);
         query.where(predicates.toArray(new Predicate[0]));
-        query.groupBy(function);
+        query.groupBy(date);
 
         return entityManager.createQuery(query).getResultList();
     }
