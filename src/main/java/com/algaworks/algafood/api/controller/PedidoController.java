@@ -6,8 +6,10 @@ import com.algaworks.algafood.api.model.dto.PedidoDTO;
 import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.model.dto.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.repository.data.PageableTranslator;
 import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.PedidoService;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,6 +44,7 @@ public class PedidoController {
 
     @GetMapping
     public Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
+        //pageable = truduzirPageable(pageable);
         final Page<Pedido> pedidosPage = pedidoService.pesquisar(pedidoFilter, pageable);
         final List<PedidoResumoDTO> pedidosResumoDTO = pRAssembler.toListDTO(pedidosPage.getContent());
         final Page<PedidoResumoDTO> pedidoResumoDTOS = new PageImpl<>(pedidosResumoDTO, pageable, pedidosPage.getTotalElements());
@@ -52,5 +55,15 @@ public class PedidoController {
     @GetMapping("/{codigoId}")
     public PedidoDTO buscar(@PathVariable String codigoId){
         return pAssembler.toDTO(pedidoService.buscar(codigoId));
+    }
+
+    private Pageable truduzirPageable (Pageable apiPageable){
+        final ImmutableMap<String, String> mapFields = ImmutableMap.of(
+                "codigo", "codigo",
+                "restaurante.nome", "restaurante.nome",
+                "nomeCliente", "cliente.nome",
+                "valortotal", "valorTotal"
+        );
+        return PageableTranslator.translate(apiPageable, mapFields);
     }
 }
