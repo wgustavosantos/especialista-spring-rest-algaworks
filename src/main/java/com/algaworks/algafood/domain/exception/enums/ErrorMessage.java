@@ -19,7 +19,8 @@ public enum ErrorMessage {
     PRODUTO_NAO_ENCONTRADO("Não existe produto de código %d"),
     PEDIDO_NAO_ENCONTRADO("Não existe um pedido de código %s"),
     FORMA_PAGAMENTO_NAO_ACEITA("Forma de pagamento %s não é aceita pelo restaurante %s."),
-    STATUS_PEDIDO("Status do pedido %s não pode ser alterado de %s para %s");
+    STATUS_PEDIDO("Status do pedido %s não pode ser alterado de %s para %s"),
+    RELATORIO_INDISPONIVEL("Não foi possível emitir relatório de vendas diárias");
 
     private String mensagem;
 
