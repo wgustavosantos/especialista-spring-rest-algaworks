@@ -1,7 +1,7 @@
 package com.algaworks.algafood;
 
 import com.algaworks.algafood.api.controller.RestauranteController;
-import com.algaworks.algafood.api.model.dto.inputDto.RestauranteInputDTO;
+import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;

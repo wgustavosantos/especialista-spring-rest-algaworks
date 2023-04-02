@@ -1,5 +1,6 @@
-package com.algaworks.algafood.api.model.dto.inputDto;
+package com.algaworks.algafood.api.model.inputDto;
 
+import com.algaworks.algafood.api.model.dto.ReferenciaIdDto.CidadeRefDTO;
 import lombok.Getter;
 import lombok.Setter;
 

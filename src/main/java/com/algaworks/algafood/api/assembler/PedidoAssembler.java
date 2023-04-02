@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.model.dto.PedidoDTO;
-import com.algaworks.algafood.api.model.dto.inputDto.PedidoInputDTO;
+import com.algaworks.algafood.api.model.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

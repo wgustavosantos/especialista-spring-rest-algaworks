@@ -1,8 +1,8 @@
 package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.model.dto.UsuarioDTO;
-import com.algaworks.algafood.api.model.dto.inputDto.UsuarioInputDTO;
-import com.algaworks.algafood.api.model.dto.inputDto.usuarioInputUpdateDTO;
+import com.algaworks.algafood.api.model.inputDto.UsuarioInputDTO;
+import com.algaworks.algafood.api.model.inputDto.usuarioInputUpdateDTO;
 import com.algaworks.algafood.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

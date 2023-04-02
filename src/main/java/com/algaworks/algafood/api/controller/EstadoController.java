@@ -3,7 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.EstadoAssembler;
 import com.algaworks.algafood.api.assembler.EstadoInputDissasembler;
 import com.algaworks.algafood.api.model.dto.EstadoDTO;
-import com.algaworks.algafood.api.model.dto.inputDto.EstadoInputDTO;
+import com.algaworks.algafood.api.model.inputDto.EstadoInputDTO;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import com.algaworks.algafood.api.assembler.PedidoAssembler;
 import com.algaworks.algafood.api.assembler.PedidoResumoAssembler;
 import com.algaworks.algafood.api.model.dto.PedidoDTO;
 import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
-import com.algaworks.algafood.api.model.dto.inputDto.PedidoInputDTO;
+import com.algaworks.algafood.api.model.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.repository.data.PageableTranslator;
 import com.algaworks.algafood.domain.filter.PedidoFilter;

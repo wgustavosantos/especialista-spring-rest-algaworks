@@ -2,7 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.FormaPagamentoAssembler;
 import com.algaworks.algafood.api.model.dto.FormaPagamentoDTO;
-import com.algaworks.algafood.api.model.dto.inputDto.FormaPagamentoInputDTO;
+import com.algaworks.algafood.api.model.inputDto.FormaPagamentoInputDTO;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.service.FormaPagamentoService;
 import org.modelmapper.ModelMapper;
