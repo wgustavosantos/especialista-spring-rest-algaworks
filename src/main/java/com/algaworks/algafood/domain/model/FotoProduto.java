@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -29,5 +30,9 @@ public class FotoProduto {
             return this.produto.getRestaurante().getId();
         }
         return null;
+    }
+
+    public void gerarNomeArquivo(){
+        this.nomeArquivo = UUID.randomUUID().toString() + "_" + this.nomeArquivo;
     }
 }
