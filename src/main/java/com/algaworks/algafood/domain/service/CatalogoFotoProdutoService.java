@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.repository.FotoStorageService;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
+import com.algaworks.algafood.infrastructure.repository.service.storage.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +20,11 @@ public class CatalogoFotoProdutoService {
     private FotoStorageService fotoStorageService;
 
     @Transactional
-    public FotoProduto salvar(FotoProduto fotoProduto, InputStream inputStream){
+    public FotoProduto salvar(FotoProduto fotoProduto, InputStream inputStream) {
         Long restauranteId = fotoProduto.getRestauranteId();
         final Long produtoId = fotoProduto.getProduto().getId();
         fotoProduto.gerarNomeArquivo();
-        final String nomeArquivo;
+
 
         produtoRepository.
                 findFotoById(restauranteId, produtoId)
@@ -42,5 +43,19 @@ public class CatalogoFotoProdutoService {
         fotoStorageService.armazenar(foto);
 
         return fotoSalva;
+    }
+
+    public InputStream recuperar(FotoProduto fotoProduto) {
+        Long restauranteId = fotoProduto.getRestauranteId();
+        final Long produtoId = fotoProduto.getProduto().getId();
+
+        final FotoProduto fotoProdutoAtual = buscarOuFalhar(restauranteId, produtoId);
+
+        return fotoStorageService.recuperar(fotoProdutoAtual.getNomeArquivo());
+
+    }
+
+    public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
+        return produtoRepository.findFotoById(restauranteId, produtoId).orElseThrow(() -> new StorageException("Não foi possível localizar o arquivo."));
     }
 }
