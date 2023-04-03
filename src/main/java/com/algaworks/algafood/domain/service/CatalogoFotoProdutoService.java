@@ -23,10 +23,14 @@ public class CatalogoFotoProdutoService {
         Long restauranteId = fotoProduto.getRestauranteId();
         final Long produtoId = fotoProduto.getProduto().getId();
         fotoProduto.gerarNomeArquivo();
+        final String nomeArquivo;
 
         produtoRepository.
                 findFotoById(restauranteId, produtoId)
-                .ifPresent(foto -> produtoRepository.delete(foto));
+                .ifPresent(foto -> {
+                    fotoStorageService.remover(foto.getNomeArquivo());
+                    produtoRepository.delete(foto);
+                });
 
         final FotoProduto fotoSalva = produtoRepository.save(fotoProduto);
 

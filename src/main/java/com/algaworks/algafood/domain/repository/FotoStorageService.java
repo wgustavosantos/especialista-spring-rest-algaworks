@@ -9,6 +9,8 @@ public interface FotoStorageService {
 
     void armazenar(NovaFoto novaFoto);
 
+    void remover(String nomeArquivo);
+
     @Getter
     @Builder
     class NovaFoto {
