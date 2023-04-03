@@ -29,7 +29,6 @@ public class CatalogoFotoProdutoService {
                 .ifPresent(foto -> produtoRepository.delete(foto));
 
         final FotoProduto fotoSalva = produtoRepository.save(fotoProduto);
-        produtoRepository.flush();
 
 
         FotoStorageService.NovaFoto foto = FotoStorageService.NovaFoto.builder()

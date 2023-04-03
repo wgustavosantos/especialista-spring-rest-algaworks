@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class FotoProduto {
+public class    FotoProduto {
 
     @EqualsAndHashCode.Include
     @Id
