@@ -60,9 +60,8 @@ public class RestauranteProdutoFotoController {
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
                                    @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
-        final FotoProdutoDTO fotoProdutoDTO = fTAssember.toDTO(fotoProduto);
 
-        return fotoProdutoDTO;
+        return fTAssember.toDTO(fotoProduto);
     }
 
     @GetMapping
@@ -71,24 +70,34 @@ public class RestauranteProdutoFotoController {
                                                           @RequestHeader(name = "accept") String accepHeader) throws HttpMediaTypeNotAcceptableException {
 
             FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
-            MediaType mediaType = MediaType.parseMediaType(fotoProduto.getContentType());
+            MediaType mediaTypeFotoProduto = MediaType.parseMediaType(fotoProduto.getContentType());
             List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(accepHeader);
 
-            verificarCompatibilidadeMediaType(mediaType, mediaTypesAceitas);
+            verificarCompatibilidadeMediaType(mediaTypeFotoProduto, mediaTypesAceitas);
 
             try{
             final InputStream inputStream = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
 
             return ResponseEntity
                     .ok()
-                    .contentType(MediaType.IMAGE_JPEG)
+                    .contentType(mediaTypeFotoProduto)
                     .body(new InputStreamResource(inputStream));
         } catch(EntidadeNaoEncontradaException e){
             return ResponseEntity.notFound().build();
         }
     }
 
-    private void verificarCompatibilidadeMediaType(MediaType mediaType, List<MediaType> mediaTypesAceitas) throws HttpMediaTypeNotAcceptableException {
+    @DeleteMapping
+    public void deletarFotoProduto(@PathVariable Long restauranteId,
+                                   @PathVariable Long produtoId){
+
+        catalogoFotoProdutoService.deletar(restauranteId, produtoId);
+
+    }
+
+    private void verificarCompatibilidadeMediaType(MediaType mediaType,
+                                                   List<MediaType> mediaTypesAceitas)
+            throws HttpMediaTypeNotAcceptableException {
         /*false para não compativel com algum mediatype da lista*/
         final boolean compativel = mediaTypesAceitas.stream().anyMatch(m -> m.isCompatibleWith(mediaType));
 
