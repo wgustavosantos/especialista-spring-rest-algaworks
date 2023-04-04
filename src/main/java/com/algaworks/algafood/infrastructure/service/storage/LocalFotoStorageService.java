@@ -1,20 +1,19 @@
-package com.algaworks.algafood.infrastructure.repository.service.storage;
+package com.algaworks.algafood.infrastructure.service.storage;
 
+import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.repository.FotoStorageService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
+//@Service utilizar o bean de S3FotoStorageService
 public class LocalFotoStorageService implements FotoStorageService {
 
-    @Value("${algafood.storage.local.diretorio-fotos}")
-    private Path path;
-
+    @Autowired
+    private StorageProperties storageProperties;
     @Override
     public void armazenar(NovaFoto novaFoto) {
 
@@ -52,6 +51,6 @@ public class LocalFotoStorageService implements FotoStorageService {
     }
 
     private Path getArquivoPath(String nomeArquivo) {
-        return path.resolve(Path.of(nomeArquivo));
+        return storageProperties.getLocal().getDiretorioFotos().resolve(Path.of(nomeArquivo));
     }
 }
