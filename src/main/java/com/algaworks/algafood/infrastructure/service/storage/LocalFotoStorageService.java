@@ -8,7 +8,7 @@ import org.springframework.util.FileCopyUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-//@Service utilizar o bean de S3FotoStorageService
+//@Service Bean dinâmico em StorageConfig
 public class LocalFotoStorageService implements FotoStorageService {
 
     @Autowired

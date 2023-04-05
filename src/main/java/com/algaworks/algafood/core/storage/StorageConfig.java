@@ -1,5 +1,8 @@
 package com.algaworks.algafood.core.storage;
 
+import com.algaworks.algafood.domain.repository.FotoStorageService;
+import com.algaworks.algafood.infrastructure.service.storage.LocalFotoStorageService;
+import com.algaworks.algafood.infrastructure.service.storage.S3FotoStorageService;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
@@ -10,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AmazonS3Config {
+public class StorageConfig {
 
     @Autowired
     private StorageProperties storageProperties;
@@ -29,4 +32,14 @@ public class AmazonS3Config {
                 withRegion(regiao).
                 build();
     }
+
+    @Bean
+    public FotoStorageService fotoStorageService (){
+
+        if(storageProperties.getTipoArmazenamento().equals(StorageProperties.TipoArmazenamento.LOCALSTORAGE)){
+            return new LocalFotoStorageService();
+        } else
+            return new S3FotoStorageService();
+    }
+
 }
