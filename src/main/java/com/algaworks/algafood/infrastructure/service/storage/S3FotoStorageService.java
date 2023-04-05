@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.net.URL;
 
 @Service
 public class S3FotoStorageService implements FotoStorageService {
@@ -62,7 +63,11 @@ public class S3FotoStorageService implements FotoStorageService {
     }
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
-        return null;
+    public FotoRecuperada recuperar(String nomeArquivo) {
+        final String bucket = storageProperties.getS3().getBucket();
+        final String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
+        final URL url = amazonS3.getUrl(bucket, caminhoArquivo);
+
+        return FotoRecuperada.builder().urlFoto(url.toString()).build();
     }
 }
