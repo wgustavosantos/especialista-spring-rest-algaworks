@@ -16,21 +16,22 @@ public class FluxoPedidoService {
     private EnvioEmailSerivce envioEmailSerivce;
 
     @Transactional
-    public void confirmar(String codigoPedido){
+    public void confirmar(String codigoPedido) {
         final Pedido pedido = pedidoService.buscar(codigoPedido);
-       pedido.confirmar();
+        pedido.confirmar();
 
         Mensagem mensagem = Mensagem.builder()
                 .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado.")
-                .corpo("O pedido de código <strong>" + pedido.getId() + "<strong/> foi confirmado!")
+                .corpo("pedido-confirmado.html")
+                .variavel("pedido", pedido)
                 .destinatario(pedido.getCliente().getEmail())
                 .build();
 
-       envioEmailSerivce.enviar(mensagem);
+        envioEmailSerivce.enviar(mensagem);
     }
 
     @Transactional
-    public void entregar(String codigoPedido){
+    public void entregar(String codigoPedido) {
         final Pedido pedido = pedidoService.buscar(codigoPedido);
         pedido.entregar();
     }
