@@ -35,8 +35,5 @@ public class SmtpEnvioEmailService implements EnvioEmailSerivce {
         } catch (Exception e) {
             throw new EmailException("Não foi possível enviar e-mail", e);
         }
-
-
-
     }
 }

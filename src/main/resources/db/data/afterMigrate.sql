@@ -200,3 +200,27 @@ values (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', 'Rua
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (6, 5, 3, 1, 87.2, 87.2, null);
+
+#15.4. Usando o serviço de envio de e-mails na confirmação de pedidos
+insert into usuario (id, nome, email, senha, data_cadastro) values
+(6, 'Débora Mendonça', 'guto15santos+debora@gmail.com', '123', utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values
+(7, 'Carlos Lima', 'guto15santos+carlos@gmail.com', '123', utc_timestamp);
+
+insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+                    status, data_criacao, subtotal, taxa_frete, valor_total)
+values (6, 'f8ce8e42-1767-4827-ba77-8c8eb7546a75', 1, 6, 2, 1, '68600-000', 'Rua 11', '930', 'Casa 20', 'Martins',
+        'CRIADO', '2023-04-05 16:00:00',  87.2, 10, 97.2);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (7, 6, 3, 1, 87.2, 87.2, null);
+
+insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+                    status, data_criacao, subtotal, taxa_frete, valor_total)
+values (7, '0935c769-db63-4191-a05a-a18217d4af6d', 1, 7, 2, 1, '68600-000', 'Rua 11', '930', 'Casa 20', 'Martins',
+        'CRIADO', '2023-04-05 16:00:00',  87.2, 10, 97.2);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (8, 7, 3, 1, 87.2, 87.2, null);
