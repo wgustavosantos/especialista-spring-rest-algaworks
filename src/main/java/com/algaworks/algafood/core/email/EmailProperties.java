@@ -17,4 +17,11 @@ public class EmailProperties {
 
     @NotNull
     private String rementente;
+
+    private ImplEmail implementacao = ImplEmail.MOCK;
+
+    public enum ImplEmail{
+        MOCK,
+        SENDGRID;
+    }
 }
