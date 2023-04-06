@@ -88,6 +88,7 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
         setDataConfirmacao(OffsetDateTime.now());
 
         registerEvent(new PedidoConfirmadoEvent(this));
+        System.out.println("Evento registrado");
     }
 
     public void cancelar(){
