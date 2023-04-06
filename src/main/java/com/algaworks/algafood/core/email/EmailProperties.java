@@ -19,9 +19,17 @@ public class EmailProperties {
     private String rementente;
 
     private ImplEmail implementacao = ImplEmail.MOCK;
+    private Sandbox sandbox = new Sandbox();
 
     public enum ImplEmail{
         MOCK,
-        SENDGRID;
+        SENDGRID,
+        SANDBOX;
+    }
+
+    @Getter
+    @Setter
+    public class Sandbox{
+        private String destinatario;
     }
 }
