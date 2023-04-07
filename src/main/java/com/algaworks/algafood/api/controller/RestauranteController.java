@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(maxAge = 1800,allowedHeaders = "*")
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
