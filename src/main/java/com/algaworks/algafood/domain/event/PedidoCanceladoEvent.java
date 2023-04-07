@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class PedidoCanceladoEvent {
-    
+
     private Pedido pedido;
 }

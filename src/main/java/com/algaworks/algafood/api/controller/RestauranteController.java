@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -78,18 +79,20 @@ public class RestauranteController {
 
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping
-    public List<RestauranteDTO> listar() {
-        final List<Restaurante> restaurantes = restauranteService.listar();
+    public ResponseEntity<List<RestauranteDTO>> listar() {
+        final List<RestauranteDTO> restauranteDTOS = rAssembler.toListDTO(restauranteService.listar());
 
-        return rAssembler.toListDTO(restaurantes);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+                .body(restauranteDTOS);
     }
 
-    @JsonView(RestauranteView.ResumoApenasNome.class)
+    /*@JsonView(RestauranteView.ResumoApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
     public List<RestauranteDTO> listarApenasNome() {
 
         return listar();
-    }
+    }*/
 
     /* @GetMapping
     public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
