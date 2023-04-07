@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
+import com.algaworks.algafood.domain.event.PedidoCanceladoEvent;
 import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
@@ -88,12 +89,12 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
         setDataConfirmacao(OffsetDateTime.now());
 
         registerEvent(new PedidoConfirmadoEvent(this));
-        System.out.println("Evento registrado");
     }
 
     public void cancelar(){
         setStatus(StatusPedido.CANCELADO);
         setDataCancelamento(OffsetDateTime.now());
+        registerEvent(new PedidoCanceladoEvent(this));
     }
     public void entregar(){
         setStatus(StatusPedido.ENTREGUE);

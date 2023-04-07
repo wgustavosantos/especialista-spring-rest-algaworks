@@ -17,12 +17,9 @@ public class FluxoPedidoService {
 
     @Transactional
     public void confirmar(String codigoPedido) {
-        System.out.println("Buscando pedidos no banco de dados");
         final Pedido pedido = pedidoService.buscar(codigoPedido);
         pedido.confirmar();
-        System.out.println("Antes do método save do Spring Data");
         pedidoRepository.save(pedido);
-        System.out.println("Depois do método save do Spring Data");
 
        /*Chamada para envio de email retirada para publicação
         de eventos no aggregate root da entidade*/
@@ -38,5 +35,6 @@ public class FluxoPedidoService {
     public void cancelar(String codigoPedido) {
         final Pedido pedido = pedidoService.buscar(codigoPedido);
         pedido.cancelar();
+        pedidoRepository.save(pedido);
     }
 }
