@@ -41,7 +41,7 @@ public class FormaPagamentoController {
     public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId){
         final FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
         final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toDTO(formaPagamento);
-        return ResponseEntity.ok(formaPagamentoDTO);
+        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(formaPagamentoDTO);
     }
 
     @PutMapping("/{formaPagamentoId}")
