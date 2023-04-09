@@ -46,10 +46,24 @@ public class FormaPagamentoController {
     }
 
     @GetMapping("/{formaPagamentoId}")
-    public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId){
+    public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request){
         final FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
+        ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+
+        String eTag = "0";
+
+        final OffsetDateTime dataUltimaAtualizacaoId = formaPagamentoRepository.getDataUltimaAtualizacaoId(formaPagamentoId);
+        if(dataUltimaAtualizacaoId != null)
+            eTag = String.valueOf(dataUltimaAtualizacaoId.toEpochSecond());
+
+        if(request.checkNotModified(eTag))
+            return null;
+
         final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toDTO(formaPagamento);
-        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(formaPagamentoDTO);
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .eTag(eTag)
+                .body(formaPagamentoDTO);
     }
 
     @PutMapping("/{formaPagamentoId}")
@@ -70,16 +84,15 @@ public class FormaPagamentoController {
 
         final OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
 
-        if(dataUltimaAtualizacao != null){
+        if(dataUltimaAtualizacao != null)/*Pode vir nulo caso não haja forma de pagamento*/
             eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
-        }
+
+        if(request.checkNotModified(eTag))/*true para etag iguais*/
+            return null;
 
         final List<FormaPagamentoDTO> formaPagamentosDTO = fPAssembler.toListDTO(formaPagamentoService.listar());
         return ResponseEntity.ok()
-//                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
-//                .cacheControl(CacheControl.noCache())
-//                .cacheControl(CacheControl.noStore())
                 .header(HttpHeaders.ETAG, eTag)
                 .body(formaPagamentosDTO);
     }

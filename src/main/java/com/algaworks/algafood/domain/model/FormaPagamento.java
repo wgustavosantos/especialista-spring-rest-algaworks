@@ -21,6 +21,6 @@ public class FormaPagamento {
     private String descricao;
 
     @UpdateTimestamp
-    private OffsetDateTime dataUltimaAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
 }
