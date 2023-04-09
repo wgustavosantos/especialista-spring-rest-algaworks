@@ -51,11 +51,11 @@ values (2, 'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp, true, true);
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto)
 values (3, 'Tuk Tuk Comida Indiana', 15.00, 2, utc_timestamp, utc_timestamp, true, true);
 
-insert into forma_pagamento (id, descricao)
+insert into forma_pagamento, data_atualizacao (id, descricao, utc_timestamp)
 values (1, 'Cartão de crédito');
-insert into forma_pagamento (id, descricao)
+insert into forma_pagamento, data_atualizacao  (id, descricao, utc_timestamp)
 values (2, 'Cartão de débito');
-insert into forma_pagamento (id, descricao)
+insert into forma_pagamento, data_atualizacao  (id, descricao, utc_timestamp)
 values (3, 'Dinheiro');
 
 insert into permissao (id, nome, descricao)
