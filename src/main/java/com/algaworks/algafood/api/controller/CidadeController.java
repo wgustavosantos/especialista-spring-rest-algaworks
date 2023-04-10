@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.CidadeAssembler;
 import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
+import com.algaworks.algafood.api.controller.openapi.CidadeControllerOpenApi;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.dto.CidadeDTO;
 import com.algaworks.algafood.api.model.inputDto.CidadeInputDTO;
@@ -29,7 +30,7 @@ import java.util.List;
 @Api(tags = "Cidades")
 @RestController
 @RequestMapping("/cidades")
-public class CidadeController {
+public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
     private CidadeService cidadeService;
@@ -43,11 +44,12 @@ public class CidadeController {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @Override
     @ApiOperation("Cadastra uma cidade")
     @PostMapping
     @ApiResponse(responseCode = "201", description = "Cidade cadastrada")
     public ResponseEntity<CidadeDTO> adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade")
-                                                   @RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
+                                               @RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
         try {
             final Cidade cidade = cidadeInputDisassembler.DTOtoDomainModel(cidadeInputDTO);
             Cidade c = cidadeService.salvar(cidade);
@@ -57,6 +59,7 @@ public class CidadeController {
         }
     }
 
+    @Override
     @ApiOperation("Lista as cidades")
     @GetMapping
     public ResponseEntity<List<CidadeDTO>> listar() {
@@ -64,6 +67,7 @@ public class CidadeController {
         return ResponseEntity.ok(cAssembler.toListDTO(cidades));
     }
 
+    @Override
     @ApiOperation("Busca uma cidade por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID da cidade inválido", content = @Content(schema = @Schema(implementation = Problem.class))),
@@ -74,6 +78,7 @@ public class CidadeController {
         return cAssembler.toDTO(cidadeService.buscar(cidadeId));
     }
 
+    @Override
     @ApiOperation("Atualiza uma cidade por ID")
     @PutMapping("/{cidadeId}")
     @ApiResponses({
@@ -93,6 +98,7 @@ public class CidadeController {
         return cAssembler.toDTO(cidadeService.atualizar(cidadeAtual));
     }
 
+    @Override
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Cidade excluída"),
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = Problem.class)))
