@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.model.inputDto;
 
-import com.algaworks.algafood.api.model.dto.ReferenciaIdDto.CozinhaRefDto;
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +26,7 @@ public class RestauranteInputDTO {
 
     @NotNull
     @Valid
-    private CozinhaRefDto cozinha;
+    private CozinhaIdInput cozinha;
 
     @Valid
     @NotNull

@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.model.dto.ReferenciaIdDto;
+package com.algaworks.algafood.api.model.inputDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class CidadeRefDTO {
+public class CidadeIdInput {
     @NotNull
     private Long id;
 }

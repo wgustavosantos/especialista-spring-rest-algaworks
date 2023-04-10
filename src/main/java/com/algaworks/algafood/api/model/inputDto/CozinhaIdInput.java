@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.model.dto.ReferenciaIdDto;
+package com.algaworks.algafood.api.model.inputDto;
 
 
 import lombok.Getter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 /*DTO criado para referência de um objeto alinhado a Restaurante*/
 @Getter
 @Setter
-public class CozinhaRefDto {
+public class CozinhaIdInput {
 
     @NotNull
     private Long id;

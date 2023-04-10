@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.model.inputDto;
 
-import com.algaworks.algafood.api.model.dto.ReferenciaIdDto.CidadeRefDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,5 +23,5 @@ public class EnderecoInputDTO {
 
     @Valid
     @NotNull
-    private CidadeRefDTO cidade;
+    private CidadeIdInput cidade;
 }
