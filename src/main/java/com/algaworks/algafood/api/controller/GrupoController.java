@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements com.algaworks.algafood.api.controller.openapi.GrupoControllerOpenApi {
 
     @Autowired
     private GrupoService grupoService;
@@ -27,6 +27,7 @@ public class GrupoController {
     @Autowired
     private PermissaoAssembler pAssembler;
 
+    @Override
     @PostMapping
     public ResponseEntity<GrupoDTO> adicionar(@RequestBody @Valid GrupoInputDTO grupoInputDTO){
         final Grupo grupo = gAssembler.toDomainModel(grupoInputDTO);
@@ -35,20 +36,23 @@ public class GrupoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(grupoDTO);
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<GrupoDTO>> listar(){
         final List<GrupoDTO> gruposDTO = gAssembler.toListDTO(grupoService.listar());
         return ResponseEntity.ok(gruposDTO);
     }
 
+    @Override
     @GetMapping("/{grupoId}")
     public ResponseEntity<GrupoDTO> buscar(@PathVariable Long grupoId){
         final GrupoDTO grupoDTO = gAssembler.toDTO(grupoService.buscar(grupoId));
         return ResponseEntity.ok(grupoDTO);
     }
 
+    @Override
     @PutMapping("/{grupoId}")
-    public ResponseEntity<GrupoDTO> atualizar(@RequestBody GrupoInputDTO grupoInputDTO, @PathVariable Long grupoId){
+    public ResponseEntity<GrupoDTO> atualizar(@PathVariable Long grupoId, @RequestBody GrupoInputDTO grupoInputDTO){
 
         final Grupo grupoAtual = grupoService.buscar(grupoId);
         gAssembler.copyProperties(grupoInputDTO, grupoAtual);
@@ -57,6 +61,7 @@ public class GrupoController {
         return ResponseEntity.ok(grupoDTO);
     }
 
+    @Override
     @DeleteMapping("{grupoId}")
     public ResponseEntity<Void> deletar(@PathVariable Long grupoId){
         grupoService.deletar(grupoId);

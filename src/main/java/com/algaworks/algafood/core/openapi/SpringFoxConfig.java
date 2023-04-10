@@ -46,7 +46,7 @@ public class SpringFoxConfig {
 //                .paths(PathSelectors.ant("/restaurantes/*"))
                 .build()
                 .apiInfo(apiInfo())
-                .tags(new Tag("Cidades", "Gerencia as cidades"))
+                .tags(tags()[0], tags())
                 .useDefaultResponseMessages(false)
                 .globalResponses(HttpMethod.GET, globalGetResponses())
                 .globalResponses(HttpMethod.POST, globalPutResponses())
@@ -65,13 +65,13 @@ public class SpringFoxConfig {
                 new ResponseBuilder()
                         .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
                         .description("Requisição inválida (erro do cliente)")
-                        .representation( MediaType.APPLICATION_JSON )
+                        .representation(MediaType.APPLICATION_JSON)
                         .apply(getProblemaModelReference())
                         .build(),
                 new ResponseBuilder()
                         .code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
                         .description("Erro interno no servidor")
-                        .representation( MediaType.APPLICATION_JSON )
+                        .representation(MediaType.APPLICATION_JSON)
                         .apply(getProblemaModelReference())
                         .build()
         );
@@ -82,13 +82,13 @@ public class SpringFoxConfig {
                 new ResponseBuilder()
                         .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
                         .description("Requisição inválida (erro do cliente)")
-                        .representation( MediaType.APPLICATION_JSON )
+                        .representation(MediaType.APPLICATION_JSON)
                         .apply(getProblemaModelReference())
                         .build(),
                 new ResponseBuilder()
                         .code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
                         .description("Erro interno no servidor")
-                        .representation( MediaType.APPLICATION_JSON )
+                        .representation(MediaType.APPLICATION_JSON)
                         .apply(getProblemaModelReference())
                         .build(),
                 new ResponseBuilder()
@@ -98,7 +98,7 @@ public class SpringFoxConfig {
                 new ResponseBuilder()
                         .code(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
                         .description("Requisição recusada porque o corpo está em um formato não suportado")
-                        .representation( MediaType.APPLICATION_JSON )
+                        .representation(MediaType.APPLICATION_JSON)
                         .apply(getProblemaModelReference())
                         .build()
         );
@@ -109,7 +109,7 @@ public class SpringFoxConfig {
                 new ResponseBuilder()
                         .code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
                         .description("Erro interno do Servidor")
-                        .representation( MediaType.APPLICATION_JSON )
+                        .representation(MediaType.APPLICATION_JSON)
                         .apply(getProblemaModelReference())
                         .build(),
                 new ResponseBuilder()
@@ -133,6 +133,28 @@ public class SpringFoxConfig {
                 .build();
 
     }
+
+    private Tag[] tags() {
+        return new Tag[] {
+            new Tag("Cidades", "Gerencia as cidades"),
+                    new Tag("Cozinhas", "Gerencia as cozinhas"),
+                    new Tag("Grupos", "Gerencia os grupos"),
+                    new Tag("Permissões do grupo", "Gerencia as permissões do grupo"),
+                    new Tag("Pedidos", "Gerencia os pedidos"),
+                    new Tag("Status dos pedidos", "Gerencia o status do pedido"),
+                    new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
+                    new Tag("Fotos dos produtos", "Gerencia as fotos do produto"),
+                    new Tag("Restaurantes", "Gerencia os restaurantes"),
+                    new Tag("Formas de pagamento do restaurante", "Gerencia a forma de pagamento do restaurante"),
+                    new Tag("Produtos do restaurante", "Gerencia os produtos do restaurante"),
+                    new Tag("Usuários do restaurante", "Gerencia os donos dos restaurantes"),
+                    new Tag("Estados", "Gerencia os estados"),
+                    new Tag("Estatísticas", "Gerencia as estatísticas"),
+                    new Tag("Usuários", "Gerencia os usuários"),
+                    new Tag("Grupo de usuários", "Gerencia os grupos de usuários")
+        };
+    }
+
     private Consumer<RepresentationBuilder> getProblemaModelReference() {
         return r -> r.model(m -> m.name("Problema")
                 .referenceModel(ref -> ref.key(k -> k.qualifiedModelName(
@@ -140,10 +162,19 @@ public class SpringFoxConfig {
     }
 
 
-    Class[] ignoredParameterTypes() {
+    private Class[] ignoredParameterTypes() {
 
-        Class[] classes = {Cidade.class, Cozinha.class, Endereco.class, FormaPagamento.class, Produto.class, Restaurante.class, Pageable.class, Sort.class, Usuario.class, VendaDiaria.class, Page.class};
-
-        return classes;
+        return new Class[]{
+                Cidade.class,
+                Cozinha.class,
+                Endereco.class,
+                FormaPagamento.class,
+                Produto.class,
+                Restaurante.class,
+                Pageable.class,
+                Sort.class,
+                Usuario.class,
+                VendaDiaria.class,
+                Page.class};
     }
 }
