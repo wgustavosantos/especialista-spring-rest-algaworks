@@ -1,7 +1,10 @@
 package com.algaworks.algafood.core.openapi;
 
+import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
+import com.fasterxml.classmate.TypeResolver;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -20,6 +23,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Arrays;
@@ -28,6 +32,8 @@ import java.util.List;
 @Configuration
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig {
+
+    TypeResolver typeResolver = new TypeResolver();
 
     @Bean
     public Docket apiDocket() {
@@ -46,7 +52,13 @@ public class SpringFoxConfig {
                 .globalResponses(HttpMethod.GET, globalGetResponses())
                 .globalResponses(HttpMethod.POST, globalPutResponses())
                 .globalResponses(HttpMethod.PUT, globalPutResponses())
-                .globalResponses(HttpMethod.DELETE, globalDeleteResponses());
+                .globalResponses(HttpMethod.DELETE, globalDeleteResponses())
+                .additionalModels(typeResolver.resolve(Problem.class));
+    }
+
+    @Bean
+    public JacksonModuleRegistrar springFoxJacksonConfig() {
+        return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
     }
 
     private List<Response> globalDeleteResponses() {
@@ -61,6 +73,7 @@ public class SpringFoxConfig {
                         .build()
         );
     }
+
     private List<Response> globalPutResponses() {
         return Arrays.asList(
                 new ResponseBuilder()
@@ -111,7 +124,7 @@ public class SpringFoxConfig {
 
     }
 
-    Class[] ignoredParameterTypes(){
+    Class[] ignoredParameterTypes() {
 
         Class[] classes = {Cidade.class, Cozinha.class, Endereco.class, FormaPagamento.class, Produto.class, Restaurante.class, Pageable.class, Sort.class, Usuario.class, VendaDiaria.class, Page.class};
 
