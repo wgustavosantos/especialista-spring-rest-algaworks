@@ -8,14 +8,16 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.ProdutoService;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("restaurantes/{restauranteId}/produtos")
-public class RestauranteProdutoController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/produtos",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoController implements RestauranteProdutoControllerOpenApi {
 
     @Autowired
     private ProdutoService produtoService;
@@ -26,6 +28,7 @@ public class RestauranteProdutoController {
     @Autowired
     private ProdutoAssembler pAssembler;
 
+    @Override
     @PostMapping
     public ProdutoDTO adicionar(@RequestBody @Valid ProdutoInputDTO produtoInputDTO, @PathVariable Long restauranteId){
         Restaurante restaurante = restauranteService.buscar(restauranteId);
@@ -35,9 +38,10 @@ public class RestauranteProdutoController {
         return pAssembler.toDTO(produtoService.salvar(produto));
     }
 
+    @Override
     @GetMapping
     public List<ProdutoDTO> listar(@PathVariable Long restauranteId,
-                                   @RequestParam (required = false) boolean incluirInativos){
+                                   @RequestParam(required = false) boolean incluirInativos){
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
         List<Produto> produtos = null;
 
@@ -51,6 +55,7 @@ public class RestauranteProdutoController {
         return pAssembler.toListDTO(produtos);
     }
 
+    @Override
     @GetMapping("/{produtoId}")
     public ProdutoDTO buscar(@PathVariable Long produtoId, @PathVariable Long restauranteId){
         final Produto produto = produtoService.buscar(produtoId, restauranteId);
@@ -58,6 +63,7 @@ public class RestauranteProdutoController {
 
     }
 
+    @Override
     @PutMapping("/{produtoId}")
     public ProdutoDTO atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                 @RequestBody @Valid ProdutoInputDTO produtoInputDTO){
