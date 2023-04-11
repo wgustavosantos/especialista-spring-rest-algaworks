@@ -11,6 +11,8 @@ import com.algaworks.algafood.domain.repository.data.PageableTranslator;
 import com.algaworks.algafood.domain.service.PedidoService;
 import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,6 +46,10 @@ public class PedidoController {
        return pAssembler.toDTO(pedidoService.adicionar(pedido));
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula"
+            , name = "campos", paramType = "query", type = "string")
+    })
     @GetMapping
     public Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
         pageable = truduzirPageable(pageable);
@@ -53,7 +59,10 @@ public class PedidoController {
         return pedidoResumoDTOS;
     }
 
-
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula"
+                    , name = "campos", paramType = "query", type = "string")
+    })
     @GetMapping("/{codigoId}")
     public PedidoDTO buscar(@PathVariable String codigoId){
         return pAssembler.toDTO(pedidoService.buscar(codigoId));
