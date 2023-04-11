@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.controller;
+package com.algaworks.algafood.api.openapi.controller;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import io.swagger.annotations.Api;
