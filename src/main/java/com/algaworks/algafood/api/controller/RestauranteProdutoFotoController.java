@@ -44,10 +44,11 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId,
                                         @PathVariable Long produtoId,
-                                        @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+                                        @Valid FotoProdutoInput fotoProdutoInput,
+                                        @RequestPart(required = true) MultipartFile file) throws IOException {
 
         FotoProduto fotoProduto = new FotoProduto();
-        final MultipartFile file = fotoProdutoInput.getFile();
+//        final MultipartFile file = fotoProdutoInput.getFile();
 
         fotoProduto.setProduto(produtoService.buscar(produtoId, restauranteId));
         fotoProduto.setDescricao(fotoProdutoInput.getDescricao());
@@ -70,7 +71,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     }
 
     @Override
-    @GetMapping(produces = MediaType.ALL_VALUE)
+    @GetMapping(produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId,
                                         @PathVariable Long produtoId,
                                         @RequestHeader(name = "accept") String accepHeader) throws HttpMediaTypeNotAcceptableException {
