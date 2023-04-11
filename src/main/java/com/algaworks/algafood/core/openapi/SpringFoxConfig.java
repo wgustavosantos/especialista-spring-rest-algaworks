@@ -20,15 +20,14 @@ import org.springframework.web.context.request.ServletWebRequest;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Response;
-import springfox.documentation.service.Tag;
+import springfox.documentation.schema.ScalarType;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -60,7 +59,15 @@ public class SpringFoxConfig {
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, CozinhaDTO.class), CozinhasModelOpenApi.class)
-                );
+                )
+                .globalRequestParameters(Collections.singletonList(
+                        new RequestParameterBuilder()
+                                .name("campos")
+                                .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
+                                .in(ParameterType.QUERY)
+                                .required(false)
+                                .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
+                                .build()));
     }
 
     @Bean

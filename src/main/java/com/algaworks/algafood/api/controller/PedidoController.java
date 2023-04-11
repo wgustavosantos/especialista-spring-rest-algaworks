@@ -5,11 +5,12 @@ import com.algaworks.algafood.api.assembler.PedidoResumoAssembler;
 import com.algaworks.algafood.api.model.dto.PedidoDTO;
 import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.model.inputDto.PedidoInputDTO;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.repository.data.PageableTranslator;
-import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.PedidoService;
 import com.google.common.collect.ImmutableMap;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("pedidos")
+@Api(tags = "Pedidos")
 public class PedidoController {
 
     @Autowired
