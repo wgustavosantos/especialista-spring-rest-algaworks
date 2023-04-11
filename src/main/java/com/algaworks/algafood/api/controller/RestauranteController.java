@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.api.model.view.RestauranteView;
+import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
@@ -20,6 +21,9 @@ import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,6 +80,11 @@ public class RestauranteController {
         }
     }
 
+    @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
+                    name = "projecao", paramType = "query", type = "string")
+    })
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping
     public List<RestauranteDTO> listar() {
@@ -84,6 +93,7 @@ public class RestauranteController {
         return rAssembler.toListDTO(restaurantes);
     }
 
+    @ApiOperation(value = "Lista restaurantes", hidden = true)
     @JsonView(RestauranteView.ResumoApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
     public List<RestauranteDTO> listarApenasNome() {

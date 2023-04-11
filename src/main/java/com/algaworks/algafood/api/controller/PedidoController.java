@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.assembler.PedidoResumoAssembler;
 import com.algaworks.algafood.api.model.dto.PedidoDTO;
 import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.model.inputDto.PedidoInputDTO;
+import com.algaworks.algafood.api.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.PedidoService;
