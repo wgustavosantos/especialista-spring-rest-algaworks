@@ -26,7 +26,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
     public ResponseEntity<GrupoDTO> buscar(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId);
 
     @ApiOperation("Cadastra um grupo")
@@ -34,7 +34,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(responseCode = "201", description = "Grupo cadastrado"),
     })
     public ResponseEntity<GrupoDTO> adicionar(
-            @ApiParam(name = "corpo", value = "Representação de um novo grupo")
+            @ApiParam(name = "corpo", value = "Representação de um novo grupo", required = true)
             GrupoInputDTO GrupoInputDTO);
 
     @ApiOperation("Atualiza um grupo por ID")
@@ -43,9 +43,9 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
     public ResponseEntity<GrupoDTO> atualizar(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId,
-            @ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados")
+            @ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados", required = true)
             GrupoInputDTO grupoInputDTO);
 
     @ApiOperation("Exclui um grupo por ID")
@@ -54,7 +54,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
     public ResponseEntity<Void> deletar(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId);
 
 }

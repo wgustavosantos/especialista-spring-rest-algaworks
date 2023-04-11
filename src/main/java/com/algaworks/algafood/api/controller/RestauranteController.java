@@ -5,7 +5,6 @@ import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.api.model.view.RestauranteView;
-import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
@@ -21,12 +20,11 @@ import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -43,12 +41,11 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenApi {
 
     @Autowired
     RestauranteRepository restauranteRepository;
-
     @Autowired
     private RestauranteService restauranteService;
 
@@ -67,6 +64,7 @@ public class RestauranteController {
     @Autowired
     private RestauranteInputDisassembler rInputDisassembler;
 
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteDTO adicionar
@@ -80,11 +78,7 @@ public class RestauranteController {
         }
     }
 
-    @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
-                    name = "projecao", paramType = "query", type = "string")
-    })
+    @Override
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping
     public List<RestauranteDTO> listar() {
@@ -93,7 +87,7 @@ public class RestauranteController {
         return rAssembler.toListDTO(restaurantes);
     }
 
-    @ApiOperation(value = "Lista restaurantes", hidden = true)
+    @Override
     @JsonView(RestauranteView.ResumoApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
     public List<RestauranteDTO> listarApenasNome() {
@@ -127,6 +121,7 @@ public class RestauranteController {
 
     */
 
+    @Override
     @GetMapping("/{restauranteId}")
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
@@ -134,15 +129,16 @@ public class RestauranteController {
         return rAssembler.toDTO(restaurante);
     }
 
-    @PutMapping("/{id}")
-    public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInput, @PathVariable Long id) {
+    @Override
+    @PutMapping("/{restauranteId}")
+    public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInput, @PathVariable Long restauranteId) {
         final Restaurante restauranteAtual;
 
         try {
             Cozinha cozinha = cozinhaService.buscar(restauranteInput.getCozinha().getId());
             Cidade cidade = cidadeService.buscar(restauranteInput.getEndereco().getCidade().getId());
 
-            restauranteAtual = restauranteService.buscar(id);
+            restauranteAtual = restauranteService.buscar(restauranteId);
             rInputDisassembler.copyProperties(restauranteInput, restauranteAtual);
 
             restauranteAtual.setCozinha(cozinha);
@@ -157,36 +153,42 @@ public class RestauranteController {
 
     }
 
+    @Override
     @DeleteMapping("/{restauranteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long restauranteId) {
         restauranteService.deletar(restauranteId);
     }
 
+    @Override
     @PutMapping("/{restauranteId}/ativar")
     public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
         restauranteService.ativar(restauranteId);
         return ResponseEntity.noContent().build();
     }
 
+    @Override
     @DeleteMapping("/{restauranteId}/inativar")
     public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
         restauranteService.inativar(restauranteId);
         return ResponseEntity.noContent().build();
     }
 
+    @Override
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void abrir(@PathVariable Long restauranteId) {
         restauranteService.abrir(restauranteId);
     }
 
+    @Override
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void fechar(@PathVariable Long restauranteId) {
         restauranteService.fechar(restauranteId);
     }
 
+    @Override
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativarRestaurantes(@RequestBody Set<Long> restauranteIds) {
@@ -197,6 +199,7 @@ public class RestauranteController {
         }
     }
 
+    @Override
     @DeleteMapping("/inativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativarRestaurantes(@RequestBody Set<Long> restauranteIds) {
@@ -212,6 +215,7 @@ public class RestauranteController {
      *                       HttpMessageNotReadableException no método merge e relançar para ser capturada por
      *                       handleHttpMessageNotReadable em ApiExceptionHandler
      */
+    @Override
     @PatchMapping("/{id}")
     public RestauranteDTO atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos,
                                            HttpServletRequest servletRequest) {

@@ -11,11 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = "Formas de pagamento")
@@ -25,15 +22,15 @@ public interface FormaPagamentoControllerOpenApi {
             @ApiResponse(responseCode = "201", description = "Forma de pagamento cadastrada", content = @Content(schema = @Schema(implementation = Problem.class))),
     })
     ResponseEntity<FormaPagamentoDTO> adicionar(
-            @ApiParam(name = "corpo", value = "Representação de uma nova forma de pagamento")
-            @RequestBody @Valid FormaPagamentoInputDTO formaPagamentoInputDTO);
+            @ApiParam(name = "corpo", value = "Representação de uma nova forma de pagamento", required = true)
+             FormaPagamentoInputDTO formaPagamentoInputDTO);
     @ApiOperation("Busca uma forma de pagamento por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID da forma de pagamento inválido", content = @Content(schema = @Schema(implementation = Problem.class))),
             @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
     ResponseEntity<FormaPagamentoDTO> buscar(
-            @ApiParam(value = "ID de uma forma de pagamento", example = "1") @PathVariable Long formaPagamentoId,
+            @ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true) Long formaPagamentoId,
             ServletWebRequest request);
 
     @ApiOperation("Atualiza uma cidade por ID")
@@ -42,11 +39,11 @@ public interface FormaPagamentoControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
     ResponseEntity<FormaPagamentoDTO> atualizar(
-            @ApiParam(value = "ID de uma forma de pagamento", example = "1")
-            @PathVariable Long formaPagamentoId,
+            @ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true)
+            Long formaPagamentoId,
 
-            @ApiParam(name = "corpo", value = "Representação de uma forma de pagamento com os novos dados")
-            @RequestBody FormaPagamentoInputDTO formaPagamentoInputDTO);
+            @ApiParam(name = "corpo", value = "Representação de uma forma de pagamento com os novos dados", required = true)
+            FormaPagamentoInputDTO formaPagamentoInputDTO);
     @ApiOperation("Lista as formas de pagamento")
     ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request);
 
@@ -55,5 +52,5 @@ public interface FormaPagamentoControllerOpenApi {
             @ApiResponse(responseCode = "204", description = "Forma de pagamento excluída"),
             @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    ResponseEntity<Void> deletar(@PathVariable Long formaPagamentoId);
+    ResponseEntity<Void> deletar(@ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true) Long formaPagamentoId);
 }
