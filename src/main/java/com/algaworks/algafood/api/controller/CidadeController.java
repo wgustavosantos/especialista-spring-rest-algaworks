@@ -2,7 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.CidadeAssembler;
 import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
-import com.algaworks.algafood.api.controller.openapi.CidadeControllerOpenApi;
+import com.algaworks.algafood.api.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.dto.CidadeDTO;
 import com.algaworks.algafood.api.model.inputDto.CidadeInputDTO;
