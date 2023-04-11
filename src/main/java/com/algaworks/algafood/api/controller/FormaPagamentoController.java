@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.model.inputDto.FormaPagamentoInputDTO;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.service.FormaPagamentoService;
+import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/formapagamentos")
+@Api(tags = "Formas de pagamento")
 public class FormaPagamentoController {
 
     @Autowired
