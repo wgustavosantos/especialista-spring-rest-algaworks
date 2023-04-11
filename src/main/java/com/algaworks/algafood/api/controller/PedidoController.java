@@ -7,10 +7,7 @@ import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.model.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.repository.data.PageableTranslator;
 import com.algaworks.algafood.domain.service.PedidoService;
-import com.google.common.collect.ImmutableMap;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +15,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("pedidos")
-@Api(tags = "Pedidos")
-public class PedidoController {
+@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private PedidoService pedidoService;
@@ -37,6 +34,7 @@ public class PedidoController {
     @Autowired
     private PedidoResumoAssembler pRAssembler;
 
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoDTO  adicionar(@RequestBody @Valid PedidoInputDTO pedidoInputDTO){
@@ -46,10 +44,7 @@ public class PedidoController {
        return pAssembler.toDTO(pedidoService.adicionar(pedido));
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula"
-            , name = "campos", paramType = "query", type = "string")
-    })
+    @Override
     @GetMapping
     public Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
         pageable = truduzirPageable(pageable);
@@ -59,6 +54,7 @@ public class PedidoController {
         return pedidoResumoDTOS;
     }
 
+    @Override
     @ApiImplicitParams({
             @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula"
                     , name = "campos", paramType = "query", type = "string")
@@ -68,13 +64,4 @@ public class PedidoController {
         return pAssembler.toDTO(pedidoService.buscar(codigoId));
     }
 
-    private Pageable truduzirPageable (Pageable apiPageable){
-        final ImmutableMap<String, String> mapFields = ImmutableMap.of(
-                "codigo", "codigo",
-                "restaurante.nome", "restaurante.nome",
-                "nomeCliente", "cliente.nome",
-                "valortotal", "valorTotal"
-        );
-        return PageableTranslator.translate(apiPageable, mapFields);
-    }
 }

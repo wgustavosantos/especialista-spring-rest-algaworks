@@ -15,7 +15,7 @@ public class PedidoInputDTO {
 
     @Valid
     @NotNull
-    private RestauranteIdDTO restaurante;
+    private RestauranteIdInputDTO restaurante;
 
     @Valid
     @NotNull
