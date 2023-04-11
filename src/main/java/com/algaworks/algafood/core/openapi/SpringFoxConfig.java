@@ -1,6 +1,7 @@
 package com.algaworks.algafood.core.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.core.openapi.model.PageableModelOpenApi;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.fasterxml.classmate.TypeResolver;
@@ -8,9 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,7 +51,8 @@ public class SpringFoxConfig {
                 .globalResponses(HttpMethod.POST, globalPutResponses())
                 .globalResponses(HttpMethod.PUT, globalPutResponses())
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponses())
-                .additionalModels(typeResolver.resolve(Problem.class));
+                .additionalModels(typeResolver.resolve(Problem.class))
+                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class);
     }
 
     @Bean
@@ -171,10 +171,7 @@ public class SpringFoxConfig {
                 FormaPagamento.class,
                 Produto.class,
                 Restaurante.class,
-                Pageable.class,
-                Sort.class,
                 Usuario.class,
-                VendaDiaria.class,
-                Page.class};
+                VendaDiaria.class};
     }
 }
