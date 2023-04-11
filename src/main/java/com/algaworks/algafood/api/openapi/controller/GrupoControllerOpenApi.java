@@ -18,14 +18,14 @@ import java.util.List;
 public interface GrupoControllerOpenApi {
 
     @ApiOperation("Lista os grupos")
-    public ResponseEntity<List<GrupoDTO>> listar();
+    ResponseEntity<List<GrupoDTO>> listar();
 
     @ApiOperation("Busca um grupo por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID da grupo inválido", content = @Content(schema = @Schema(implementation = Problem.class))),
             @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public ResponseEntity<GrupoDTO> buscar(
+    ResponseEntity<GrupoDTO> buscar(
             @ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId);
 
@@ -33,7 +33,7 @@ public interface GrupoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Grupo cadastrado"),
     })
-    public ResponseEntity<GrupoDTO> adicionar(
+    ResponseEntity<GrupoDTO> adicionar(
             @ApiParam(name = "corpo", value = "Representação de um novo grupo", required = true)
             GrupoInputDTO GrupoInputDTO);
 
@@ -42,7 +42,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(responseCode = "200", description = "Grupo atualizado"),
             @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public ResponseEntity<GrupoDTO> atualizar(
+    ResponseEntity<GrupoDTO> atualizar(
             @ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId,
             @ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados", required = true)
@@ -53,7 +53,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(responseCode = "204", description = "Grupo excluído"),
             @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public ResponseEntity<Void> deletar(
+    ResponseEntity<Void> deletar(
             @ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId);
 

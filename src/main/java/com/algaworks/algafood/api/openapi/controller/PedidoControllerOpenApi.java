@@ -25,37 +25,20 @@ import javax.validation.Valid;
 public interface PedidoControllerOpenApi {
 
     @ApiOperation("Registra um pedido")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Pedido registrado"),
-    })
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Pedido registrado"),})
     @ResponseStatus(HttpStatus.CREATED)
     PedidoDTO adicionar(@RequestBody @Valid PedidoInputDTO pedidoInputDTO);
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula"
-                    , name = "campos", paramType = "query", type = "string")
-    })
+    @ApiImplicitParams({@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "query", type = "string")})
     Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable);
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula"
-                    , name = "campos", paramType = "query", type = "string")
-    })
+    @ApiImplicitParams({@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "query", type = "string")})
     @ApiOperation("Busca um pedido por código")
-    @ApiResponses({
-            @ApiResponse(responseCode = "404", description = "Pedido não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
-    })
-    PedidoDTO buscar(
-            @ApiParam(value = "Código de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55", required = true)
-            @PathVariable String codigoId);
+    @ApiResponses({@ApiResponse(responseCode = "404", description = "Pedido não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))})
+    PedidoDTO buscar(@ApiParam(value = "Código de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55", required = true) @PathVariable String codigoId);
 
     default Pageable truduzirPageable(Pageable apiPageable) {
-        final ImmutableMap<String, String> mapFields = ImmutableMap.of(
-                "codigo", "codigo",
-                "restaurante.nome", "restaurante.nome",
-                "nomeCliente", "cliente.nome",
-                "valortotal", "valorTotal"
-        );
+        final ImmutableMap<String, String> mapFields = ImmutableMap.of("codigo", "codigo", "restaurante.nome", "restaurante.nome", "nomeCliente", "cliente.nome", "valortotal", "valorTotal");
         return PageableTranslator.translate(apiPageable, mapFields);
     }
 }

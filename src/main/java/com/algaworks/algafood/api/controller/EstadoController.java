@@ -4,10 +4,12 @@ import com.algaworks.algafood.api.assembler.EstadoAssembler;
 import com.algaworks.algafood.api.assembler.EstadoInputDissasembler;
 import com.algaworks.algafood.api.model.dto.EstadoDTO;
 import com.algaworks.algafood.api.model.inputDto.EstadoInputDTO;
+import com.algaworks.algafood.api.openapi.controller.EstadoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +17,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estados")
-public class EstadoController {
+@RequestMapping(path = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
+public class EstadoController implements EstadoControllerOpenApi {
 
     @Autowired
     private EstadoService estadoService;
@@ -28,6 +30,7 @@ public class EstadoController {
     private EstadoInputDissasembler eInputDissasembler;
 
 
+    @Override
     @PostMapping
     public ResponseEntity<EstadoDTO> adicionar(@RequestBody @Valid EstadoInputDTO estadoInputDTO) {
 
@@ -36,16 +39,19 @@ public class EstadoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoDTO);
     }
 
+    @Override
     @GetMapping
     public List<EstadoDTO> listar() {
         return eAssembler.toListDTO(estadoService.listar());
     }
 
+    @Override
     @GetMapping("/{estadoId}")
     public EstadoDTO buscar(@PathVariable Long estadoId) {
         return eAssembler.toDTO(estadoService.buscar(estadoId));
     }
 
+    @Override
     @PutMapping("/{estadoId}")
     public EstadoDTO atualizar(@RequestBody @Valid EstadoInputDTO estadoInputDTO, @PathVariable Long estadoId) {
 
@@ -55,6 +61,7 @@ public class EstadoController {
         return eAssembler.toDTO(estadoService.atualizar(estadoAtual));
     }
 
+    @Override
     @DeleteMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long estadoId) {

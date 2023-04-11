@@ -18,22 +18,22 @@ import org.springframework.http.ResponseEntity;
 public interface CozinhaControllerOpenApi {
 
     @ApiOperation("Lista as cozinhas com paginação")
-    public Page<CozinhaDTO> listar(Pageable pageable);
+    Page<CozinhaDTO> listar(Pageable pageable);
 
     @ApiOperation("Busca uma cozinha por ID")
     @ApiResponses({@ApiResponse(responseCode = "400", description = "ID da cozinha inválido", content = @Content(schema = @Schema(implementation = Problem.class))), @ApiResponse(responseCode = "404", description = "Cozinha não encontrada", content = @Content(schema = @Schema(implementation = Problem.class)))})
-    public CozinhaDTO buscar(@ApiParam(value = "ID de uma cozinha", example = "1") Long cozinhaId);
+    CozinhaDTO buscar(@ApiParam(value = "ID de uma cozinha", example = "1") Long cozinhaId);
 
     @ApiOperation("Cadastra uma cozinha")
     @ApiResponses({@ApiResponse(responseCode = "201", description = "Cozinha cadastrada"),})
-    public ResponseEntity<CozinhaDTO> adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cozinha") CozinhaInputDTO cozinhaInput);
+    ResponseEntity<CozinhaDTO> adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cozinha") CozinhaInputDTO cozinhaInput);
 
     @ApiOperation("Atualiza uma cozinha por ID")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Cozinha atualizada"), @ApiResponse(responseCode = "404", description = "Cozinha não encontrada", content = @Content(schema = @Schema(implementation = Problem.class)))})
-    public CozinhaDTO atualizar(@ApiParam(name = "corpo", value = "Representação de uma cozinha com os novos dados") CozinhaInputDTO cozinhaInput, @ApiParam(value = "ID de uma cozinha", example = "1") Long cozinhaId);
+    CozinhaDTO atualizar(@ApiParam(name = "corpo", value = "Representação de uma cozinha com os novos dados") CozinhaInputDTO cozinhaInput, @ApiParam(value = "ID de uma cozinha", example = "1") Long cozinhaId);
 
     @ApiOperation("Exclui uma cozinha por ID")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Cozinha excluída"), @ApiResponse(responseCode = "404", description = "Cozinha não encontrada", content = @Content(schema = @Schema(implementation = Problem.class)))})
-    public void deletar(@ApiParam(value = "ID de uma cozinha", example = "1") Long cozinhaId);
+    void deletar(@ApiParam(value = "ID de uma cozinha", example = "1") Long cozinhaId);
 
 }
