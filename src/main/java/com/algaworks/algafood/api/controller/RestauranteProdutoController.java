@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.ProdutoAssembler;
 import com.algaworks.algafood.api.model.dto.ProdutoDTO;
 import com.algaworks.algafood.api.model.inputDto.ProdutoInputDTO;
+import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.ProdutoService;

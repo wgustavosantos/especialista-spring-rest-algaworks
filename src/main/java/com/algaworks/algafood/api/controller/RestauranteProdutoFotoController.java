@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.FotoProdutoAssember;
 import com.algaworks.algafood.api.model.dto.FotoProdutoDTO;
 import com.algaworks.algafood.api.model.inputDto.FotoProdutoInput;
+import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.repository.FotoStorageService;
@@ -23,8 +24,9 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
     @Autowired
     private CatalogoFotoProdutoService catalogoFotoProdutoService;
@@ -38,6 +40,7 @@ public class RestauranteProdutoFotoController {
     @Autowired
     private FotoProdutoAssember fTAssember;
 
+    @Override
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId,
                                         @PathVariable Long produtoId,
@@ -57,18 +60,20 @@ public class RestauranteProdutoFotoController {
         return fTAssember.toDTO(fotoSalva);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @GetMapping
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
-                                   @PathVariable Long produtoId) {
+                                 @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
 
         return fTAssember.toDTO(fotoProduto);
     }
 
-    @GetMapping
+    @Override
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId,
-                                                          @PathVariable Long produtoId,
-                                                          @RequestHeader(name = "accept") String accepHeader) throws HttpMediaTypeNotAcceptableException {
+                                        @PathVariable Long produtoId,
+                                        @RequestHeader(name = "accept") String accepHeader) throws HttpMediaTypeNotAcceptableException {
 
             FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
             MediaType mediaTypeFotoProduto = MediaType.parseMediaType(fotoProduto.getContentType());
@@ -95,6 +100,7 @@ public class RestauranteProdutoFotoController {
         }
     }
 
+    @Override
     @DeleteMapping
     public void deletarFotoProduto(@PathVariable Long restauranteId,
                                    @PathVariable Long produtoId){
