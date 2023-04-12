@@ -14,6 +14,7 @@ import com.algaworks.algafood.domain.service.CidadeService;
 import com.algaworks.algafood.domain.service.EstadoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +65,18 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Override
     @GetMapping("/{cidadeId}")
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
-        return cAssembler.toDTO(cidadeService.buscar(cidadeId));
+        final CidadeDTO cidade = cAssembler.toDTO(cidadeService.buscar(cidadeId));
+        
+
+        cidade.add(Link.of("http://localhost:8080/cidades/1"));
+//		cidade.add(Link.of("http://api.algafood.local:8080/cidades/1", IanaLinkRelations.SELF));
+
+//		cidade.add(Link.of("http://api.algafood.local:8080/cidades", IanaLinkRelations.COLLECTION));
+        cidade.add(Link.of("http://localhost:8080/cidades", "cidades"));
+
+        cidade.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+
+        return cidade;
     }
 
     @Override
