@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estatisticas")
-public class EstatisticasController {
+@RequestMapping(path = "/estatisticas")
+public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
     private VendaQueryService vendaQueryService;
@@ -25,15 +25,17 @@ public class EstatisticasController {
     @Autowired
     private VendaReportService vendaReportService;
 
+    @Override
     @GetMapping(path ="/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter,
-            @RequestParam (required = false, defaultValue = "+00:00") String timeOffSet){
+                                                    @RequestParam(required = false, defaultValue = "+00:00") String timeOffSet){
         return vendaQueryService.consultarVendasDiarias(vendaDiariaFilter, timeOffSet);
     }
 
+    @Override
     @GetMapping(path ="/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter vendaDiariaFilter,
-                                                    @RequestParam (required = false, defaultValue = "+00:00") String timeOffSet){
+                                                            @RequestParam(required = false, defaultValue = "+00:00") String timeOffSet){
         final byte[] bytesPdf = vendaReportService.emitirVendasDiarias(vendaDiariaFilter, timeOffSet);
 
         final HttpHeaders headers = new HttpHeaders();
