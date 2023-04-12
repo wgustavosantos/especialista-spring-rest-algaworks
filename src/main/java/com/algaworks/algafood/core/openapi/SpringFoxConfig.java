@@ -11,6 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,11 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -146,20 +152,19 @@ public class SpringFoxConfig {
         return new Tag[] {
             new Tag("Cidades", "Gerencia as cidades"),
                     new Tag("Cozinhas", "Gerencia as cozinhas"),
-                    new Tag("Grupos", "Gerencia os grupos"),
-                    new Tag("Permissões do grupo", "Gerencia as permissões do grupo"),
+                    new Tag("Grupos", "Gerencia os grupos de usuários"),
+                    new Tag("Permissões do Grupo", "Gerencia as permissões do grupo"),
                     new Tag("Pedidos", "Gerencia os pedidos"),
-                    new Tag("Status dos pedidos", "Gerencia o status do pedido"),
-                    new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
-                    new Tag("Fotos dos produtos", "Gerencia as fotos do produto"),
+                    new Tag("Status", "Gerencia o status do pedido"),
+                    new Tag("Formas", "Gerencia as formas de pagamento"),
+                    new Tag("Fotos", "Gerencia as fotos do produto"),
                     new Tag("Restaurantes", "Gerencia os restaurantes"),
-                    new Tag("Formas de pagamento do restaurante", "Gerencia a forma de pagamento do restaurante"),
-                    new Tag("Produtos do restaurante", "Gerencia os produtos do restaurante"),
-                    new Tag("Usuários do restaurante", "Gerencia os donos dos restaurantes"),
+                    new Tag("Formas de Pagamento do Restaurante", "Gerencia a forma de pagamento do restaurante"),
+                    new Tag("Produtos do Restaurante", "Gerencia os produtos do restaurante"),
+                    new Tag("Usuarios do restaurante", "Gerencia os donos dos restaurantes"),
                     new Tag("Estados", "Gerencia os estados"),
-                    new Tag("Estatísticas", "Gerencia as estatísticas"),
-                    new Tag("Usuários", "Gerencia os usuários"),
-                    new Tag("Grupo de usuários", "Gerencia os grupos de usuários")
+                    new Tag("Estatisticas", "Gerencia as estatisticas"),
+                    new Tag("Usuarios", "Gerencia os usuarios"),
         };
     }
 
@@ -181,6 +186,8 @@ public class SpringFoxConfig {
                 Restaurante.class,
                 Usuario.class,
                 VendaDiaria.class,
-                ServletWebRequest.class};
+                ServletWebRequest.class,
+                URL.class, URI.class, URLStreamHandler.class, Resource.class,
+                File.class, InputStream.class};
     }
 }

@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.openapi.controller;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.dto.CidadeDTO;
 import com.algaworks.algafood.api.model.inputDto.CidadeInputDTO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+@Api(tags = "Cidades")
 public interface CidadeControllerOpenApi {
     @ApiOperation("Cadastra uma cidade")
     @ApiResponse(responseCode = "201", description = "Cidade cadastrada")

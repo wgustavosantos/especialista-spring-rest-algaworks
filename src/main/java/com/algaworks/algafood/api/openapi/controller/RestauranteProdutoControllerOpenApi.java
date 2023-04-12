@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.List;
 
-@Api(tags = "Produtos")
+@Api(tags = "Produtos do Restaurante")
 public interface RestauranteProdutoControllerOpenApi {
 
     @ApiOperation("Lista os produtos de um restaurante")
