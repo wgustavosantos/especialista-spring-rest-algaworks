@@ -164,7 +164,7 @@ public class SpringFoxConfig {
                     new Tag("Usuarios do restaurante", "Gerencia os donos dos restaurantes"),
                     new Tag("Estados", "Gerencia os estados"),
                     new Tag("Estatisticas", "Gerencia as estatisticas"),
-                    new Tag("Usuarios", "Gerencia os usuarios"),
+                    new Tag("Usuários", "Gerencia os usuarios"),
         };
     }
 

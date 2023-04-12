@@ -1,6 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.api.model.inputDto.usuarioInputSenhaDTO;
+import com.algaworks.algafood.api.model.inputDto.UsuarioInputSenhaDTO;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
@@ -77,7 +77,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void alterarSenha(Long usuarioId, usuarioInputSenhaDTO senhaDTO) {
+    public void alterarSenha(Long usuarioId, UsuarioInputSenhaDTO senhaDTO) {
         Usuario usuarioAtual = buscar(usuarioId);
 
         if(!usuarioAtual.senhaIsEquals(senhaDTO.getSenhaAtual()))
