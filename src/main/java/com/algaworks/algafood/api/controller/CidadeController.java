@@ -14,7 +14,7 @@ import com.algaworks.algafood.domain.service.CidadeService;
 import com.algaworks.algafood.domain.service.EstadoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Api(tags = "Cidades")
 @RestController
@@ -69,17 +70,30 @@ public class CidadeController implements CidadeControllerOpenApi {
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
         final CidadeDTO cidade = cAssembler.toDTO(cidadeService.buscar(cidadeId));
 
-        /*_link.self para o próprio recurso*/
+        /*_link.self para o próprio recurso
         cidade.add(linkTo(CidadeController.class)
-                .slash(cidade.getId()).withSelfRel());
+                .slash(cidade.getId()).withSelfRel());*/
 
-        /*_link.collection para coleção de cidades */
+        /*_link.self para o próprio recurso
+        linkTo recebendo um Object method como argumento
+        chamada de método para controller específicos*/
+        final Link linkCidade = linkTo( methodOn(CidadeController.class).buscar(cidade.getId()) ).withSelfRel();
+        cidade.add(linkCidade);
+
+        /*_link.collection para coleção de cidades
         cidade.add(linkTo(CidadeController.class)
-                .withRel("cidades"));
+                .withRel("cidades"));*/
 
-        /*_link.self para o recurso estado/id dentro de cidade*/
+        final Link linkCidades = linkTo(methodOn(CidadeController.class).listar()).withRel("Cidades");
+        cidade.add(linkCidades);
+
+        /*_link.self para o recurso estado/id dentro de cidade
         cidade.getEstado().add(linkTo(EstadoController.class)
-                .slash(cidade.getEstado().getId()).withSelfRel());
+                .slash(cidade.getEstado().getId()).withSelfRel());*/
+
+        final Link linkEstados = linkTo(methodOn(EstadoController.class).
+                buscar(cidade.getEstado().getId())).withSelfRel();
+        cidade.getEstado().add(linkEstados);
 
         return cidade;
     }
