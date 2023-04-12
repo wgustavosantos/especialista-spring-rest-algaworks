@@ -14,7 +14,7 @@ import com.algaworks.algafood.domain.service.CidadeService;
 import com.algaworks.algafood.domain.service.EstadoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Api(tags = "Cidades")
 @RestController
@@ -66,15 +68,18 @@ public class CidadeController implements CidadeControllerOpenApi {
     @GetMapping("/{cidadeId}")
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
         final CidadeDTO cidade = cAssembler.toDTO(cidadeService.buscar(cidadeId));
-        
 
-        cidade.add(Link.of("http://localhost:8080/cidades/1"));
-//		cidade.add(Link.of("http://api.algafood.local:8080/cidades/1", IanaLinkRelations.SELF));
+        /*_link.self para o próprio recurso*/
+        cidade.add(linkTo(CidadeController.class)
+                .slash(cidade.getId()).withSelfRel());
 
-//		cidade.add(Link.of("http://api.algafood.local:8080/cidades", IanaLinkRelations.COLLECTION));
-        cidade.add(Link.of("http://localhost:8080/cidades", "cidades"));
+        /*_link.collection para coleção de cidades */
+        cidade.add(linkTo(CidadeController.class)
+                .withRel("cidades"));
 
-        cidade.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+        /*_link.self para o recurso estado/id dentro de cidade*/
+        cidade.getEstado().add(linkTo(EstadoController.class)
+                .slash(cidade.getEstado().getId()).withSelfRel());
 
         return cidade;
     }
