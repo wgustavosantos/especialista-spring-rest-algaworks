@@ -7,13 +7,15 @@ import com.algaworks.algafood.domain.service.GrupoService;
 import com.algaworks.algafood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("usuarios/{usuarioId}/grupos")
-public class UsuarioGrupoController {
+@RequestMapping(path = "/usuarios/{usuarioId}/grupos",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -24,6 +26,7 @@ public class UsuarioGrupoController {
     @Autowired
     GrupoAssembler gAssembler;
 
+    @Override
     @GetMapping
     public List<GrupoDTO> listar(@PathVariable Long usuarioId){
         final Usuario usuario = usuarioService.buscar(usuarioId);
@@ -31,12 +34,14 @@ public class UsuarioGrupoController {
         return gAssembler.toListDTO(usuario.getGrupos());
     }
 
+    @Override
     @PutMapping("{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void adicionarGrupo(@PathVariable Long usuarioId, @PathVariable Long grupoId){
         usuarioService.adicionarGrupo(usuarioId,grupoId);
     }
 
+    @Override
     @DeleteMapping("{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removerGrupo(@PathVariable Long usuarioId, @PathVariable Long grupoId){

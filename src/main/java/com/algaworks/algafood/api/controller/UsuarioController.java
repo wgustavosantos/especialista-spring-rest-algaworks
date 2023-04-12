@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.model.dto.UsuarioDTO;
 import com.algaworks.algafood.api.model.inputDto.UsuarioComSenhaInputDTO;
 import com.algaworks.algafood.api.model.inputDto.UsuarioInputSenhaDTO;
 import com.algaworks.algafood.api.model.inputDto.usuarioInputUpdateDTO;
+import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
