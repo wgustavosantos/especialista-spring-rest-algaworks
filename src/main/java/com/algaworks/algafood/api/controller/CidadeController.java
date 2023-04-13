@@ -14,6 +14,7 @@ import com.algaworks.algafood.domain.service.CidadeService;
 import com.algaworks.algafood.domain.service.EstadoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,9 +61,31 @@ public class CidadeController implements CidadeControllerOpenApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<CidadeDTO>> listar() {
+    public CollectionModel<CidadeDTO> listar() {
         final List<Cidade> cidades = cidadeService.listar();
-        return ResponseEntity.ok(cAssembler.toListDTO(cidades));
+        final List<CidadeDTO> cidadesDTOS = cAssembler.toListDTO(cidades);
+
+        /*Para criar links para cada objeto json*/
+        cidadesDTOS.forEach(cidade -> {
+            final Link linkEstados = linkTo(methodOn(EstadoController.class).
+                    buscar(cidade.getEstado().getId())).withSelfRel();
+            cidade.getEstado().add(linkEstados);
+
+            final Link linkCidades = linkTo(methodOn(CidadeController.class).listar()).withRel("Cidades");
+            cidade.add(linkCidades);
+
+            final Link linkCidade = linkTo( methodOn(CidadeController.class).buscar(cidade.getId()) ).withSelfRel();
+            cidade.add(linkCidade);
+        });
+
+        final CollectionModel<CidadeDTO> cidadesCollectionModel = CollectionModel.of(cidadesDTOS);
+
+        /*link para listagem de cidades*/
+        cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
+
+
+
+        return cidadesCollectionModel;
     }
 
     @Override
