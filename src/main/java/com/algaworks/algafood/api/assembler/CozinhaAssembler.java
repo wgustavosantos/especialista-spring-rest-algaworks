@@ -1,24 +1,35 @@
 package com.algaworks.algafood.api.assembler;
 
+import com.algaworks.algafood.api.controller.CidadeController;
+import com.algaworks.algafood.api.controller.CozinhaController;
 import com.algaworks.algafood.api.model.dto.CozinhaDTO;
 import com.algaworks.algafood.domain.model.Cozinha;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Component
-public class CozinhaAssembler {
+public class CozinhaAssembler extends RepresentationModelAssemblerSupport<Cozinha, CozinhaDTO> {
 
     @Autowired
     ModelMapper modelMapper;
 
-    public CozinhaDTO toDTO(Cozinha cozinha){
-        return modelMapper.map(cozinha, CozinhaDTO.class);
+    public CozinhaAssembler() {
+        super(CozinhaController.class, CozinhaDTO.class);
     }
 
-    public List<CozinhaDTO> toListDTO(List<Cozinha> cozinhas){
-        return cozinhas.stream().map(this::toDTO).toList();
+    @Override
+    public CozinhaDTO toModel(Cozinha cozinha){
+        final CozinhaDTO cozinhaDTO = createModelWithId(cozinha.getId(), cozinha);
+        modelMapper.map(cozinha, cozinhaDTO);
+
+        cozinhaDTO.add(linkTo(CidadeController.class).withRel("cozinhas"));
+
+        return cozinhaDTO;
     }
+
+
 }

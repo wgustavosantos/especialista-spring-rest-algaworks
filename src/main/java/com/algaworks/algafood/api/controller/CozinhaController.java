@@ -11,16 +11,16 @@ import com.algaworks.algafood.domain.service.CozinhaService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,26 +39,37 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @Autowired
     private CozinhaInputDisassembler cInputAssembler;
 
+    @Autowired
+    private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+
     @Override
     @PostMapping
     public ResponseEntity<CozinhaDTO> adicionar(@RequestBody @Valid CozinhaInputDTO cozinhaInputDTO) {
         final Cozinha cozinha = cInputAssembler.DTOtoDomainModel(cozinhaInputDTO);
-        final CozinhaDTO cozinhaDTO = cAssembler.toDTO(cozinhaService.salvar(cozinha));
+        final CozinhaDTO cozinhaDTO = cAssembler.toModel(cozinhaService.salvar(cozinha));
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
     }
 
     @Override
     @GetMapping
-    public Page<CozinhaDTO> listar(@PageableDefault(size = 5) Pageable pageable) {
-        final List<CozinhaDTO> cozinhas = cAssembler.toListDTO(cozinhaService.listar(pageable).getContent());
+    public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 5) Pageable pageable) {
 
-        return new PageImpl<>(cozinhas, pageable, cozinhas.size());
+        final Page<Cozinha> cozinhasPage = cozinhaService.listar(pageable);
+
+        final PagedModel<CozinhaDTO> cozinhaDTOPagedModel = pagedResourcesAssembler.toModel(cozinhasPage, cAssembler);
+
+//        final CollectionModel<CozinhaDTO> cozinhas = cAssembler.toCollectionModel(cozinhasPage.getContent());
+//
+//        final PageImpl<CozinhaDTO> cozinhasPageModel = new PageImpl<>(cozinhas, pageable, cozinhas.size());
+//
+//        return cozinhasPageModel;
+        return cozinhaDTOPagedModel;
     }
 
     @Override
     @GetMapping("/{cozinhaId}")
     public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
-        return cAssembler.toDTO(cozinhaService.buscar(cozinhaId));
+        return cAssembler.toModel(cozinhaService.buscar(cozinhaId));
     }
 
     @Override
@@ -67,7 +78,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         final Cozinha cozinhaAtual = cozinhaService.buscar(cozinhaId);
         cInputAssembler.copyProperties(cozinhaInputDTO, cozinhaAtual);
 
-        return cAssembler.toDTO(cozinhaService.atualizar(cozinhaAtual));
+        return cAssembler.toModel(cozinhaService.atualizar(cozinhaAtual));
     }
 
     @Override

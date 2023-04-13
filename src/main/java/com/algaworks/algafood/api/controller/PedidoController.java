@@ -13,8 +13,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,9 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Autowired
     private PedidoResumoAssembler pRAssembler;
 
+    @Autowired
+    private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,17 +46,16 @@ public class PedidoController implements PedidoControllerOpenApi {
 
         final Pedido pedido = pAssembler.toDomainModel(pedidoInputDTO);
 
-       return pAssembler.toDTO(pedidoService.adicionar(pedido));
+       return pAssembler.toModel(pedidoService.adicionar(pedido));
     }
 
     @Override
     @GetMapping
-    public Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
+    public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
         pageable = truduzirPageable(pageable);
         final Page<Pedido> pedidosPage = pedidoService.pesquisar(pedidoFilter, pageable);
-        final List<PedidoResumoDTO> pedidosResumoDTO = pRAssembler.toListDTO(pedidosPage.getContent());
-        final Page<PedidoResumoDTO> pedidoResumoDTOS = new PageImpl<>(pedidosResumoDTO, pageable, pedidosPage.getTotalElements());
-        return pedidoResumoDTOS;
+
+        return pagedResourcesAssembler.toModel(pedidosPage, pRAssembler);
     }
 
     @Override
@@ -62,7 +65,7 @@ public class PedidoController implements PedidoControllerOpenApi {
     })
     @GetMapping("/{codigoId}")
     public PedidoDTO buscar(@PathVariable String codigoId){
-        return pAssembler.toDTO(pedidoService.buscar(codigoId));
+        return pAssembler.toModel(pedidoService.buscar(codigoId));
     }
 
 }

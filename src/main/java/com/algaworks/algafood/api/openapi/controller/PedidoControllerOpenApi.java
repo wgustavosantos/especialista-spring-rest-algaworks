@@ -12,8 +12,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +30,7 @@ public interface PedidoControllerOpenApi {
     PedidoDTO adicionar(@RequestBody @Valid PedidoInputDTO pedidoInputDTO);
 
     @ApiImplicitParams({@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "query", type = "string")})
-    Page<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable);
+    PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable);
 
     @ApiImplicitParams({@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "query", type = "string")})
     @ApiOperation("Busca um pedido por código")
