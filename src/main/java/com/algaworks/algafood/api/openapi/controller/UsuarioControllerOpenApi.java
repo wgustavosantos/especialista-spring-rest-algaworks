@@ -12,16 +12,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 @Api(tags = "Usuários")
 public interface UsuarioControllerOpenApi {
 
     @ApiOperation("Lista os usuários")
-    ResponseEntity<List<UsuarioDTO>> listar();
+    CollectionModel<UsuarioDTO> listar();
 
     @ApiOperation("Busca um usuário por ID")
     @ApiResponses({@ApiResponse(responseCode = "400", description = "ID do usuário inválido", content = @Content(schema = @Schema(implementation = Problem.class))), @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))})

@@ -9,13 +9,13 @@ import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,26 +32,25 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     public ResponseEntity<UsuarioDTO> adicionar(@RequestBody @Valid UsuarioComSenhaInputDTO usuarioInputDTO) {
 
         final Usuario usuario = aAssembler.toDomainModel(usuarioInputDTO);
-        final UsuarioDTO usuarioDTO = aAssembler.toDTO(usuarioService.salvar(usuario));
+        final UsuarioDTO usuarioDTO = aAssembler.toModel(usuarioService.salvar(usuario));
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
     }
 
     @Override
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> listar() {
-        final List<UsuarioDTO> usuariosDTO = aAssembler.toListDTO(usuarioService.listar());
+    public CollectionModel<UsuarioDTO> listar() {
+        final CollectionModel<UsuarioDTO> usuariosDTO = aAssembler.toCollectionModel(usuarioService.listar());
 
-        return ResponseEntity.ok(usuariosDTO);
+        return usuariosDTO;
     }
 
     @Override
     @GetMapping("/{usuarioId}")
     public ResponseEntity<UsuarioDTO> buscar(@PathVariable Long usuarioId) {
-        final UsuarioDTO usuarioDTO = aAssembler.toDTO(usuarioService.buscar(usuarioId));
+        final UsuarioDTO usuarioDTO = aAssembler.toModel(usuarioService.buscar(usuarioId));
 
         return ResponseEntity.ok(usuarioDTO);
     }
-
     @Override
     @PutMapping("/{usuarioId}")
     public UsuarioDTO atualizar(@RequestBody @Valid usuarioInputUpdateDTO usuarioUpdateDTO, @PathVariable Long usuarioId) {
@@ -59,7 +58,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         Usuario usuarioAtual = usuarioService.buscar(usuarioId);
         aAssembler.copyProperties(usuarioUpdateDTO, usuarioAtual);
 
-        return aAssembler.toDTO(usuarioService.atualizar(usuarioAtual));
+        return aAssembler.toModel(usuarioService.atualizar(usuarioAtual));
     }
 
     @Override
