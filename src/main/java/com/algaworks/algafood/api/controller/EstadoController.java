@@ -8,13 +8,13 @@ import com.algaworks.algafood.api.openapi.controller.EstadoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,20 +35,21 @@ public class EstadoController implements EstadoControllerOpenApi {
     public ResponseEntity<EstadoDTO> adicionar(@RequestBody @Valid EstadoInputDTO estadoInputDTO) {
 
         final Estado estado = eInputDissasembler.toDomainModel(estadoInputDTO);
-        final EstadoDTO estadoDTO = eAssembler.toDTO(estadoService.salvar(estado));
+        final EstadoDTO estadoDTO = eAssembler.toModel(estadoService.salvar(estado));
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoDTO);
     }
 
     @Override
     @GetMapping
-    public List<EstadoDTO> listar() {
-        return eAssembler.toListDTO(estadoService.listar());
+    public CollectionModel<EstadoDTO> listar() {
+
+        return eAssembler.toCollectionModel(estadoService.listar());
     }
 
     @Override
     @GetMapping("/{estadoId}")
     public EstadoDTO buscar(@PathVariable Long estadoId) {
-        return eAssembler.toDTO(estadoService.buscar(estadoId));
+        return eAssembler.toModel(estadoService.buscar(estadoId));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         Estado estadoAtual = estadoService.buscar(estadoId);
         eInputDissasembler.copyProperties(estadoInputDTO, estadoAtual);
 
-        return eAssembler.toDTO(estadoService.atualizar(estadoAtual));
+        return eAssembler.toModel(estadoService.atualizar(estadoAtual));
     }
 
     @Override
