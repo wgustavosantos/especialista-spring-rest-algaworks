@@ -103,7 +103,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
     /* @GetMapping
     public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
-        final List<RestauranteDTO> restaurantes = rAssembler.toListDTO(restauranteService.listar());
+        final List<RestauranteDTO> restaurantes = rAssembler.toCollectionModel(restauranteService.listar());
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(restaurantes);
 
         mappingJacksonValue.setSerializationView(RestauranteView.Resumo.class);

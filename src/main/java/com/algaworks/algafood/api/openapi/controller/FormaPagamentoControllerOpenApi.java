@@ -10,10 +10,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
-
-import java.util.List;
 
 @Api(tags = "Formas de pagamento")
 public interface FormaPagamentoControllerOpenApi {
@@ -45,7 +44,7 @@ public interface FormaPagamentoControllerOpenApi {
             @ApiParam(name = "corpo", value = "Representação de uma forma de pagamento com os novos dados", required = true)
             FormaPagamentoInputDTO formaPagamentoInputDTO);
     @ApiOperation("Lista as formas de pagamento")
-    ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request);
+    ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request);
 
     @ApiOperation("Exclui uma forma de pagamento por ID")
     @ApiResponses({

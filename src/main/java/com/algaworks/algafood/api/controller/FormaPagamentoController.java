@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.service.FormaPagamentoService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -17,7 +18,6 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import javax.validation.Valid;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -41,7 +41,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     @PostMapping
     public ResponseEntity<FormaPagamentoDTO> adicionar(@RequestBody @Valid FormaPagamentoInputDTO formaPagamentoInputDTO){
         final FormaPagamento formaPagamentoAtual = formaPagamentoService.salvar(fPAssembler.DTOtoDomainObject(formaPagamentoInputDTO));
-        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toDTO(formaPagamentoAtual);
+        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toModel(formaPagamentoAtual);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(formaPagamentoDTO);
     }
@@ -61,7 +61,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         if(request.checkNotModified(eTag))
             return null;
 
-        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toDTO(formaPagamento);
+        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toModel(formaPagamento);
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
                 .eTag(eTag)
@@ -75,13 +75,13 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         final FormaPagamento formaPagamentoAtual = formaPagamentoService.buscar(formaPagamentoId);
         fPAssembler.copyProperties(formaPagamentoInputDTO, formaPagamentoAtual);
         final FormaPagamento formaPagamento = formaPagamentoService.atualizar(formaPagamentoAtual);
-        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toDTO(formaPagamento);
+        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toModel(formaPagamento);
         return ResponseEntity.ok(formaPagamentoDTO);
     }
 
     @Override
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request){
+    public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request){
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
         String eTag = "0";
@@ -94,7 +94,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         if(request.checkNotModified(eTag))/*true para etag iguais*/
             return null;
 
-        final List<FormaPagamentoDTO> formaPagamentosDTO = fPAssembler.toListDTO(formaPagamentoService.listar());
+        final CollectionModel<FormaPagamentoDTO> formaPagamentosDTO = fPAssembler.toCollectionModel(formaPagamentoService.listar());
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
                 .header(HttpHeaders.ETAG, eTag)

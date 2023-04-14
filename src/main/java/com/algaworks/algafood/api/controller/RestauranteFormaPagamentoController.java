@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.assembler.FormaPagamentoAssembler;
 import com.algaworks.algafood.api.assembler.RestauranteAssembler;
 import com.algaworks.algafood.api.model.dto.FormaPagamentoDTO;
@@ -7,11 +8,10 @@ import com.algaworks.algafood.api.openapi.controller.RestauranteFormaPagamentoCo
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento",
@@ -26,11 +26,16 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @Autowired
     private FormaPagamentoAssembler fPAssembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @GetMapping
-    public List<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
+    public CollectionModel<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
 
-        return fPAssembler.toListDTO(restaurante.getFormasPagamento());
+        return fPAssembler.toCollectionModel(restaurante.getFormasPagamento())
+                .removeLinks()
+                .add(algaLinks.linkToRestauranteFormasPagamento(restauranteId));
     }
 
     @DeleteMapping("/{formaPagamentoId}")
