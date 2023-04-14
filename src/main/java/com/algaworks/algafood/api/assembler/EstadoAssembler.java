@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @Component
 public class EstadoAssembler extends RepresentationModelAssemblerSupport<Estado, EstadoDTO> {
 
@@ -44,7 +42,7 @@ public class EstadoAssembler extends RepresentationModelAssemblerSupport<Estado,
     @Override
     public CollectionModel<EstadoDTO> toCollectionModel(Iterable<? extends Estado> entities) {
         return super.toCollectionModel(entities)
-                .add(linkTo(EstadoController.class).withSelfRel());
+                .add(algaLinks.linkToEstados());
     }
 
 }

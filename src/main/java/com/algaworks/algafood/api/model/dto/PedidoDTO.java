@@ -45,7 +45,7 @@ public class PedidoDTO extends RepresentationModel<PedidoDTO> {
     private OffsetDateTime dataCancelamento;
 
     private FormaPagamentoDTO formaPagamento;
-    private RestauranteResumoDTO restaurante;
+    private RestauranteApenasNomeDTO restaurante;
     private UsuarioDTO cliente;
     private EnderecoDTO enderecoEntrega;
     private List<ItemPedidoDTO> itensPedido = new ArrayList<>();

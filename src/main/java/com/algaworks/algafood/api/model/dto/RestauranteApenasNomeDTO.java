@@ -6,16 +6,15 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-@Relation(collectionRelation = "cozinhas")
-@Getter
+@Relation(collectionRelation = "restaurantes")
 @Setter
-public class CozinhaDTO extends RepresentationModel<CozinhaDTO> {
+@Getter
+public class RestauranteApenasNomeDTO extends RepresentationModel<RestauranteApenasNomeDTO> {
 
-    //    @JsonView(RestauranteView.Resumo.class)
     @ApiModelProperty(example = "1")
     private Long id;
 
-    //    @JsonView(RestauranteView.Resumo.class)
-    @ApiModelProperty(example = "Brasileira")
+    @ApiModelProperty(example = "Thai Gourmet")
     private String nome;
+
 }
