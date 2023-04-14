@@ -8,6 +8,7 @@ import com.algaworks.algafood.api.openapi.controller.GrupoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,22 +34,21 @@ public class GrupoController implements GrupoControllerOpenApi {
     @PostMapping
     public ResponseEntity<GrupoDTO> adicionar(@RequestBody @Valid GrupoInputDTO grupoInputDTO){
         final Grupo grupo = gAssembler.toDomainModel(grupoInputDTO);
-        final GrupoDTO grupoDTO = gAssembler.toDTO(grupoService.salvar(grupo));
+        final GrupoDTO grupoDTO = gAssembler.toModel(grupoService.salvar(grupo));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(grupoDTO);
     }
 
     @Override
     @GetMapping
-    public ResponseEntity<List<GrupoDTO>> listar(){
-        final List<GrupoDTO> gruposDTO = gAssembler.toListDTO(grupoService.listar());
-        return ResponseEntity.ok(gruposDTO);
+    public CollectionModel<GrupoDTO> listar(){
+        return gAssembler.toCollectionModel(grupoService.listar());
     }
 
     @Override
     @GetMapping("/{grupoId}")
     public ResponseEntity<GrupoDTO> buscar(@PathVariable Long grupoId){
-        final GrupoDTO grupoDTO = gAssembler.toDTO(grupoService.buscar(grupoId));
+        final GrupoDTO grupoDTO = gAssembler.toModel(grupoService.buscar(grupoId));
         return ResponseEntity.ok(grupoDTO);
     }
 
@@ -58,7 +58,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 
         final Grupo grupoAtual = grupoService.buscar(grupoId);
         gAssembler.copyProperties(grupoInputDTO, grupoAtual);
-        final GrupoDTO grupoDTO = gAssembler.toDTO(grupoService.atualizar(grupoAtual));
+        final GrupoDTO grupoDTO = gAssembler.toModel(grupoService.atualizar(grupoAtual));
 
         return ResponseEntity.ok(grupoDTO);
     }
