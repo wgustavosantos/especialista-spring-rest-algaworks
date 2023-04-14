@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.FotoProdutoAssember;
+import com.algaworks.algafood.api.assembler.FotoProdutoAssembler;
 import com.algaworks.algafood.api.model.dto.FotoProdutoDTO;
 import com.algaworks.algafood.api.model.inputDto.FotoProdutoInput;
 import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
@@ -38,7 +38,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     private ProdutoService produtoService;
 
     @Autowired
-    private FotoProdutoAssember fTAssember;
+    private FotoProdutoAssembler fTAssember;
 
     @Override
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -58,7 +58,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
         final FotoProduto fotoSalva = catalogoFotoProdutoService.salvar(fotoProduto, fotoProdutoInput.getFile().getInputStream());
 
-        return fTAssember.toDTO(fotoSalva);
+        return fTAssember.toModel(fotoSalva);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
                                  @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
 
-        return fTAssember.toDTO(fotoProduto);
+        return fTAssember.toModel(fotoProduto);
     }
 
     @Override

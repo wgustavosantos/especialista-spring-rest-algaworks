@@ -33,6 +33,9 @@ public class ProdutoAssembler extends RepresentationModelAssemblerSupport<Produt
 
         produtoDTO.add(algaLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
 
+        produtoDTO.add(algaLinks.linkToFotoProduto(
+                produto.getRestaurante().getId(), produto.getId(), "foto"));
+
         return produtoDTO;
     }
 
