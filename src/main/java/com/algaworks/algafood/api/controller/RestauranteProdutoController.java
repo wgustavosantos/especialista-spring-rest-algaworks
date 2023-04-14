@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.assembler.ProdutoAssembler;
 import com.algaworks.algafood.api.model.dto.ProdutoDTO;
 import com.algaworks.algafood.api.model.inputDto.ProdutoInputDTO;
@@ -9,6 +10,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.ProdutoService;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,9 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private ProdutoAssembler pAssembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @Override
     @PostMapping
     public ProdutoDTO adicionar(@RequestBody @Valid ProdutoInputDTO produtoInputDTO, @PathVariable Long restauranteId){
@@ -36,13 +41,13 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         Produto produto = pAssembler.toDomainModel(produtoInputDTO);
         produto.setRestaurante(restaurante);
 
-        return pAssembler.toDTO(produtoService.salvar(produto));
+        return pAssembler.toModel(produtoService.salvar(produto));
     }
 
     @Override
     @GetMapping
-    public List<ProdutoDTO> listar(@PathVariable Long restauranteId,
-                                   @RequestParam(required = false) boolean incluirInativos){
+    public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId,
+                                              @RequestParam(required = false) Boolean incluirInativos){
         final Restaurante restaurante = restauranteService.buscar(restauranteId);
         List<Produto> produtos = null;
 
@@ -53,14 +58,15 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         }
 
 
-        return pAssembler.toListDTO(produtos);
+        return pAssembler.toCollectionModel(produtos)
+                .add(algaLinks.linkToProdutos(restauranteId));
     }
 
     @Override
     @GetMapping("/{produtoId}")
     public ProdutoDTO buscar(@PathVariable Long produtoId, @PathVariable Long restauranteId){
         final Produto produto = produtoService.buscar(produtoId, restauranteId);
-        return pAssembler.toDTO(produto);
+        return pAssembler.toModel(produto);
 
     }
 
@@ -72,7 +78,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 
         pAssembler.copyProperties(produtoInputDTO, produto);
 
-        return pAssembler.toDTO(produto);
+        return pAssembler.toModel(produto);
 
     }
 
