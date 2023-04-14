@@ -31,7 +31,7 @@ public class PedidoResumoAssembler extends RepresentationModelAssemblerSupport<P
         final PedidoResumoDTO pedidoResumoDTO = createModelWithId(pedido.getId(), pedido);
         modelMapper.map(pedido, pedidoResumoDTO);
 
-        pedidoResumoDTO.add(algaLinks.linkToPedidos());
+        pedidoResumoDTO.add(algaLinks.linkToPedidos("pedidos"));
 
         pedidoResumoDTO.getRestaurante().add(
                 algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));

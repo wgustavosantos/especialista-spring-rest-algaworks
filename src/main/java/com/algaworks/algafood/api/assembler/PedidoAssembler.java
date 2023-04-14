@@ -40,7 +40,7 @@ public class PedidoAssembler extends RepresentationModelAssemblerSupport<Pedido,
         if(pedido.podeSerEntregue())
             pedidoDTO.add(algaLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
 
-        pedidoDTO.add(algaLinks.linkToPedidos());
+        pedidoDTO.add(algaLinks.linkToPedidos("pedidos"));
 
         pedidoDTO.getRestaurante().add(
                 algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
