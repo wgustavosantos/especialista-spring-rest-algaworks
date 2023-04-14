@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.model.dto.PedidoDTO;
 import com.algaworks.algafood.api.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.model.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.api.openapi.controller.PedidoControllerOpenApi;
+import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.PedidoService;
@@ -21,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,8 +52,11 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Override
     @GetMapping
     public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
-        pageable = truduzirPageable(pageable);
-        final Page<Pedido> pedidosPage = pedidoService.pesquisar(pedidoFilter, pageable);
+        Pageable pageableTraduzido = truduzirPageable(pageable);
+
+        Page<Pedido> pedidosPage = pedidoService.pesquisar(pedidoFilter, pageableTraduzido);
+
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
 
         return pagedResourcesAssembler.toModel(pedidosPage, pRAssembler);
     }
