@@ -7,7 +7,7 @@ import org.springframework.hateoas.Links;
 
 import java.util.List;
 
-@ApiModel("CidadesDTO")
+@ApiModel("CidadesModel")
 @Data
 public class CidadesModelOpenApi {
 
