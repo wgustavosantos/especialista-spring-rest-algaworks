@@ -165,6 +165,8 @@ public class SpringFoxConfig {
                     new Tag("Estados", "Gerencia os estados"),
                     new Tag("Estatisticas", "Gerencia as estatisticas"),
                     new Tag("Usuários", "Gerencia os usuarios"),
+                    new Tag("Permissões", "Gerencia as permissões")
+
         };
     }
 
