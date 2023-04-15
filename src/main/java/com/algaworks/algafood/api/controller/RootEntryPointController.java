@@ -16,22 +16,23 @@ public class RootEntryPointController {
     private AlgaLinks algaLinks;
 
     @GetMapping
-    public RootEntryPointModel root() {
-        var rootEntryPointModel = new RootEntryPointModel();
+    public RootEntryPointDTO root() {
+        var rootEntryPointDTO = new RootEntryPointDTO();
 
-        rootEntryPointModel.add(algaLinks.linkToCozinhas("cozinhas"));
-        rootEntryPointModel.add(algaLinks.linkToPedidos("pedidos"));
-        rootEntryPointModel.add(algaLinks.linkToRestaurantes("restaurantes"));
-        rootEntryPointModel.add(algaLinks.linkToGrupos("grupos"));
-        rootEntryPointModel.add(algaLinks.linkToUsuarios("usuarios"));
-        rootEntryPointModel.add(algaLinks.linkToPermissoes("permissoes"));
-        rootEntryPointModel.add(algaLinks.linkToFormasPagamento("formas-pagamento"));
-        rootEntryPointModel.add(algaLinks.linkToEstados("estados"));
-        rootEntryPointModel.add(algaLinks.linkToCidades("cidades"));
+        rootEntryPointDTO.add(algaLinks.linkToCozinhas("cozinhas"));
+        rootEntryPointDTO.add(algaLinks.linkToPedidos("pedidos"));
+        rootEntryPointDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
+        rootEntryPointDTO.add(algaLinks.linkToGrupos("grupos"));
+        rootEntryPointDTO.add(algaLinks.linkToUsuarios("usuarios"));
+        rootEntryPointDTO.add(algaLinks.linkToPermissoes("permissoes"));
+        rootEntryPointDTO.add(algaLinks.linkToFormasPagamento("formas-pagamento"));
+        rootEntryPointDTO.add(algaLinks.linkToEstados("estados"));
+        rootEntryPointDTO.add(algaLinks.linkToCidades("cidades"));
+        rootEntryPointDTO.add(algaLinks.linkToEstatisticas("estatisticas"));
 
-        return rootEntryPointModel;
+        return rootEntryPointDTO;
     }
 
-    private static class RootEntryPointModel extends RepresentationModel<RootEntryPointModel> {
+    private static class RootEntryPointDTO extends RepresentationModel<RootEntryPointDTO> {
     }
 }
