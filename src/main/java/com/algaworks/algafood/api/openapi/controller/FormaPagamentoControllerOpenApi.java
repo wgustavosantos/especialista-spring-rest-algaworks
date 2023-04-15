@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.openapi.controller;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.dto.FormaPagamentoDTO;
 import com.algaworks.algafood.api.model.inputDto.FormaPagamentoInputDTO;
+import com.algaworks.algafood.api.openapi.model.FormasPagamentoModelOpenApi;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -43,7 +44,10 @@ public interface FormaPagamentoControllerOpenApi {
 
             @ApiParam(name = "corpo", value = "Representação de uma forma de pagamento com os novos dados", required = true)
             FormaPagamentoInputDTO formaPagamentoInputDTO);
-    @ApiOperation("Lista as formas de pagamento")
+    @ApiOperation(value = "Lista as formas de pagamento")
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = FormasPagamentoModelOpenApi.class)
+    })
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request);
 
     @ApiOperation("Exclui uma forma de pagamento por ID")
