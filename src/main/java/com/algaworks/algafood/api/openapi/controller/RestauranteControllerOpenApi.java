@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -32,6 +33,7 @@ public interface RestauranteControllerOpenApi {
 //    @JsonView(RestauranteView.Resumo.class)
     CollectionModel<RestauranteBasicoDTO> listar();
 
+    @ApiIgnore
     @ApiOperation(value = "Lista restaurantes", hidden = true)
     CollectionModel<RestauranteApenasNomeDTO> listarApenasNome();
 
