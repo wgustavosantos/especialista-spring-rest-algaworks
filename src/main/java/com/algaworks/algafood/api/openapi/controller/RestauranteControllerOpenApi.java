@@ -1,9 +1,10 @@
 package com.algaworks.algafood.api.openapi.controller;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.model.dto.RestauranteApenasNomeDTO;
+import com.algaworks.algafood.api.model.dto.RestauranteBasicoDTO;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
-import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,13 +27,13 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({@ApiResponse(responseCode = "201", description = "Restaurante cadastrado"),})
     RestauranteDTO adicionar(@ApiParam(name = "corpo", value = "Representação de um novo restaurante", required = true) RestauranteInputDTO restauranteInput);
 
-    @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
+    @ApiOperation(value = "Lista restaurantes")
     @ApiImplicitParams({@ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome", name = "projecao", paramType = "query", type = "string")})
 //    @JsonView(RestauranteView.Resumo.class)
-    CollectionModel<RestauranteDTO> listar();
+    CollectionModel<RestauranteBasicoDTO> listar();
 
     @ApiOperation(value = "Lista restaurantes", hidden = true)
-    CollectionModel<RestauranteDTO> listarApenasNome();
+    CollectionModel<RestauranteApenasNomeDTO> listarApenasNome();
 
     @ApiOperation("Busca um restaurante por ID")
     @ApiResponses({@ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(schema = @Schema(implementation = Problem.class))), @ApiResponse(responseCode = "404", description = "Restaurante não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))})

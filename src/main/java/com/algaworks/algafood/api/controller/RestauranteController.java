@@ -4,6 +4,8 @@ import com.algaworks.algafood.api.assembler.RestauranteApenasNomeDTOAssembler;
 import com.algaworks.algafood.api.assembler.RestauranteAssembler;
 import com.algaworks.algafood.api.assembler.RestauranteBasicoDTOAssembler;
 import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
+import com.algaworks.algafood.api.model.dto.RestauranteApenasNomeDTO;
+import com.algaworks.algafood.api.model.dto.RestauranteBasicoDTO;
 import com.algaworks.algafood.api.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.model.inputDto.RestauranteInputDTO;
 import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
@@ -88,17 +90,18 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     @Override
 //    @JsonView(RestauranteView.Resumo.class)
     @GetMapping
-    public CollectionModel<RestauranteDTO> listar() {
+    public CollectionModel<RestauranteBasicoDTO> listar() {
         final List<Restaurante> restaurantes = restauranteService.listar();
-
-        return rAssembler.toCollectionModel(restaurantes);
+        final CollectionModel<RestauranteBasicoDTO> restauranteBasicoDTOS = restauranteBasicoModelAssembler.toCollectionModel(restaurantes);
+        return restauranteBasicoDTOS;
     }
 
     @Override
 //    @JsonView(RestauranteView.ResumoApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
-    public CollectionModel<RestauranteDTO> listarApenasNome() {
-        return listar();
+    public CollectionModel<RestauranteApenasNomeDTO> listarApenasNome() {
+        final CollectionModel<RestauranteApenasNomeDTO> restauranteApenasNomeDTOS = restauranteApenasNomeModelAssembler.toCollectionModel(restauranteService.listar());
+        return restauranteApenasNomeDTOS;
     }
 
     /* @GetMapping
