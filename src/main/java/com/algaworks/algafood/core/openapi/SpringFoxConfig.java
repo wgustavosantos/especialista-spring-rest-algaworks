@@ -1,8 +1,8 @@
 package com.algaworks.algafood.core.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.model.dto.*;
-import com.algaworks.algafood.api.openapi.model.*;
+import com.algaworks.algafood.api.v1.model.dto.*;
+import com.algaworks.algafood.api.v1.openapi.model.*;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.fasterxml.classmate.TypeResolver;
