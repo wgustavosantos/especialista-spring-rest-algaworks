@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**") //todos os endpoints
                 .allowedMethods("*"); //todos os métodos http
     }
-
+    
     @Bean
     public Filter shallowEtagHeaderFilter(){
         return new ShallowEtagHeaderFilter();
