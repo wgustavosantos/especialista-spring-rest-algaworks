@@ -1,10 +1,12 @@
 package com.algaworks.algafood.api.v2.model;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+@ApiModel("CidadeDTO")
 @Relation(collectionRelation = "cidades")
 @Getter
 @Setter

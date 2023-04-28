@@ -3,6 +3,8 @@ package com.algaworks.algafood.core.openapi;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.dto.*;
 import com.algaworks.algafood.api.v1.openapi.model.*;
+import com.algaworks.algafood.api.v2.model.CidadeDTOV2;
+import com.algaworks.algafood.api.v2.model.CozinhaDTOV2;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.fasterxml.classmate.TypeResolver;
@@ -120,7 +122,14 @@ public class SpringFoxConfig {
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponses())
                 .additionalModels(typeResolver.resolve(Problem.class))
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
-                .directModelSubstitute(Links.class, LinksModelOpenApi.class);
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(PagedModel.class, CozinhaDTOV2.class),
+                        CozinhasModelV2OpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CidadeDTOV2.class),
+                        CidadesModelV2OpenApi.class))
+                .tags(tagsV2()[0], tagsV2());
     }
 
     @Bean
@@ -238,6 +247,13 @@ public class SpringFoxConfig {
 
         };
     }
+    private Tag[] tagsV2() {
+        return new Tag[]{
+                new Tag("Cidades", "Gerencia as cidades"),
+                new Tag("Cozinhas", "Gerencia as cozinhas"),
+        };
+    }
+
 
     private Consumer<RepresentationBuilder> getProblemaModelReference() {
         return r -> r.model(m -> m.name("Problema")
