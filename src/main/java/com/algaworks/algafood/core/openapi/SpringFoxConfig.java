@@ -46,17 +46,18 @@ public class SpringFoxConfig {
     TypeResolver typeResolver = new TypeResolver();
 
     @Bean
-    public Docket apiDocket() {
+    public Docket apiDocketV1() {
 
         return new Docket(DocumentationType.OAS_30)
+                .groupName("V1")
                 .ignoredParameterTypes(ignoredParameterTypes())
                 .select()
                 //.apis(RequestHandlerSelectors.any())/*Todos os endpointds*/
                 .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-                .paths(PathSelectors.any())/*Caminho padrão*/
+                .paths(PathSelectors.ant("/v1/**"))/*Caminho padrão*/
 //                .paths(PathSelectors.ant("/restaurantes/*"))
                 .build()
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfoV1())
                 .tags(tags()[0], tags())
                 .useDefaultResponseMessages(false)
                 .globalResponses(HttpMethod.GET, globalGetResponses())
@@ -76,8 +77,8 @@ public class SpringFoxConfig {
                         typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
                         EstadosModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
-                typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class),
-                FormasPagamentoModelOpenApi.class))
+                        typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class),
+                        FormasPagamentoModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, GrupoDTO.class),
                         GruposModelOpenApi.class))
@@ -97,8 +98,29 @@ public class SpringFoxConfig {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, UsuarioDTO.class),
                         UsuariosModelOpenApi.class));
+    }
 
+    @Bean
+    public Docket apiDocketV2() {
 
+        return new Docket(DocumentationType.OAS_30)
+                .groupName("V2")
+                .ignoredParameterTypes(ignoredParameterTypes())
+                .select()
+                //.apis(RequestHandlerSelectors.any())/*Todos os endpointds*/
+                .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+                .paths(PathSelectors.ant("/v2/**"))/*Caminho padrão*/
+//                .paths(PathSelectors.ant("/restaurantes/*"))
+                .build()
+                .apiInfo(apiInfoV2())
+                .useDefaultResponseMessages(false)
+                .globalResponses(HttpMethod.GET, globalGetResponses())
+                .globalResponses(HttpMethod.POST, globalPutResponses())
+                .globalResponses(HttpMethod.PUT, globalPutResponses())
+                .globalResponses(HttpMethod.DELETE, globalDeleteResponses())
+                .additionalModels(typeResolver.resolve(Problem.class))
+                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class);
     }
 
     @Bean
@@ -165,7 +187,7 @@ public class SpringFoxConfig {
         );
     }
 
-    public ApiInfo apiInfo() {
+    public ApiInfo apiInfoV1() {
         final Contact wenderson_gustavo =
                 new Contact("Wenderson Gustavo",
                         "https://github.com/wgustavosantos",
@@ -180,24 +202,39 @@ public class SpringFoxConfig {
 
     }
 
+    public ApiInfo apiInfoV2() {
+        final Contact wenderson_gustavo =
+                new Contact("Wenderson Gustavo",
+                        "https://github.com/wgustavosantos",
+                        "wgustavo.dev@gmail.com");
+
+        return new ApiInfoBuilder()
+                .title("AlgaFood API")
+                .description("API aberta para clientes e restaurantes")
+                .version("2")
+                .contact(wenderson_gustavo)
+                .build();
+
+    }
+
     private Tag[] tags() {
-        return new Tag[] {
-            new Tag("Cidades", "Gerencia as cidades"),
-                    new Tag("Cozinhas", "Gerencia as cozinhas"),
-                    new Tag("Grupos", "Gerencia os grupos de usuários"),
-                    new Tag("Permissões do Grupo", "Gerencia as permissões do grupo"),
-                    new Tag("Pedidos", "Gerencia os pedidos"),
-                    new Tag("Status", "Gerencia o status do pedido"),
-                    new Tag("Formas", "Gerencia as formas de pagamento"),
-                    new Tag("Fotos", "Gerencia as fotos do produto"),
-                    new Tag("Restaurantes", "Gerencia os restaurantes"),
-                    new Tag("Formas de Pagamento do Restaurante", "Gerencia a forma de pagamento do restaurante"),
-                    new Tag("Produtos do Restaurante", "Gerencia os produtos do restaurante"),
-                    new Tag("Usuarios do restaurante", "Gerencia os donos dos restaurantes"),
-                    new Tag("Estados", "Gerencia os estados"),
-                    new Tag("Estatisticas", "Gerencia as estatisticas"),
-                    new Tag("Usuários", "Gerencia os usuarios"),
-                    new Tag("Permissões", "Gerencia as permissões")
+        return new Tag[]{
+                new Tag("Cidades", "Gerencia as cidades"),
+                new Tag("Cozinhas", "Gerencia as cozinhas"),
+                new Tag("Grupos", "Gerencia os grupos de usuários"),
+                new Tag("Permissões do Grupo", "Gerencia as permissões do grupo"),
+                new Tag("Pedidos", "Gerencia os pedidos"),
+                new Tag("Status", "Gerencia o status do pedido"),
+                new Tag("Formas", "Gerencia as formas de pagamento"),
+                new Tag("Fotos", "Gerencia as fotos do produto"),
+                new Tag("Restaurantes", "Gerencia os restaurantes"),
+                new Tag("Formas de Pagamento do Restaurante", "Gerencia a forma de pagamento do restaurante"),
+                new Tag("Produtos do Restaurante", "Gerencia os produtos do restaurante"),
+                new Tag("Usuarios do restaurante", "Gerencia os donos dos restaurantes"),
+                new Tag("Estados", "Gerencia os estados"),
+                new Tag("Estatisticas", "Gerencia as estatisticas"),
+                new Tag("Usuários", "Gerencia os usuarios"),
+                new Tag("Permissões", "Gerencia as permissões")
 
         };
     }
