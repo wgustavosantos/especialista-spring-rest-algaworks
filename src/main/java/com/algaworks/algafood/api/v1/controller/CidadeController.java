@@ -55,6 +55,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @Deprecated
     @Override
     @GetMapping
     public CollectionModel<CidadeDTO> listar() {
