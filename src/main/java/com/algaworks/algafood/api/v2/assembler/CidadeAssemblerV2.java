@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.v2.assembler;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v2.AlgaLinksV2;
 import com.algaworks.algafood.api.v2.controller.CidadeControllerV2;
 import com.algaworks.algafood.api.v2.model.CidadeDTOV2;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -17,7 +17,7 @@ public class CidadeAssemblerV2 extends RepresentationModelAssemblerSupport<Cidad
     ModelMapper modelMapper;
 
     @Autowired
-    private AlgaLinks algaLinks;
+    private AlgaLinksV2 algaLinks;
 
     public CidadeAssemblerV2(){
         super(CidadeControllerV2.class, CidadeDTOV2.class);
