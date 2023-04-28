@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.v1.controller;
 
 import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v2.AlgaLinksV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
@@ -15,6 +16,9 @@ public class RootEntryPointController {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaLinksV2 algaLinksV2;
+
     @GetMapping
     public RootEntryPointDTO root() {
         var rootEntryPointDTO = new RootEntryPointDTO();
@@ -28,6 +32,7 @@ public class RootEntryPointController {
         rootEntryPointDTO.add(algaLinks.linkToFormasPagamento("formas-pagamento"));
         rootEntryPointDTO.add(algaLinks.linkToEstados("estados"));
         rootEntryPointDTO.add(algaLinks.linkToCidades("cidades"));
+        rootEntryPointDTO.add(algaLinksV2.linkToCidades("cidades"));
         rootEntryPointDTO.add(algaLinks.linkToEstatisticas("estatisticas"));
 
         return rootEntryPointDTO;
