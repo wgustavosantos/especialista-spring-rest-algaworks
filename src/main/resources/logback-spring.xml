@@ -4,6 +4,8 @@
     <!-- Adicionando logs padrão do Spring Boot-->
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
+    <!--Só é ativado caso o profile "production" estiver ativado-->
+    <springProfile name="production">
         <springProperty name="logglyToken" source="logging.loggly.customer-token"/>
         <!-- Registrando logs do Loggly.com -->
         <appender name="loggly" class="ch.qos.logback.ext.loggly.LogglyBatchAppender">
@@ -20,4 +22,5 @@
         <root level="info">
             <appender-ref ref="logglyAsync"/>
         </root>
+    </springProfile>
 </configuration>
