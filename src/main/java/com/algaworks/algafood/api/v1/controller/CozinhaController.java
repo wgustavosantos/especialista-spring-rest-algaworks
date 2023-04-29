@@ -60,10 +60,10 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
         /*
         21.1. Introdução ao Logback e SLF4J
-        forçando exceção para para adicionar ao log */
+        forçando exceção para para adicionar ao log
         if(true){
             throw new RuntimeException("Teste de Exception");
-        }
+        } */
 
 
         final Page<Cozinha> cozinhasPage = cozinhaService.listar(pageable);
