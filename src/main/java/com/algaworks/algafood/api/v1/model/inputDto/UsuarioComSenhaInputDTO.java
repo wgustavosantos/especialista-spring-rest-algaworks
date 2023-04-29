@@ -10,7 +10,8 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class UsuarioComSenhaInputDTO extends UsuarioInputDTO {
 
-    @ApiModelProperty(example = "123", required = true)
+    /*Swagger Documentarion*/
+    @ApiModelProperty(example = "senha@123", required = true)
     @NotBlank
     private String senha;
 }
