@@ -139,6 +139,13 @@
             <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
 
+        <!-- Loggly > Logback > Slf4j -->
+        <dependency>
+            <groupId>org.logback-extensions</groupId>
+            <artifactId>logback-ext-loggly</artifactId>
+            <version>0.1.5</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

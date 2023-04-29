@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+
+    <springProperty name="logglyToken" source="logging.loggly.customer-token"/>
+
+    <!-- Adicionando logs padrão do Spring Boot-->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- Registrando logs do Loggly.com -->
+    <appender name="loggly" class="ch.qos.logback.ext.loggly.LogglyBatchAppender">
+        <endpointUrl>https://logs-01.loggly.com/bulk/logglyToken/tag/logback</endpointUrl>
+        <pattern>%d{"ISO8601", UTC} %p %t %c %M - %m%n</pattern>
+    </appender>
+
+    <!-- Appender para registro assincrono de logs no loggly-->
+    <appender name="logglyAsync" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="loggly"/>
+    </appender>
+
+    <!-- Registrando logs de nível info para cima-->
+    <root level="info">
+        <appender-ref ref="logglyAsync" />
+    </root>
+
+</configuration>
