@@ -47,60 +47,60 @@ public class SpringFoxConfig {
 
     TypeResolver typeResolver = new TypeResolver();
 
-//    @Bean
-//    public Docket apiDocketV1() {
-//
-//        return new Docket(DocumentationType.OAS_30)
-//                .groupName("V1")
-//                .ignoredParameterTypes(ignoredParameterTypes())
-//                .select()
-//                //.apis(RequestHandlerSelectors.any())/*Todos os endpointds*/
-//                .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-//                .paths(PathSelectors.ant("/v1/**"))/*Caminho padrão*/
-////                .paths(PathSelectors.ant("/restaurantes/*"))
-//                .build()
-//                .apiInfo(apiInfoV1())
-//                .tags(tags()[0], tags())
-//                .useDefaultResponseMessages(false)
-//                .globalResponses(HttpMethod.GET, globalGetResponses())
-//                .globalResponses(HttpMethod.POST, globalPutResponses())
-//                .globalResponses(HttpMethod.PUT, globalPutResponses())
-//                .globalResponses(HttpMethod.DELETE, globalDeleteResponses())
-//                .additionalModels(typeResolver.resolve(Problem.class))
-//                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
-//                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(PagedModel.class, CozinhaDTO.class), CozinhasModelOpenApi.class)
-//                )
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesModelOpenApi.class)
-//                )
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
-//                        EstadosModelOpenApi.class))
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class),
-//                        FormasPagamentoModelOpenApi.class))
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, GrupoDTO.class),
-//                        GruposModelOpenApi.class))
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, PermissaoDTO.class),
-//                        PermissoesModelOpenApi.class))
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class),
-//                        PedidosResumoModelOpenApi.class))
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, ProdutoDTO.class),
-//                        ProdutosModelOpenApi.class))
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class),
-//                        RestaurantesBasicoModelOpenApi.class))
-//
-//                .alternateTypeRules(AlternateTypeRules.newRule(
-//                        typeResolver.resolve(CollectionModel.class, UsuarioDTO.class),
-//                        UsuariosModelOpenApi.class));
-//    }
+    @Bean
+    public Docket apiDocketV1() {
+
+        return new Docket(DocumentationType.OAS_30)
+                .groupName("V1")
+                .ignoredParameterTypes(ignoredParameterTypes())
+                .select()
+                //.apis(RequestHandlerSelectors.any())/*Todos os endpointds*/
+                .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+                .paths(PathSelectors.ant("/v1/**"))/*Caminho padrão*/
+//                .paths(PathSelectors.ant("/restaurantes/*"))
+                .build()
+                .apiInfo(apiInfoV1())
+                .tags(tags()[0], tags())
+                .useDefaultResponseMessages(false)
+                .globalResponses(HttpMethod.GET, globalGetResponses())
+                .globalResponses(HttpMethod.POST, globalPutResponses())
+                .globalResponses(HttpMethod.PUT, globalPutResponses())
+                .globalResponses(HttpMethod.DELETE, globalDeleteResponses())
+                .additionalModels(typeResolver.resolve(Problem.class))
+                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(PagedModel.class, CozinhaDTO.class), CozinhasModelOpenApi.class)
+                )
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesModelOpenApi.class)
+                )
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
+                        EstadosModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class),
+                        FormasPagamentoModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, GrupoDTO.class),
+                        GruposModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, PermissaoDTO.class),
+                        PermissoesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class),
+                        PedidosResumoModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, ProdutoDTO.class),
+                        ProdutosModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class),
+                        RestaurantesBasicoModelOpenApi.class))
+
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, UsuarioDTO.class),
+                        UsuariosModelOpenApi.class));
+    }
 
     @Bean
     public Docket apiDocketV2() {
