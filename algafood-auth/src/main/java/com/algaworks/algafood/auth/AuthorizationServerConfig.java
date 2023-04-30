@@ -4,12 +4,14 @@ import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
 @Configuration
 @EnableAuthorizationServer
@@ -27,8 +29,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory() //autorização de clientes em memória
                 .withClient("algafood-web")//cliente consumidor da api
                 .secret(passwordEncoder.encode("web123"))//password do client
-                .authorizedGrantTypes("password")//tipo de fluxo Resource Owner Passoword Crendetials GrantType
-                .scopes("write", "read");//escopo de leitura e alteração
+                .authorizedGrantTypes("password")//tipo de fluxo Resource Owner Passoword Credentials GrantType
+                .scopes("write", "read")//escopo de leitura e alteração
+                .accessTokenValiditySeconds(60 * 60 * 6);//equivale a 6 horas
+    }
+
+    /*Para configurar o acesso ao endpoint de checagem de token ou check token, instrospecção de token */
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        //ecurity.checkTokenAccess("isAuthenticated()");//Spring Security Expression.
+        security.checkTokenAccess("permitAll()");//permitindo qualquer cliente
+        // P/ acessar o check token, precisa de autenticaçao do cliente
     }
 
     @Override
