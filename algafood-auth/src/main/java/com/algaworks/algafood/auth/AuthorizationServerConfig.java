@@ -31,7 +31,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("web123"))//password do client
                 .authorizedGrantTypes("password")//tipo de fluxo Resource Owner Passoword Credentials GrantType
                 .scopes("write", "read")//escopo de leitura e alteração
-                .accessTokenValiditySeconds(60 * 60 * 6);//equivale a 6 horas
+                .accessTokenValiditySeconds(60 * 60 * 6)//equivale a 6 horas
+                .and()
+                .withClient("checktoken")/*Acesso somente para verificar o token no ResourceServer*/
+                .secret("check123");
     }
 
     /*Para configurar o acesso ao endpoint de checagem de token ou check token, instrospecção de token */
