@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.token.TokenService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -23,13 +24,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     /*configuração de clientes*/
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory() //autorização de clientes em memória
                 .withClient("algafood-web")//cliente consumidor da api
                 .secret(passwordEncoder.encode("web123"))//password do client
-                .authorizedGrantTypes("password")//tipo de fluxo Resource Owner Passoword Credentials GrantType
+                .authorizedGrantTypes("password", "refresh_token")//tipo de fluxo Resource Owner Passoword Credentials GrantType
                 .scopes("write", "read")//escopo de leitura e alteração
                 .accessTokenValiditySeconds(60 * 60 * 6)//equivale a 6 horas
                 .and()
@@ -48,5 +52,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager); //somente o fluxo "passoword" precisa do authecticationManager, pois é assim que funciona o seu fluxo
+        endpoints.userDetailsService(userDetailsService);/*para refresh_token*/
     }
 }
