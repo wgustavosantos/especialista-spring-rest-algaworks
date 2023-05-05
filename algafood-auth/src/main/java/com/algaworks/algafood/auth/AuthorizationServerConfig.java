@@ -54,5 +54,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager); //somente o fluxo "passoword" precisa do authecticationManager, pois é assim que funciona o seu fluxo
         endpoints.userDetailsService(userDetailsService);/*para refresh_token*/
+        endpoints.reuseRefreshTokens(false);
     }
 }
