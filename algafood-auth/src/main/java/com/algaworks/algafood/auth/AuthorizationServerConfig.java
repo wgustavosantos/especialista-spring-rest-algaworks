@@ -37,7 +37,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .scopes("write", "read")//escopo de leitura e alteração
                 .accessTokenValiditySeconds(60 * 60 * 60)//equivale a 6 horas
                 .refreshTokenValiditySeconds(60 * 24 * 60 * 60)//60 dias * 24 horas * 60m * 60s
-                .and()
+            .and()/*client credentials grant type*/
+                .withClient("faturamento")
+                .secret(passwordEncoder.encode("faturamento123"))//password do client
+                .authorizedGrantTypes("client_credentials")//tipo de fluxo Resource Owner Passoword Credentials GrantType
+                .scopes("write", "read")//escopo de leitura e alteração
+            .and()
                 .withClient("checktoken")/*Acesso somente para verificar o token no ResourceServer*/
                 .secret("check123");
     }
