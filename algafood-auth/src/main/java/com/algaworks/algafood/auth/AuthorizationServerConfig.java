@@ -37,6 +37,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .scopes("write", "read")//escopo de leitura e alteração
                 .accessTokenValiditySeconds(60 * 60 * 60)//equivale a 6 horas
                 .refreshTokenValiditySeconds(60 * 24 * 60 * 60)//60 dias * 24 horas * 60m * 60s
+                .and()
+                .withClient("foodanalitycs")
+                .secret(passwordEncoder.encode("food123"))
+                .authorizedGrantTypes("authorization_code")
+                .scopes("write", "read")
+                .redirectUris("http://aplicacao-clientes")
             .and()/*client credentials grant type*/
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))//password do client
@@ -44,7 +50,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .scopes("write", "read")//escopo de leitura e alteração
             .and()
                 .withClient("checktoken")/*Acesso somente para verificar o token no ResourceServer*/
-                .secret("check123");
+                .secret("check123")
+            ;
     }
 
     /*Para configurar o acesso ao endpoint de checagem de token ou check token, instrospecção de token */
