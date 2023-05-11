@@ -50,7 +50,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .scopes("write", "read")//escopo de leitura e alteração
             .and()
                 .withClient("checktoken")/*Acesso somente para verificar o token no ResourceServer*/
-                .secret("check123")
+                .secret(passwordEncoder.encode("check123"));
             ;
     }
 
