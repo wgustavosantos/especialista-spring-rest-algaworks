@@ -42,7 +42,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("food123"))
                 .authorizedGrantTypes("authorization_code")
                 .scopes("write", "read")
-                .redirectUris("http://127.0.0.1:5500")
+                .redirectUris("http://aplicacao-clientes")
             .and()/*client credentials grant type*/
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))//password do client
@@ -50,7 +50,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .scopes("write", "read")//escopo de leitura e alteração
             .and()
                 .withClient("checktoken")/*Acesso somente para verificar o token no ResourceServer*/
-                .secret(passwordEncoder.encode("check123"));
+                .secret(passwordEncoder.encode("check123"))
+            .and()
+                .withClient("webadmin")
+                .authorizedGrantTypes("implicit")
+                .scopes("write", "read")
+                .redirectUris("http://127.0.0.1:5500")
             ;
     }
 
