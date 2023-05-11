@@ -17,7 +17,8 @@ public class CorsConfig {
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(false);
-        config.setAllowedOrigins(Collections.singletonList("*"));
+
+        config.setAllowedOriginPatterns(Collections.singletonList("http://**"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
 
@@ -30,5 +31,4 @@ public class CorsConfig {
 
         return bean;
     }
-
 }

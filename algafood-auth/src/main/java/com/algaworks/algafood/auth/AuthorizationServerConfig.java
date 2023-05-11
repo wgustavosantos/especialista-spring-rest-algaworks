@@ -42,7 +42,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("food123"))
                 .authorizedGrantTypes("authorization_code")
                 .scopes("write", "read")
-                .redirectUris("http://aplicacao-clientes")
+                .redirectUris("http://127.0.0.1:5500")
             .and()/*client credentials grant type*/
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))//password do client
