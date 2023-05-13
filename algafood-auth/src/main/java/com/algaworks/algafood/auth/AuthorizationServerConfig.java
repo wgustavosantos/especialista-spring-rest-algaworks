@@ -2,6 +2,7 @@ package com.algaworks.algafood.auth;
 
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import java.util.Arrays;
@@ -34,8 +36,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
 
     /*configuração de clientes*/
     @Override
@@ -80,15 +80,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager); //somente o fluxo "passoword" precisa do authecticationManager, pois é assim que funciona o seu fluxo
-        endpoints.userDetailsService(userDetailsService);/*para refresh_token*/
-        endpoints.reuseRefreshTokens(false);
-        endpoints.tokenGranter(tokenGranter(endpoints));
-        endpoints.tokenStore(tokenStore());
-    }
-
-    public TokenStore tokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+        endpoints.authenticationManager(authenticationManager). //somente o fluxo "passoword" precisa do authecticationManager, pois é assim que funciona o seu fluxo
+        userDetailsService(userDetailsService)./*para refresh_token*/
+        reuseRefreshTokens(false).
+        tokenGranter(tokenGranter(endpoints)).
+        accessTokenConverter(jwtAccessTokenConverter());
     }
 
     private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -100,5 +96,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 pkceAuthorizationCodeTokenGranter, endpoints.getTokenGranter());
 
         return new CompositeTokenGranter(granters);
+    }
+
+    @Bean/*Converte informações de user logado para JWT * pode ser usado como Bean*/
+    public JwtAccessTokenConverter jwtAccessTokenConverter (){
+        /*utiliza hmacsha-256 simétrico*/
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey("algaworks");
+
+        return jwtAccessTokenConverter;
     }
 }
