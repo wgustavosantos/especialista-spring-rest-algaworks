@@ -64,5 +64,17 @@
             <artifactId>spring-security-jwt</artifactId>
             <version>1.1.1.RELEASE</version>
         </dependency>
+        <!--é um processador de anotação que gera metadados sobre classes em seu aplicativo que são anotadas com
+         @ConfigurationProperties. Esses metadados são usados pelo seu IDE (Eclipse, IntelliJ ou NetBeans)
+         para fornecer preenchimento automático e documentação para as propriedades ao editar application.properties-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
 </project>
