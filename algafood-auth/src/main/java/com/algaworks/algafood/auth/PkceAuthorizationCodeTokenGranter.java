@@ -1,6 +1,6 @@
 package com.algaworks.algafood.auth;
 
-// Solução baseada em: https://github.com/spring-projects/spring-security-oauth/pull/675/files
+// Sol  ução baseada em: https://github.com/spring-projects/spring-security-oauth/pull/675/files
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
