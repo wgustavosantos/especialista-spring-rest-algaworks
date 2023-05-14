@@ -18,6 +18,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
@@ -54,10 +56,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .refreshTokenValiditySeconds(60 * 24 * 60 * 60)//60 dias * 24 horas * 60m * 60s
                 .and()
                 .withClient("foodanalitycs")
-                .secret(passwordEncoder.encode(""))
+                .secret(passwordEncoder.encode("food123"))
                 .authorizedGrantTypes("authorization_code")
                 .scopes("write", "read")
-                .redirectUris("http://aplicacao-clientes")
+                .redirectUris("http://127.0.0.1:5500")
             .and()/*client credentials grant type*/
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))//password do client
@@ -89,8 +91,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.authenticationManager(authenticationManager). //somente o fluxo "passoword" precisa do authecticationManager, pois é assim que funciona o seu fluxo
         userDetailsService(userDetailsService)./*para refresh_token*/
         reuseRefreshTokens(false).
-        tokenGranter(tokenGranter(endpoints)).
-        accessTokenConverter(jwtAccessTokenConverter());
+        accessTokenConverter(jwtAccessTokenConverter()).
+        approvalStore(approvalStore(endpoints.getTokenStore())).
+        tokenGranter(tokenGranter(endpoints));
+    }
+
+    private ApprovalStore approvalStore (TokenStore tokenStore){
+        final TokenApprovalStore tokenApprovalStore = new TokenApprovalStore();
+        tokenApprovalStore.setTokenStore(tokenStore);
+        return tokenApprovalStore;
     }
 
     private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -104,7 +113,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new CompositeTokenGranter(granters);
     }
 
-    @Bean/*Converte informações de user logado para JWT * pode ser usado como Bean*/
+    //@Bean/*Converte informações de user logado para JWT * pode ser usado como Bean*/
     public JwtAccessTokenConverter jwtAccessTokenConverter (){
         /*utiliza hmacsha-256 simétrico*/
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
