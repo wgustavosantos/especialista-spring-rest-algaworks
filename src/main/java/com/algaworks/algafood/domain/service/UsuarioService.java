@@ -84,7 +84,7 @@ public class UsuarioService {
     @Transactional
     public void alterarSenha(Long usuarioId, UsuarioInputSenhaDTO senhaDTO) {
         Usuario usuarioAtual = buscar(usuarioId);
-        
+
         if(!passwordEncoder.matches(senhaDTO.getSenhaAtual(), usuarioAtual.getSenha()))
             throw new NegocioException(ErrorMessage.SENHA_NAO_COINCIDE.get());
 

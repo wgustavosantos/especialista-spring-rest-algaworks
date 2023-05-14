@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
@@ -40,6 +41,9 @@ public class PedidoService {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @Transactional
     public Pedido adicionar(Pedido pedido) {
         validarPedido(pedido);
@@ -50,7 +54,7 @@ public class PedidoService {
 
     private void validarPedido(Pedido pedido) {
         pedido.setCliente(new Usuario());
-        pedido.getCliente().setId(1L);
+        pedido.getCliente().setId(algaSecurity.getUsuarioId());
 
         final Restaurante restaurante = restauranteService.buscar(pedido.getRestaurante().getId());
         final FormaPagamento formaPagamento = formaPagamentoService.buscar(pedido.getFormaPagamento().getId());
