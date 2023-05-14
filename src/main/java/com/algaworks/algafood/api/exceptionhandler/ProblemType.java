@@ -14,7 +14,8 @@ public enum ProblemType {
     CORPO_NAO_LEGIVEL("/corpo-nao-legivel", "Corpo não legível"),
     PARAMETRO_INVALIDO("/parametro-invalido", "parametro inválido"),
     ERRO_DE_SISTEMA("/erro-de-sistema","Erro de interno do sistema."),
-    DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos");
+    DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos"),
+    ACESSO_NEGADO("/acesso-negado", "Acesso negado");
 
     private String title;
     private String uri;
