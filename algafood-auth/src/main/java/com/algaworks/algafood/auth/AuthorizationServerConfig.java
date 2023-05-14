@@ -79,6 +79,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         //ecurity.checkTokenAccess("isAuthenticated()");//Spring Security Expression.
         security.checkTokenAccess("permitAll()")//permitindo qualquer cliente
+                .tokenKeyAccess("permitAll()")//permite todos os acessos ao endpoint de acesso ao tokenkey publico do jwt
                 .allowFormAuthenticationForClients();//permitindo autenticação de client em um form
         // P/ acessar o check token, precisa de autenticaçao do cliente
     }
