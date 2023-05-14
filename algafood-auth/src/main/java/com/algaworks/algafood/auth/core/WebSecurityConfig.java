@@ -1,4 +1,4 @@
-package com.algaworks.algafood.auth;
+package com.algaworks.algafood.auth.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,18 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /*Lista de usuários em memória para autenticação*/
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("Gustavo")
-                    .password(passwordEncoder().encode("123"))
-                    .roles("ADMIN")
-                .and()
-                .withUser("Joao")
-                .password(passwordEncoder().encode("123"))
-                .roles("ADMIN");
-    }
 
     /*@Override estamos em um "Authorization Server" e essas config são para "Resource Server"
     protected void configure(HttpSecurity http) throws Exception {
@@ -59,12 +47,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
-    }
-
-    /*User Details Service para o Refresh Token*/
-    @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return super.userDetailsService();
     }
 }
