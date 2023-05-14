@@ -185,7 +185,9 @@ values (1, 'João da Silva', 'joao.ger@algafood.com', '$2a$10$Ze/ehgT3FoLQi9w9/K
 insert into usuario_grupo (usuario_id, grupo_id)
 values (1, 1),
        (1, 2),
-       (2, 2);
+       (2, 2),
+       (3, 4),
+       (4, 4);
 
 #12.17. Desafio- implementando endpoints de associação de usuários responsáveis com restaurantes
 insert into usuario (id, nome, email, senha, data_cadastro)
