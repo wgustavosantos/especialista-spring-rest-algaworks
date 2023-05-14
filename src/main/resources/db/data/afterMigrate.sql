@@ -132,10 +132,10 @@ values (1, 'Gerente'),
 
 #12.9. Desafio: implementando os endpoints de usuarios
 insert into usuario (id, nome, email, senha, data_cadastro)
-values (1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
-       (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
-       (3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
-       (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
+values (1, 'João da Silva', 'joao.ger@algafood.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.', utc_timestamp),
+       (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.', utc_timestamp),
+       (3, 'José Souza', 'jose.aux@algafood.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.', utc_timestamp),
+       (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.', utc_timestamp);
 
 #12.15. Desafio- implementando os endpoints de associação de grupos com permissões
 
@@ -145,7 +145,7 @@ insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
 
 #12.17. Desafio- implementando endpoints de associação de usuários responsáveis com restaurantes
-insert into usuario (id, nome, email, senha, data_cadastro) values (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.', utc_timestamp);
 insert into restaurante_usuario_responsavel(usuario_id, restaurante_id) values(1, 5), (3, 5);
 
 #12.19. Desafio: Implementando os endpoints de consulta de pedidos
@@ -203,9 +203,9 @@ values (6, 5, 3, 1, 87.2, 87.2, null);
 
 #15.4. Usando o serviço de envio de e-mails na confirmação de pedidos
 insert into usuario (id, nome, email, senha, data_cadastro) values
-(6, 'Débora Mendonça', 'guto15santos+debora@gmail.com', '123', utc_timestamp);
+(6, 'Débora Mendonça', 'guto15santos+debora@gmail.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.', utc_timestamp);
 insert into usuario (id, nome, email, senha, data_cadastro) values
-(7, 'Carlos Lima', 'guto15santos+carlos@gmail.com', '123', utc_timestamp);
+(7, 'Carlos Lima', 'guto15santos+carlos@gmail.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.', utc_timestamp);
 
 insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
                     endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,

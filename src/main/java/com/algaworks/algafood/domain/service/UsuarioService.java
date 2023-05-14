@@ -12,6 +12,7 @@ import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,9 @@ public class UsuarioService {
     @Autowired
     private GrupoService grupoService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public Usuario salvar(Usuario usuario) {
         usuarioRepository.detach(usuario); /*Antes de chamaro findbyEmail o SDJPA faz o commit dos objetos gerenciados
@@ -39,6 +43,7 @@ public class UsuarioService {
         if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)){
             throw new NegocioException(String.format(ErrorMessage.EMAIL_JA_CADASTRADO.get(), usuario.getEmail()));
         }
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
@@ -79,8 +84,8 @@ public class UsuarioService {
     @Transactional
     public void alterarSenha(Long usuarioId, UsuarioInputSenhaDTO senhaDTO) {
         Usuario usuarioAtual = buscar(usuarioId);
-
-        if(!usuarioAtual.senhaIsEquals(senhaDTO.getSenhaAtual()))
+        
+        if(!passwordEncoder.matches(senhaDTO.getSenhaAtual(), usuarioAtual.getSenha()))
             throw new NegocioException(ErrorMessage.SENHA_NAO_COINCIDE.get());
 
         usuarioAtual.setSenha(senhaDTO.getNovaSenha());
