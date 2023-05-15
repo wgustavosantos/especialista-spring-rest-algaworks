@@ -46,27 +46,27 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("algafood-web")//cliente consumidor da api
                 .secret(passwordEncoder.encode("web123"))//password do client
                 .authorizedGrantTypes("password", "refresh_token")//tipo de fluxo Resource Owner Passoword Credentials GrantType
-                .scopes("write", "read")//escopo de leitura e alteração
+                .scopes("WRITE", "READ")//escopo de leitura e alteração
                 .accessTokenValiditySeconds(60 * 60 * 60)//equivale a 6 horas
                 .refreshTokenValiditySeconds(60 * 24 * 60 * 60)//60 dias * 24 horas * 60m * 60s
                 .and()
                 .withClient("foodanalitycs")
                 .secret(passwordEncoder.encode("food123"))
                 .authorizedGrantTypes("authorization_code")
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 .redirectUris("http://127.0.0.1:5500")
             .and()/*client credentials grant type*/
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))//password do client
                 .authorizedGrantTypes("client_credentials")//tipo de fluxo Resource Owner Passoword Credentials GrantType
-                .scopes("write", "read")//escopo de leitura e alteração
+                .scopes("WRITE", "READ")//escopo de leitura e alteração
             .and()
                 .withClient("checktoken")/*Acesso somente para verificar o token no ResourceServer*/
                 .secret(passwordEncoder.encode("check123"))
             .and()
                 .withClient("webadmin")
                 .authorizedGrantTypes("implicit")
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 .redirectUris("http://127.0.0.1:5500")
             ;
     }
