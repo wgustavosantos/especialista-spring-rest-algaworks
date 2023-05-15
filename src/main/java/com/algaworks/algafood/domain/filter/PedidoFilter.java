@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.filter;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.OffsetDateTime;
@@ -14,6 +15,7 @@ import java.time.OffsetDateTime;
  */
 @Setter
 @Getter
+@ToString
 public class PedidoFilter {
 
     @ApiModelProperty(example = "1", value = "ID do cliente para filtro da pesquisa")
