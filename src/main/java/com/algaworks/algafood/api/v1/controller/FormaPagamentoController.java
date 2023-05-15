@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v1.assembler.FormaPagamentoAssembler;
 import com.algaworks.algafood.api.v1.model.dto.FormaPagamentoDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.FormaPagamentoInputDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.FormaPagamentoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.service.FormaPagamentoService;
@@ -37,6 +38,19 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     @Autowired
     public FormaPagamentoAssembler fPAssembler;
 
+    @CheckSecurity.FormasPagamento.PodeEditar
+    @Override
+    @PutMapping("/{formaPagamentoId}")
+    public ResponseEntity<FormaPagamentoDTO> atualizar(@PathVariable Long formaPagamentoId,
+                                                       @RequestBody FormaPagamentoInputDTO formaPagamentoInputDTO){
+        final FormaPagamento formaPagamentoAtual = formaPagamentoService.buscar(formaPagamentoId);
+        fPAssembler.copyProperties(formaPagamentoInputDTO, formaPagamentoAtual);
+        final FormaPagamento formaPagamento = formaPagamentoService.atualizar(formaPagamentoAtual);
+        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toModel(formaPagamento);
+        return ResponseEntity.ok(formaPagamentoDTO);
+    }
+
+    @CheckSecurity.FormasPagamento.PodeEditar
     @Override
     @PostMapping
     public ResponseEntity<FormaPagamentoDTO> adicionar(@RequestBody @Valid FormaPagamentoInputDTO formaPagamentoInputDTO){
@@ -46,6 +60,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         return ResponseEntity.status(HttpStatus.CREATED).body(formaPagamentoDTO);
     }
 
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @Override
     @GetMapping("/{formaPagamentoId}")
     public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request){
@@ -68,17 +83,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 .body(formaPagamentoDTO);
     }
 
-    @Override
-    @PutMapping("/{formaPagamentoId}")
-    public ResponseEntity<FormaPagamentoDTO> atualizar(@PathVariable Long formaPagamentoId,
-                                                       @RequestBody FormaPagamentoInputDTO formaPagamentoInputDTO){
-        final FormaPagamento formaPagamentoAtual = formaPagamentoService.buscar(formaPagamentoId);
-        fPAssembler.copyProperties(formaPagamentoInputDTO, formaPagamentoAtual);
-        final FormaPagamento formaPagamento = formaPagamentoService.atualizar(formaPagamentoAtual);
-        final FormaPagamentoDTO formaPagamentoDTO = fPAssembler.toModel(formaPagamento);
-        return ResponseEntity.ok(formaPagamentoDTO);
-    }
-
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @Override
     @GetMapping
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request){
@@ -101,6 +106,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 .body(formaPagamentosDTO);
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @Override
     @DeleteMapping("/{formaPagamentoId}")
     public ResponseEntity<Void> deletar(@PathVariable Long formaPagamentoId){
