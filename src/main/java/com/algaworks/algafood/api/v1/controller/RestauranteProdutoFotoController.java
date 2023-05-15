@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v1.assembler.FotoProdutoAssembler;
 import com.algaworks.algafood.api.v1.model.dto.FotoProdutoDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.FotoProdutoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.repository.FotoStorageService;
@@ -40,6 +41,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @Autowired
     private FotoProdutoAssembler fTAssember;
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @Override
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId,
@@ -61,6 +63,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return fTAssember.toModel(fotoSalva);
     }
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @Override
     @GetMapping
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
@@ -101,6 +104,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @Override
     @DeleteMapping
     public void deletarFotoProduto(@PathVariable Long restauranteId,
