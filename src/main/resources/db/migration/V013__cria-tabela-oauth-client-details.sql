@@ -1,6 +1,16 @@
-alter table forma_pagamento
-    add column data_atualizacao datetime null;
-update forma_pagamento
-set forma_pagamento.data_atualizacao = utc_timestamp;
-alter table forma_pagamento
-    modify column data_atualizacao datetime not null;
+create table oauth_client_details
+(
+    client_id               varchar(255),
+    resource_ids            varchar(256),
+    client_secret           varchar(256),
+    scope                   varchar(256),
+    authorized_grant_types  varchar(256),
+    web_server_redirect_uri varchar(256),
+    authorities             varchar(256),
+    access_token_validity   integer,
+    refresh_token_validity  integer,
+    additional_information  varchar(4096),
+    autoapprove             varchar(256),
+
+    primary key (client_id)
+) engine=innodb default charset=utf8;
