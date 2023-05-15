@@ -20,15 +20,13 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import javax.sql.DataSource;
 import java.security.KeyPair;
 import java.util.Arrays;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -39,36 +37,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private JwtKeyStoreProperties jwtKeyStoreProperties;
 
+    @Autowired
+    private DataSource dataSource;
+
     /*configuração de clientes*/
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory() //autorização de clientes em memória
-                .withClient("algafood-web")//cliente consumidor da api
-                .secret(passwordEncoder.encode("web123"))//password do client
-                .authorizedGrantTypes("password", "refresh_token")//tipo de fluxo Resource Owner Passoword Credentials GrantType
-                .scopes("WRITE", "READ")//escopo de leitura e alteração
-                .accessTokenValiditySeconds(60 * 60 * 60)//equivale a 6 horas
-                .refreshTokenValiditySeconds(60 * 24 * 60 * 60)//60 dias * 24 horas * 60m * 60s
-                .and()
-                .withClient("foodanalytics")
-                .secret(passwordEncoder.encode("food123"))
-                .authorizedGrantTypes("authorization_code")
-                .scopes("WRITE", "READ")
-                .redirectUris("http://aplicacao-cliente")
-            .and()/*client credentials grant type*/
-                .withClient("faturamento")
-                .secret(passwordEncoder.encode("faturamento123"))//password do client
-                .authorizedGrantTypes("client_credentials")//tipo de fluxo Resource Owner Passoword Credentials GrantType
-                .scopes("WRITE", "READ")//escopo de leitura e alteração
-            .and()
-                .withClient("checktoken")/*Acesso somente para verificar o token no ResourceServer*/
-                .secret(passwordEncoder.encode("check123"))
-            .and()
-                .withClient("webadmin")
-                .authorizedGrantTypes("implicit")
-                .scopes("WRITE", "READ")
-                .redirectUris("http://127.0.0.1:5500")
-            ;
+        clients.jdbc(dataSource);
     }
 
     /*Para configurar o acesso ao endpoint de checagem de token ou check token, instrospecção de token */
