@@ -7,11 +7,10 @@ import com.algaworks.algafood.api.v1.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.PedidoService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,11 +60,8 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pagedResourcesAssembler.toModel(pedidosPage, pRAssembler);
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @Override
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula"
-                    , name = "campos", paramType = "query", type = "string")
-    })
     @GetMapping("/{codigoId}")
     public PedidoDTO buscar(@PathVariable String codigoId){
         return pAssembler.toModel(pedidoService.buscar(codigoId));
