@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.v1.model.inputDto.UsuarioComSenhaInputDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.UsuarioInputSenhaDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.usuarioInputUpdateDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     @Autowired
     private UsuarioAssembler aAssembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PostMapping
     public ResponseEntity<UsuarioDTO> adicionar(@RequestBody @Valid UsuarioComSenhaInputDTO usuarioInputDTO) {
@@ -36,6 +38,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<UsuarioDTO> listar() {
@@ -44,6 +47,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuariosDTO;
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping("/{usuarioId}")
     public ResponseEntity<UsuarioDTO> buscar(@PathVariable Long usuarioId) {
@@ -51,6 +55,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 
         return ResponseEntity.ok(usuarioDTO);
     }
+
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
     @Override
     @PutMapping("/{usuarioId}")
     public UsuarioDTO atualizar(@RequestBody @Valid usuarioInputUpdateDTO usuarioUpdateDTO, @PathVariable Long usuarioId) {
@@ -61,6 +67,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return aAssembler.toModel(usuarioService.atualizar(usuarioAtual));
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -69,6 +76,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @Override
     @PutMapping("/{usuarioId}/senha")
     public ResponseEntity<Void> alterarSenha(@RequestBody @Valid UsuarioInputSenhaDTO senhaDTO, @PathVariable Long usuarioId) {

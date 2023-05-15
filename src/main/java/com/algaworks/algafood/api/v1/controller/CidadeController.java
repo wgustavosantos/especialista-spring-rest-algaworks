@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.v1.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.v1.model.dto.CidadeDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.CidadeInputDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -40,6 +41,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PostMapping
     public ResponseEntity<CidadeDTO> adicionar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
@@ -55,6 +57,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Deprecated
     @Override
     @GetMapping
@@ -64,6 +67,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cAssembler.toCollectionModel(cidades);
     }
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Override
     @GetMapping("/{cidadeId}")
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
@@ -71,6 +75,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cAssembler.toModel(cidadeService.buscar(cidadeId));
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PutMapping("/{cidadeId}")
     public CidadeDTO atualizar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO, @PathVariable Long cidadeId) {
@@ -86,6 +91,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cAssembler.toModel(cidadeService.atualizar(cidadeAtual));
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

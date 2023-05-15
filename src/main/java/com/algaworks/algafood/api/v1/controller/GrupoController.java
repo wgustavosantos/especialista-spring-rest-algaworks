@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.PermissaoAssembler;
 import com.algaworks.algafood.api.v1.model.dto.GrupoDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.GrupoInputDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.GrupoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     @Autowired
     private PermissaoAssembler pAssembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PostMapping
     public ResponseEntity<GrupoDTO> adicionar(@RequestBody @Valid GrupoInputDTO grupoInputDTO){
@@ -38,12 +40,14 @@ public class GrupoController implements GrupoControllerOpenApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(grupoDTO);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<GrupoDTO> listar(){
         return gAssembler.toCollectionModel(grupoService.listar());
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping("/{grupoId}")
     public ResponseEntity<GrupoDTO> buscar(@PathVariable Long grupoId){
@@ -51,6 +55,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return ResponseEntity.ok(grupoDTO);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PutMapping("/{grupoId}")
     public ResponseEntity<GrupoDTO> atualizar(@PathVariable Long grupoId, @RequestBody GrupoInputDTO grupoInputDTO){
@@ -62,6 +67,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return ResponseEntity.ok(grupoDTO);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @DeleteMapping("{grupoId}")
     public ResponseEntity<Void> deletar(@PathVariable Long grupoId){
