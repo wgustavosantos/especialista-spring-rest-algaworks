@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.EstadoInputDissasembler;
 import com.algaworks.algafood.api.v1.model.dto.EstadoDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.EstadoInputDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.EstadoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class EstadoController implements EstadoControllerOpenApi {
     @Autowired
     private EstadoInputDissasembler eInputDissasembler;
 
-
+    @CheckSecurity.Estados.PodeEditar
     @Override
     @PostMapping
     public ResponseEntity<EstadoDTO> adicionar(@RequestBody @Valid EstadoInputDTO estadoInputDTO) {
@@ -39,6 +40,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoDTO);
     }
 
+    @CheckSecurity.Estados.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<EstadoDTO> listar() {
@@ -46,12 +48,14 @@ public class EstadoController implements EstadoControllerOpenApi {
         return eAssembler.toCollectionModel(estadoService.listar());
     }
 
+    @CheckSecurity.Estados.PodeConsultar
     @Override
     @GetMapping("/{estadoId}")
     public EstadoDTO buscar(@PathVariable Long estadoId) {
         return eAssembler.toModel(estadoService.buscar(estadoId));
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @Override
     @PutMapping("/{estadoId}")
     public EstadoDTO atualizar(@RequestBody @Valid EstadoInputDTO estadoInputDTO, @PathVariable Long estadoId) {
@@ -62,6 +66,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return eAssembler.toModel(estadoService.atualizar(estadoAtual));
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @Override
     @DeleteMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
