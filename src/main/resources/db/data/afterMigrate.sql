@@ -193,7 +193,7 @@ values (1, 1),
 insert into usuario (id, nome, email, senha, data_cadastro)
 values (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$10$Ze/ehgT3FoLQi9w9/KpebufW2E2nYYNVcnYON/OwhowlI3DBPBmV.',
         utc_timestamp);
-insert into restaurante_usuario_responsavel(usuario_id, restaurante_id)
+insert into restaurante_usuario_responsavel(restaurante_id, usuario_id)
 values (1, 5),
        (3, 5);
 
