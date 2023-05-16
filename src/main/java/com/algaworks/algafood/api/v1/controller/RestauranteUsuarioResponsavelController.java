@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.UsuarioAssembler;
 import com.algaworks.algafood.api.v1.model.dto.UsuarioDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
@@ -26,6 +27,9 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 
     @Autowired
     private AlgaLinks algaLinks;
+    
+    @Autowired
+    private AlgaSecurity algaSecurity;
 
     @Override
     @GetMapping
@@ -34,14 +38,19 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 
         CollectionModel<UsuarioDTO> usuariosModel = uAssembler
                 .toCollectionModel(restaurante.getResponsaveis())
-                .removeLinks()
-                .add(algaLinks.linkToResponsaveisRestaurante(restauranteId))
-                .add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+                .removeLinks();
 
-        usuariosModel.getContent().forEach(usuarioDTO -> {
-            usuarioDTO.add(algaLinks.linkToRestauranteResponsavelDesassociacao(
-                    restauranteId, usuarioDTO.getId(), "desassociar"));
-        });
+        usuariosModel.add(algaLinks.linkToResponsaveisRestaurante(restauranteId));
+
+        if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
+            usuariosModel.add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+
+            usuariosModel.getContent().forEach(usuarioModel -> {
+                usuarioModel.add(algaLinks.linkToRestauranteResponsavelDesassociacao(
+                        restauranteId, usuarioModel.getId(), "desassociar"));
+            });
+        }
+
 
         return usuariosModel;
     }

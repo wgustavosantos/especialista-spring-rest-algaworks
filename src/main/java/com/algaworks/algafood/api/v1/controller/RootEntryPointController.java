@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.v1.controller;
 
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v2.AlgaLinksV2;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
@@ -19,21 +20,46 @@ public class RootEntryPointController {
     @Autowired
     private AlgaLinksV2 algaLinksV2;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @GetMapping
     public RootEntryPointDTO root() {
         var rootEntryPointDTO = new RootEntryPointDTO();
+        
+        if (algaSecurity.podeConsultarCozinhas()) {
+            rootEntryPointDTO.add(algaLinks.linkToCozinhas("cozinhas"));
+        }
 
-        rootEntryPointDTO.add(algaLinks.linkToCozinhas("cozinhas"));
-        rootEntryPointDTO.add(algaLinks.linkToPedidos("pedidos"));
-        rootEntryPointDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
-        rootEntryPointDTO.add(algaLinks.linkToGrupos("grupos"));
-        rootEntryPointDTO.add(algaLinks.linkToUsuarios("usuarios"));
-        rootEntryPointDTO.add(algaLinks.linkToPermissoes("permissoes"));
-        rootEntryPointDTO.add(algaLinks.linkToFormasPagamento("formas-pagamento"));
-        rootEntryPointDTO.add(algaLinks.linkToEstados("estados"));
-        rootEntryPointDTO.add(algaLinks.linkToCidades("cidades"));
-        rootEntryPointDTO.add(algaLinksV2.linkToCidades("cidades"));
-        rootEntryPointDTO.add(algaLinks.linkToEstatisticas("estatisticas"));
+        if (algaSecurity.podePesquisarPedidos()) {
+            rootEntryPointDTO.add(algaLinks.linkToPedidos("pedidos"));
+        }
+
+        if (algaSecurity.podeConsultarRestaurantes()) {
+            rootEntryPointDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
+        }
+
+        if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            rootEntryPointDTO.add(algaLinks.linkToGrupos("grupos"));
+            rootEntryPointDTO.add(algaLinks.linkToUsuarios("usuarios"));
+            rootEntryPointDTO.add(algaLinks.linkToPermissoes("permissoes"));
+        }
+
+        if (algaSecurity.podeConsultarFormasPagamento()) {
+            rootEntryPointDTO.add(algaLinks.linkToFormasPagamento("formas-pagamento"));
+        }
+
+        if (algaSecurity.podeConsultarEstados()) {
+            rootEntryPointDTO.add(algaLinks.linkToEstados("estados"));
+        }
+
+        if (algaSecurity.podeConsultarCidades()) {
+            rootEntryPointDTO.add(algaLinks.linkToCidades("cidades"));
+        }
+
+        if (algaSecurity.podeConsultarEstatisticas()) {
+            rootEntryPointDTO.add(algaLinks.linkToEstatisticas("estatisticas"));
+        }
 
         return rootEntryPointDTO;
     }
