@@ -20,7 +20,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
         final Pedido pedido = event.getPedido();
         EnvioEmailSerivce.Mensagem mensagem = EnvioEmailSerivce.Mensagem.builder()
                 .assunto(pedido .getRestaurante().getNome() + " - Pedido confirmado.")
-                .corpo("pedido-confirmado.html")
+                .corpo("emails/pedido-confirmado.html")
                 .variavel("pedido", pedido )
                 .destinatario(pedido .getCliente().getEmail())
                 .build();

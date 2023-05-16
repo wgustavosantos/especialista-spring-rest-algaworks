@@ -24,7 +24,6 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     /*Métodos de configuração de usuários e BCryptPasswordEncoder foram deletados
      * pois ficam no Authorization Server*/
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /*restrição e autorização de acesso aos endpoints
@@ -35,7 +34,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
          * oauth2ResourceServer().opaqueToken()" indica que o Resource Server deve usar um token opaco
          * (opaque token) para autenticação do usuário.*/
         http
-                .formLogin().and()
+                .formLogin().loginPage("/login")
+                .and()
             .authorizeRequests()
                 .antMatchers("/oauth/*").authenticated()//jogar para página de login cap 23.41
                 .and()
