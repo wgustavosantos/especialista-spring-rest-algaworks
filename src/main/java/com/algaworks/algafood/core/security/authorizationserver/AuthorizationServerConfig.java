@@ -1,6 +1,11 @@
 package com.algaworks.algafood.core.security.authorizationserver;
 
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +25,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 @Configuration
@@ -85,10 +91,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new CompositeTokenGranter(granters);
     }
 
-    //@Bean/*Converte informações de user logado para JWT * pode ser usado como Bean*/
+    @Bean/*23.45. Implementando o endpoint do JSON Web Key Set (JWKS)*/
+    public JWKSet jwkSet(){
+        final KeyPair keyPair = getKeyPair();
+
+        /*pegando a chave pública do keypar*/
+        RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey)keyPair.getPublic())
+                .keyUse(KeyUse.SIGNATURE)//chave assinada por nós
+                .algorithm(JWSAlgorithm.RS256)
+                .keyID("algafood-key-id").build();//pode ser qualquer nome de iden. no json
+
+        return new JWKSet(rsaKey);
+    }
+
+    @Bean/*Converte informações de user logado para JWT * pode ser usado como Bean*/
     public JwtAccessTokenConverter jwtAccessTokenConverter (){
         /*utiliza hmacsha-256 simétrico*/
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        KeyPair keyPair = getKeyPair();
+        jwtAccessTokenConverter.setKeyPair(keyPair);
+        return jwtAccessTokenConverter;
+    }
+
+    private KeyPair getKeyPair(){
         //jwtAccessTokenConverter.setSigningKey("ansbchd978234dkfjhsd98sd42nlkj2094kwejs0d8g");
 
         String keyStorePass = jwtKeyStoreProperties.getPassword();
@@ -96,7 +121,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         final KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), keyStorePass.toCharArray());
         final KeyPair keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
-        jwtAccessTokenConverter.setKeyPair(keyPair);
-        return jwtAccessTokenConverter;
+
+        return keyPair;
     }
 }
