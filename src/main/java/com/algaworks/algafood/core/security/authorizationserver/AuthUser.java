@@ -1,14 +1,12 @@
-package com.algaworks.algafood.auth.core;
+package com.algaworks.algafood.core.security.authorizationserver;
 
-import com.algaworks.algafood.auth.domain.Usuario;
+import com.algaworks.algafood.domain.model.Usuario;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Service;
 
 import java.io.Serial;
 import java.util.Collection;
-import java.util.Collections;
 
 @Getter
 public class AuthUser extends User {

@@ -1,7 +1,7 @@
-package com.algaworks.algafood.auth.core;
+package com.algaworks.algafood.core.security.authorizationserver;
 
-import com.algaworks.algafood.auth.domain.Usuario;
-import com.algaworks.algafood.auth.domain.UsuarioRepository;
+import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

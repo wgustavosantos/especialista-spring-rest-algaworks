@@ -1,6 +1,8 @@
 package com.algaworks.algafood.core.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,6 +35,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
          * oauth2ResourceServer().opaqueToken()" indica que o Resource Server deve usar um token opaco
          * (opaque token) para autenticação do usuário.*/
         http
+                .formLogin().and()
+            .authorizeRequests()
+                .antMatchers("/oauth/*").authenticated()//jogar para página de login cap 23.41
+                .and()
             .cors().and()
             .csrf().disable()
             .oauth2ResourceServer()
@@ -60,5 +66,12 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
         });
 
         return jwtAuthenticationConverter;
+    }
+
+    /*AuthenticationManager para o Authorization Server, configure (AuthorizationServerEndpointsConfigurer) */
+    @Bean
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 }
