@@ -23,7 +23,7 @@ public class CorsConfig {
         config.setAllowedHeaders(Collections.singletonList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", config);//cors para todas as requisições
 
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new CorsFilter(source));
