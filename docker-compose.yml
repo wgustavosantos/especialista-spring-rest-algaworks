@@ -9,8 +9,9 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: "1042"
-      algafood.storage.s3.chave-acesso-secreta: "6C4hLgEJJ32TfqRdaFcediyEcrXNXN0LNVBuva5h"
-      algafood.storage.s3.id-chave-acesso: "AKIA33MIL5MN45PQBFRS"
+
+      ALGAFOOD.STORAGE.S3.CHAVE-ACESSO-SECRETA: "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"
+      ALGAFOOD.STORAGE.S3.ID-CHAVE-ACESSO: "AKIA33MIL5MN45PQBFRS"
     ports:
       - "3306:3306"
     networks:
@@ -18,6 +19,7 @@ services:
 
   algafood-api:
     image: algafood-api
+    command: ["/wait-for-it.sh", "algafodd-mysql:3306", "-t", "30", "--", "java", "-jar", "api.jar"]
     environment:
       DB_HOST: algafood-mysql
     ports:
