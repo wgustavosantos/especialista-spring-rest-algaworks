@@ -2,7 +2,11 @@ FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-COPY target/algafood-api-2.1.7.RELEASE.jar /app/api.jar
+#24.11. Construindo a imagem Docker pelo Maven
+
+ARG JAR_FILE
+
+COPY target/${JAR_FILE} /app/api.jar
 
 EXPOSE 8080
 
