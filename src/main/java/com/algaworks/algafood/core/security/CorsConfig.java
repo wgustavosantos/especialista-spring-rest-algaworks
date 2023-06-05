@@ -16,11 +16,12 @@ public class CorsConfig {
     @Bean
     public FilterRegistrationBean<CorsFilter> FilterRegistrationBean() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(false);
+        config.setAllowCredentials(false);//precisa ser false, se usar * no origins
 
         config.setAllowedOriginPatterns(Collections.singletonList("http://**"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
+        config.setAllowedOrigins(Collections.singletonList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);//cors para todas as requisições
