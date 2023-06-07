@@ -9,8 +9,6 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: "10421042"
-      ALGAFOOD.STORAGE.S3.CHAVE-ACESSO-SECRETA: "6C4hLgEJJ32TfqRdaFcediyEcrXNXN0LNVBuva5h"
-      ALGAFOOD.STORAGE.S3.ID-CHAVE-ACESSO: "AKIA33MIL5MN45PQBFRS"
     ports:
       - "3306:3306"
     networks:
@@ -28,6 +26,9 @@ services:
       DB_HOST: algafood-mysql
       SPRING_SESSION_STORE_TYPE: redis
       SPRING_REDIS_HOST: algafood-redis
+      ALGAFOOD.STORAGE.S3.CHAVE-ACESSO-SECRETA: "6C4hLgEJJ32TfqRdaFcediyEcrXNXN0LNVBuva5h"
+      ALGAFOOD.STORAGE.S3.ID-CHAVE-ACESSO: "AKIA33MIL5MN45PQBFRS"
+      SPRING_PROFILES_ACTIVE: development
     networks:
       - algafood-network
     depends_on:
