@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.v1.model.inputDto;
 
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,11 +17,9 @@ import java.math.BigDecimal;
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria="Frete Grátis")
 public class RestauranteInputDTO {
 
-    @ApiModelProperty(example = "Thai Gourmet", required = true)
     @NotBlank
     private String nome;
 
-    @ApiModelProperty(example = "12.00", required = true)
     @NotNull
     @PositiveOrZero
     private BigDecimal taxaFrete;

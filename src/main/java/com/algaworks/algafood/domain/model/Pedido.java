@@ -5,7 +5,6 @@ import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.enums.ErrorMessage;
 import com.algaworks.algafood.domain.model.enums.StatusPedido;
-import io.swagger.annotations.Api;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Api(tags = "Pedidos")
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)

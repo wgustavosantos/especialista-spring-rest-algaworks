@@ -116,17 +116,6 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
         <!--http://springfox.github.io/springfox/docs/current/-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-bean-validators</artifactId>
-            <version>3.0.0</version>
-        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>

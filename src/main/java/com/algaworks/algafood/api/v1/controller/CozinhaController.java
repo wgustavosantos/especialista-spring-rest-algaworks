@@ -9,7 +9,6 @@ import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,6 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping(value = "/v1/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "Cozinhas")
 public class CozinhaController implements CozinhaControllerOpenApi {
 
     @Autowired
