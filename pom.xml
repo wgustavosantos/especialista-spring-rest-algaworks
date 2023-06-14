@@ -25,7 +25,7 @@
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
         <springdoc.version>1.6.9</springdoc.version>
         <mysql.version>8.0.33</mysql.version>
-
+        <springdoc.version>1.6.9</springdoc.version>
 
     </properties>
 
@@ -165,6 +165,21 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-hateoas</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>${springdoc.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>

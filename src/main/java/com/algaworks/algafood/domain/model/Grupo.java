@@ -26,7 +26,7 @@ public class Grupo {
             inverseJoinColumns = @JoinColumn(name = "permissao_id"))
     private Set<Permissao> permissoes = new HashSet<>();
 
-    public boolean associarPermissao(Permissao permissao){
+    public boolean associarPermissao(Permissao permissao) {
         return permissoes.add(permissao);
     }
 
