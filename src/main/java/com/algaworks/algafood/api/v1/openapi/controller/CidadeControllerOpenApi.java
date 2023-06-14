@@ -25,8 +25,8 @@ public interface CidadeControllerOpenApi {
     CidadeDTO buscar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
     @Operation(summary = "Atualizado uma cidade por ID")
-    CidadeDTO atualizar(@Parameter(description = "ID de uma cidade", example = "1", required = true)
-                        @RequestBody(description = "Representação de uma cidade com dados atualizados", required = true) CidadeInputDTO cidadeInputDTO, Long cidadeId);
+    CidadeDTO atualizar(@RequestBody(description = "Representação de uma cidade com dados atualizados", required = true) CidadeInputDTO cidadeInputDTO,
+                        @Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
     @Operation(summary = "Excluir uma cidade por ID")
     void deletar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
