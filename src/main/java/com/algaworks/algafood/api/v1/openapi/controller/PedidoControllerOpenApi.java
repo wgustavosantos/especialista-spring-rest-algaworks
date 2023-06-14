@@ -20,8 +20,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.Valid;
-
 @SecurityRequirement(name = "security_auth")
 public interface PedidoControllerOpenApi {
 
