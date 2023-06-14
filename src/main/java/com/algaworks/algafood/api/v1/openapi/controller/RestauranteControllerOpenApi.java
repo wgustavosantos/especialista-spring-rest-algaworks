@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.model.dto.RestauranteApenasNomeDTO;
 import com.algaworks.algafood.api.v1.model.dto.RestauranteBasicoDTO;
 import com.algaworks.algafood.api.v1.model.dto.RestauranteDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.RestauranteInputDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Set;
 
+@SecurityRequirement(name = "security_auth")
 public interface RestauranteControllerOpenApi {
 
     RestauranteDTO adicionar(RestauranteInputDTO restauranteInput);

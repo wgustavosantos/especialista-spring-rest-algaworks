@@ -1,12 +1,12 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.dto.PedidoDTO;
 import com.algaworks.algafood.api.v1.model.dto.PedidoResumoDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.repository.data.PageableTranslator;
 import com.google.common.collect.ImmutableMap;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
 
+@SecurityRequirement(name = "security_auth")
 public interface PedidoControllerOpenApi {
 
     @ResponseStatus(HttpStatus.CREATED)

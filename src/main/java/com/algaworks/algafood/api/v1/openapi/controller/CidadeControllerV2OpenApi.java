@@ -2,8 +2,10 @@ package com.algaworks.algafood.api.v1.openapi.controller;
 
 import com.algaworks.algafood.api.v2.model.CidadeDTOV2;
 import com.algaworks.algafood.api.v2.model.input.CidadeInputDTOV2;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 
+@SecurityRequirement(name = "security_auth")
 public interface CidadeControllerV2OpenApi {
 
     CollectionModel<CidadeDTOV2> listar();
