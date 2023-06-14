@@ -12,6 +12,8 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -23,6 +25,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Configuration
 @SecurityScheme(name = "security_auth",
@@ -36,6 +40,11 @@ flows = @OAuthFlows(authorizationCode = @OAuthFlow(
         }
 )))
 public class SpringDocConfig {
+
+    private static final String badRequestResponse = "BadRequestResponse";
+    private static final String notFoundResponse = "NotFoundResponse";
+    private static final String notAcceptableResponse = "NotAcceptableResponse";
+    private static final String internalServerErrorResponse = "InternalServerErrorResponse";
 
     @Bean
     public OpenAPI openAPI() {
@@ -53,9 +62,11 @@ public class SpringDocConfig {
                         .url("https://algaworks.com")
                 ).tags(Arrays.asList(
                         new Tag().name("Cidades").description("Gerencia as cidades")
-                )).components(new Components().schemas(
-                        gerarSchemas()
-                ));
+                )).components(new Components()
+                        .schemas(gerarSchemas()
+                    )
+                        .responses(gerarResponses())
+                );
     }
 
     @Bean
@@ -106,5 +117,32 @@ public class SpringDocConfig {
 
         return schemaMap;
     }
+
+    private Map<String, ApiResponse> gerarResponses() {
+        final Map<String, ApiResponse> apiResponseMap = new HashMap<>();
+
+        Content content = new Content()
+                .addMediaType(APPLICATION_JSON_VALUE,
+                        new MediaType().schema(new Schema<Problem>().$ref("Problema")));
+
+        apiResponseMap.put(badRequestResponse, new ApiResponse()
+                .description("Requisição inválida")
+                .content(content));
+
+        apiResponseMap.put(notFoundResponse, new ApiResponse()
+                .description("Recurso não encontrado")
+                .content(content));
+
+        apiResponseMap.put(notAcceptableResponse, new ApiResponse()
+                .description("Recurso não possui representação que poderia ser aceita pelo consumidor")
+                .content(content));
+
+        apiResponseMap.put(internalServerErrorResponse, new ApiResponse()
+                .description("Erro interno no servidor")
+                .content(content));
+
+        return apiResponseMap;
+    }
+
 
 }
