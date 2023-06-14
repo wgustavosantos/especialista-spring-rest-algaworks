@@ -64,9 +64,11 @@ public class SpringDocConfig {
                         new Tag().name("Cidades").description("Gerencia as cidades")
                 )).components(new Components()
                         .schemas(gerarSchemas()
-                    )
-                        .responses(gerarResponses())
-                );
+                    ).responses(gerarResponses())
+                ).tags(Arrays.asList(
+                        new Tag().name("Cidades").description("Gerencia as cidades"),
+                        new Tag().name("Grupos").description("Gerencia os grupos")
+                ));
     }
 
     @Bean
