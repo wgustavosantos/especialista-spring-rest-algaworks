@@ -4,7 +4,10 @@ import com.algaworks.algafood.api.v1.model.dto.CidadeDTO;
 import com.algaworks.algafood.api.v1.model.inputDto.CidadeInputDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
@@ -21,7 +24,12 @@ public interface CidadeControllerOpenApi {
     @Operation(summary = "Lista as cidades")
     CollectionModel<CidadeDTO> listar();
 
-    @Operation(summary = "Busca uma cidade por Id")
+    @Operation(summary = "Busca uma cidade por Id", responses = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "ID da cidade inválido",
+                    content = @Content(schema = @Schema)
+            )
+    })
     CidadeDTO buscar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
     @Operation(summary = "Atualizado uma cidade por ID")
