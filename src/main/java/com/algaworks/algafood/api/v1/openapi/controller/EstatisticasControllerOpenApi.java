@@ -21,7 +21,7 @@ import java.util.List;
 public interface EstatisticasControllerOpenApi {
 
     @Operation(hidden = true)
-    EstatisticasDTO estatisticas();
+    EstatisticasController.EstatisticasDTO estatisticas();
 
     @Operation(
             summary = "Consulta estatísticas de vendas diárias",
