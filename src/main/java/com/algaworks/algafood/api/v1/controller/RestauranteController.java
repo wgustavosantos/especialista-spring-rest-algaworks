@@ -212,12 +212,13 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     @Override
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ativarRestaurantes(@RequestBody Set<Long> restauranteIds) {
+    public ResponseEntity<Void> ativarRestaurantes(@RequestBody Set<Long> restauranteIds) {
         try {
             restauranteService.ativarEmMassa(restauranteIds);
         } catch (RestauranteNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
+        return ResponseEntity.noContent().build();
     }
 
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro

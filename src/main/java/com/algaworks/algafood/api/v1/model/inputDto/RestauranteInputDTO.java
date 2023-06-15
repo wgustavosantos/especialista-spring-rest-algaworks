@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.v1.model.inputDto;
 
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +18,11 @@ import java.math.BigDecimal;
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria="Frete Grátis")
 public class RestauranteInputDTO {
 
+    @Schema(example = "Thai Gourmet")
     @NotBlank
     private String nome;
 
+    @Schema(example = "12.00")
     @NotNull
     @PositiveOrZero
     private BigDecimal taxaFrete;
