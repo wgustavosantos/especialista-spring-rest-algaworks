@@ -67,40 +67,13 @@ public class SpringDocConfig {
                     ).responses(gerarResponses())
                 ).tags(Arrays.asList(
                         new Tag().name("Cidades").description("Gerencia as cidades"),
-                        new Tag().name("Grupos").description("Gerencia os grupos")
-                ))
-                .tags(Arrays.asList(
-                        new Tag().name("Cidades").description("Gerencia as cidades"),
-                        new Tag().name("Grupos").description("Gerencia os grupos"),
-                        new Tag().name("Cozinhas").description("Gerencia as cozinhas")
-                ))
-                .tags(Arrays.asList(
-                        new Tag().name("Cidades").description("Gerencia as cidades"),
-                        new Tag().name("Grupos").description("Gerencia os grupos"),
-                        new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
-                        new Tag().name("Formas de pagamento").description("Gerencia as formas de pagamento")
-                ))
-                .tags(Arrays.asList(
-                        new Tag().name("Cidades").description("Gerencia as cidades"),
-                        new Tag().name("Grupos").description("Gerencia os grupos"),
-                        new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
-                        new Tag().name("Formas de pagamento").description("Gerencia as formas de pagamento"),
-                        new Tag().name("Pedidos").description("Gerencia os pedidos")
-                )).tags(Arrays.asList(
-                        new Tag().name("Cidades").description("Gerencia as cidades"),
-                        new Tag().name("Grupos").description("Gerencia os grupos"),
-                        new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
-                        new Tag().name("Formas de pagamento").description("Gerencia as formas de pagamento"),
-                        new Tag().name("Pedidos").description("Gerencia os pedidos"),
-                        new Tag().name("Restaurantes").description("Gerencia os restaurantes")
-                )).tags(Arrays.asList(
-                        new Tag().name("Cidades").description("Gerencia as cidades"),
                         new Tag().name("Grupos").description("Gerencia os grupos"),
                         new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
                         new Tag().name("Formas de pagamento").description("Gerencia as formas de pagamento"),
                         new Tag().name("Pedidos").description("Gerencia os pedidos"),
                         new Tag().name("Restaurantes").description("Gerencia os restaurantes"),
-                        new Tag().name("Estados").description("Gerencia os estados")
+                        new Tag().name("Estados").description("Gerencia os estados"),
+                        new Tag().name("Produtos").description("Gerencia os produtos")
                 ));
     }
 
