@@ -46,11 +46,10 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId,
                                         @PathVariable Long produtoId,
-                                        @Valid FotoProdutoInput fotoProdutoInput,
-                                        @RequestPart(required = true) MultipartFile file) throws IOException {
+                                        @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
 
         FotoProduto fotoProduto = new FotoProduto();
-//        final MultipartFile file = fotoProdutoInput.getFile();
+        final MultipartFile file = fotoProdutoInput.getFile();
 
         fotoProduto.setProduto(produtoService.buscar(produtoId, restauranteId));
         fotoProduto.setDescricao(fotoProdutoInput.getDescricao());
