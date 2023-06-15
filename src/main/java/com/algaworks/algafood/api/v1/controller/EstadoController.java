@@ -70,7 +70,8 @@ public class EstadoController implements EstadoControllerOpenApi {
     @Override
     @DeleteMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletar(@PathVariable Long estadoId) {
+    public ResponseEntity<Void> deletar(@PathVariable Long estadoId) {
         estadoService.deletar(estadoId);
+        return ResponseEntity.noContent().build();
     }
 }
