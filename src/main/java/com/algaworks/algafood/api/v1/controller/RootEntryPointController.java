@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.v1.controller;
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v2.AlgaLinksV2;
 import com.algaworks.algafood.core.security.AlgaSecurity;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ public class RootEntryPointController {
     @Autowired
     private AlgaSecurity algaSecurity;
 
+    @Operation(hidden = true)
     @GetMapping
     public RootEntryPointDTO root() {
         var rootEntryPointDTO = new RootEntryPointDTO();
