@@ -106,10 +106,11 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @DeleteMapping
-    public void deletarFotoProduto(@PathVariable Long restauranteId,
+    public ResponseEntity<Void> deletarFotoProduto(@PathVariable Long restauranteId,
                                    @PathVariable Long produtoId){
 
         catalogoFotoProdutoService.deletar(restauranteId, produtoId);
+        return ResponseEntity.noContent().build();
 
     }
 
