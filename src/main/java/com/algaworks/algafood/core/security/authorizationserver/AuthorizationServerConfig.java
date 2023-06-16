@@ -1,9 +1,15 @@
 package com.algaworks.algafood.core.security.authorizationserver;
 
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -20,6 +26,8 @@ import org.springframework.security.oauth2.server.authorization.config.ProviderS
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.io.InputStream;
+import java.security.KeyStore;
 import java.time.Duration;
 import java.util.Arrays;
 
@@ -52,7 +60,7 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .scope("READ")
                 .tokenSettings(TokenSettings.builder()
-                        .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
+                        .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
                         .accessTokenTimeToLive(Duration.ofMinutes(30))
                         .build())
                 .build();
@@ -66,6 +74,22 @@ public class AuthorizationServerConfig {
 
         return new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
 
+    }
+
+    @Bean
+    public JWKSource<SecurityContext> securityContextJWKSource (JwtKeyStoreProperties jwtKeyStoreProperties) throws Exception {
+
+        final char[] keyStorePass = jwtKeyStoreProperties.getPassword().toCharArray();
+        final String keypairAlias = jwtKeyStoreProperties.getKeypairAlias();
+
+        final Resource jksLocation = jwtKeyStoreProperties.getJksLocation();
+        final InputStream inputStream = jksLocation.getInputStream();
+        final KeyStore keyStore = KeyStore.getInstance("JKS");
+        keyStore.load(inputStream, keyStorePass);
+
+        final RSAKey rsaKey = RSAKey.load(keyStore, keypairAlias, keyStorePass);
+
+        return new ImmutableJWKSet<>(new JWKSet(rsaKey));
     }
 
 }
