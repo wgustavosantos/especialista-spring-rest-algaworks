@@ -18,21 +18,21 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.time.Duration;
-import java.util.Collections;
+import java.util.Arrays;
+
 
 @Configuration
 public class AuthorizationServerConfig {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         return http.build();
     }
 
     @Bean
     public AuthorizationServerSettings providerSettings(AlgaFoodSecurityProperties properties) {
-
         return AuthorizationServerSettings.builder()
                 .issuer(properties.getProviderUrl())
                 .build();
@@ -48,14 +48,13 @@ public class AuthorizationServerConfig {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .scope("READ")
-                .tokenSettings(
-                        TokenSettings.builder()
-                                .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
-                                .accessTokenTimeToLive(Duration.ofMinutes(30))
-                                .build()
-                ).build();
+                .tokenSettings(TokenSettings.builder()
+                        .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
+                        .accessTokenTimeToLive(Duration.ofMinutes(30))
+                        .build())
+                .build();
 
-        return new InMemoryRegisteredClientRepository(Collections.singletonList(algafoodbackend));
+        return new InMemoryRegisteredClientRepository(Arrays.asList(algafoodbackend));
     }
 
 }
