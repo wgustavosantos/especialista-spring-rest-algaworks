@@ -24,7 +24,7 @@
         <springdoc.version>1.6.9</springdoc.version>
         <mysql.version>8.0.33</mysql.version>
         <springdoc.version>1.6.9</springdoc.version>
-        <springauthserver.version>1.1.0</springauthserver.version>
+        <springauthserver.version>0.3.1</springauthserver.version>
 
     </properties>
 
@@ -130,7 +130,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>   
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
