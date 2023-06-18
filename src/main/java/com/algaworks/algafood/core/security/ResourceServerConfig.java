@@ -32,10 +32,10 @@ public class ResourceServerConfig {
                 .and()
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 
-                return httpSecurity.formLogin(Customizer.withDefaults()).build();
+                return httpSecurity.formLogin(customizer -> customizer.loginPage("/login")).build();
     }
 
-    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        private JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
 
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
