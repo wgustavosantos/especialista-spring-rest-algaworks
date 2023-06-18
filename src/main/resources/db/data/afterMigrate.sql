@@ -6,7 +6,7 @@ lock tables cidade write, cozinha write, estado write, forma_pagamento write,
     grupo write, grupo_permissao write, permissao write,
     produto write, restaurante write, restaurante_forma_pagamento write,
     restaurante_usuario_responsavel write, usuario write, usuario_grupo write,
-    pedido write, item_pedido write, foto_produto write, oauth_client_details write;
+    pedido write, item_pedido write, foto_produto write, oauth2_registered_client write;
 
 truncate table cidade;
 truncate table cozinha;
@@ -24,7 +24,7 @@ truncate table restaurante_usuario_responsavel;
 truncate table pedido;
 truncate table item_pedido;
 truncate table foto_produto;
-truncate table oauth_client_details;
+truncate table oauth2_registered_client;
 
 set foreign_key_checks = 1;
 
@@ -313,38 +313,19 @@ select 3, id from permissao where nome like 'CONSULTAR_%';
 insert into grupo_permissao (grupo_id, permissao_id)
 select 4, id from permissao where nome like '%_RESTAURANTES' or nome like '%_PRODUTOS';
 
-#23.37. Cadastrando clientes OAuth2 no banco de dados e testando a emissão de tokens
-insert into oauth_client_details (
-    client_id, resource_ids, client_secret,
-    scope, authorized_grant_types, web_server_redirect_uri, authorities,
-    access_token_validity, refresh_token_validity, autoapprove
-)
-values (
-           'algafood-web', null, '$2y$12$w3igMjsfS5XoAYuowoH3C.54vRFWlcXSHLjX7MwF990Kc2KKKh72e',
-           'READ,WRITE', 'password,authorization_code', 'http://localhost:8080,http://localhost:8080/swagger-ui/oauth2-redirect.html', null,
-           60 * 60 * 6, 60 * 24 * 60 * 60, null
-       );
+#23.37. Cadastrando clientes OAuth2 no banco de dados e testando a emissão de tokens | codigo alterado para...
+#27.16. Implementado Repository de Clients do OAuth2 via JDBC
 
-insert into oauth_client_details (
-    client_id, resource_ids, client_secret,
-    scope, authorized_grant_types, web_server_redirect_uri, authorities,
-    access_token_validity, refresh_token_validity, autoapprove
-)
-values (
-           'foodanalytics', null, '$2a$12$InuKivuh0ARkBUlDgXefP.LEBQhNP1U2RnNDUlTa1AQQE7ZgygHqy',
-           'READ,WRITE', 'authorization_code', 'http://localhost:8082', null,
-           null, null, null
-       );
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('1', 'algafood-backend', '2022-08-16 19:04:12', '$2a$10$97f9cT/X/htp85ELK8.IhOBpCRHAmn0Z0cYOJVscCj6esvTIFYOrS', NULL, '1', 'client_secret_basic', 'client_credentials', '', 'READ', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 
-insert into oauth_client_details (
-    client_id, resource_ids, client_secret,
-    scope, authorized_grant_types, web_server_redirect_uri, authorities,
-    access_token_validity, refresh_token_validity, autoapprove
-)
-values (
-           'faturamento', null, '$2y$12$fHixriC7yXX/i1/CmpnGH.RFyK/l5YapLCFOEbIktONjE8ZDykSnu',
-           'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS',
-           null, null, null
-       );
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('2', 'algafood-web', '2022-08-16 19:04:12', '$2a$10$ku07Df8C0xrgJ.lId5.Cie..VZH4AReQ0wNIKaqvcMlC3MrjT6IF2', NULL, '2', 'client_secret_basic', 'refresh_token,authorization_code', 'http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html,http://127.0.0.1:8080/authorized', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",900.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000]}');
+
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('3', 'foodanalytics', '2022-08-16 19:04:12', '$2a$10$E5f93hZ5kq97tcZVVUEtru08Eg9KBkziAdyZegNT/cfgJItimzPwW', NULL, '3', 'client_secret_basic', 'authorization_code', 'http://www.foodanalytics.local:8082', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 
 unlock tables;
