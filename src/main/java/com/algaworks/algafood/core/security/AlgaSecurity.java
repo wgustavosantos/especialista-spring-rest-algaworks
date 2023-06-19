@@ -25,7 +25,14 @@ public class AlgaSecurity {
 
         final Jwt jwt = (Jwt) getAuthentication().getPrincipal();
 
-        return jwt.getClaim("usuario_id");
+        //retorna String, mas temos que fazer a verificacao se vier nulo e serializar p/ String
+        //pois a nova stack do jwt, está serializando como String e nao Long
+        final Object usuarioId = jwt.getClaim("usuario_id");
+
+        if(usuarioId == null)
+            return null;
+
+        return Long.valueOf(usuarioId.toString());
     }
 
     public boolean gerenciaRestaurante(Long restauranteId){

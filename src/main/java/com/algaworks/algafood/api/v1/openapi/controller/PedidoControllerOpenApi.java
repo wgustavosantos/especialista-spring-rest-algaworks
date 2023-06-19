@@ -6,7 +6,6 @@ import com.algaworks.algafood.api.v1.model.inputDto.PedidoInputDTO;
 import com.algaworks.algafood.core.springdoc.PageableParameter;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.repository.data.PageableTranslator;
-import com.google.common.collect.ImmutableMap;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -19,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.Map;
 
 @SecurityRequirement(name = "security_auth")
 public interface PedidoControllerOpenApi {
@@ -47,7 +48,7 @@ public interface PedidoControllerOpenApi {
             }
     )
     @PageableParameter
-    PagedModel<PedidoResumoDTO> pesquisar(@Parameter(hidden = true) PedidoFilter pedidoFilter,@Parameter(hidden = true) Pageable pageable);
+    PagedModel<PedidoResumoDTO> pesquisar(@Parameter(hidden = true) PedidoFilter pedidoFilter, @Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Busca um pedido por código", responses = {
             @ApiResponse(responseCode = "200"),
@@ -58,7 +59,11 @@ public interface PedidoControllerOpenApi {
             required = true) String codigoId);
 
     default Pageable truduzirPageable(Pageable apiPageable) {
-        final ImmutableMap<String, String> mapFields = ImmutableMap.of("codigo", "codigo", "restaurante.nome", "restaurante.nome", "nomeCliente", "cliente.nome", "valortotal", "valorTotal");
-        return PageableTranslator.translate(apiPageable, mapFields);
+        final Map<String, String> map = Map.of("codigo", "codigo",
+                "restaurante.nome", "restaurante.nome",
+                "nomeCliente", "cliente.nome",
+                "valortotal", "valorTotal"
+        );
+        return PageableTranslator.translate(apiPageable, map);
     }
 }

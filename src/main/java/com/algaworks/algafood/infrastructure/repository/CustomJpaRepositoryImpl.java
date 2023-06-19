@@ -1,11 +1,11 @@
 package com.algaworks.algafood.infrastructure.repository;
 
 import com.algaworks.algafood.domain.repository.CustomJpaRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.Optional;
 /* é a especializaçção da implementação SimpleJpaRepository,
 que é a implementação padrão do Spring para JpaRepository. Não precisa de anotações pois a SimpleJpaRepository

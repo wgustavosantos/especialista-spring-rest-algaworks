@@ -1,9 +1,9 @@
 package com.algaworks.algafood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 
 @Data
 @Embeddable
