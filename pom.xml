@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.algaworks</groupId>
     <artifactId>algafood-api</artifactId>
-    <version>2.7.8.RELEASE</version>
+    <version>3.0.0</version>
     <name>algafood-api</name>
     <description>API de delivery de comida</description>
     <properties>
