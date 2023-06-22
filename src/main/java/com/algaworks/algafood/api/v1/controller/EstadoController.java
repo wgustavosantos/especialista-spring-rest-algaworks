@@ -40,7 +40,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoDTO);
     }
 
-    @CheckSecurity.Estados.PodeConsultar
+//    @CheckSecurity.Estados.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<EstadoDTO> listar() {

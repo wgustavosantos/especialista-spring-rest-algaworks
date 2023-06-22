@@ -89,7 +89,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
-    @CheckSecurity.Restaurantes.PodeConsultar
+//    @CheckSecurity.Restaurantes.PodeConsultar
     @Override
 //    @JsonView(RestauranteView.Resumo.class)
     @GetMapping

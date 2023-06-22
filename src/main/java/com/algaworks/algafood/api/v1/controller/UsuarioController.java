@@ -28,7 +28,6 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     @Autowired
     private UsuarioAssembler aAssembler;
 
-    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PostMapping
     public ResponseEntity<UsuarioDTO> adicionar(@RequestBody @Valid UsuarioComSenhaInputDTO usuarioInputDTO) {

@@ -46,7 +46,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return pAssembler.toModel(produtoService.salvar(produto));
     }
 
-    @CheckSecurity.Restaurantes.PodeConsultar
+//    @CheckSecurity.Restaurantes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId,

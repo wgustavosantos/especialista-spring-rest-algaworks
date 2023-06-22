@@ -52,7 +52,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
     }
 
-    @CheckSecurity.Cozinhas.PodeConsultar
+//    @CheckSecurity.Cozinhas.PodeConsultar
     @Override
     @GetMapping
     public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 5) Pageable pageable) {

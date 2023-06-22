@@ -55,7 +55,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
-    @CheckSecurity.Cidades.PodeConsultar
+//    @CheckSecurity.Cidades.PodeConsultar
     @Deprecated
     @Override
     @GetMapping

@@ -48,7 +48,7 @@ public class PedidoController implements PedidoControllerOpenApi {
        return pAssembler.toModel(pedidoService.adicionar(pedido));
     }
 
-    @CheckSecurity.Pedidos.PodePesquisar
+//    @CheckSecurity.Pedidos.PodePesquisar
     @Override
     @GetMapping
     public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable){
