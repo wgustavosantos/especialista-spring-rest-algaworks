@@ -2,6 +2,11 @@
 
 ## REST API desenvolvida com Spring Boot seguindo as melhoras práticas do mercado.
 
+* Certificado de 280 horas - [https://app.algaworks.com/certs/RYMGMI88P0o](https://app.algaworks.com/certs/RYMGMI88P0)
+
+* Projeto na Nuvem da AWS - http://54.160.160.146:8080/swagger-ui/index.html - Leia instruções de Uso [Instruções](#instruções)
+  
+
 ## Tecnologias / Frameworks
  - SpringBoot 2.7 e 3.0
  - Spring Data JPA
@@ -97,7 +102,7 @@
 
 ![Spring Doc](./minhas-anotacoes/images/Swagger.png)
 
-### Instruções de Uso
+## Instruções
 #### Clone o projeto e execute na sua IDE
 
 Altere o arquivo `application-development.properties` para utilizar o seu database
